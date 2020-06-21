@@ -1,10 +1,7 @@
-var express = require("express");
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-//RUTA EJEMPLO
-/* GET home page. */
-router.get("/", async (req, res) => {
-    res.json({ title: "Home", mensaje: "Hola" });
-});
+//router.use('/prod', require('./productor'));
+router.use('/prov', require('./proveedor'));
 
 module.exports = router;

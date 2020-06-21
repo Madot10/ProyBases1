@@ -4,9 +4,6 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-
 var app = express();
 
 app.use(logger("dev"));
@@ -20,8 +17,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("port", process.env.PORT || 3000);
 
 //Rutas
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use('/',require('./routes'));
 
 // Middleware para Vue.js router modo history
 const history = require("connect-history-api-fallback");
