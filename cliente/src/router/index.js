@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Login from "../views/Login.vue";
 
 Vue.use(VueRouter);
 
@@ -14,8 +13,25 @@ const routes = [
     },
     {
         path: "/admin",
-        name: "Administración",
-        component: () => import("../views/admin.vue"),
+        name: "admin",
+        component: () => import("../views/Admin.vue"),
+    },
+    /*RUTAS PROVEEDOR */
+    {
+        path: "/prov",
+        component: () => import("../views/MainView.vue"),
+    },
+
+    /*RUTAS PRODUCTOR */
+    {
+        path: "/prod",
+        component: () => import("../views/MainView.vue"),
+    },
+
+    /* 404 => REDIRECT  */
+    {
+        path: "*",
+        redirect: { name: "admin" },
     },
 ];
 

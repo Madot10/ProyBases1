@@ -8,9 +8,17 @@
                         <b-icon icon="box-seam"></b-icon>
                         Sistema VAM
                     </h1>
-                    <h4>
-                        {{ mode_list ? (type_user == "prov" ? "Proveedores" : "Productores") : "" }}
-                    </h4>
+                    <div v-if="mode_list">
+                        <h4>
+                            <b-icon
+                                icon="chevron-left"
+                                class="pointer"
+                                @click="back_select"
+                            ></b-icon>
+                            {{ type_user == "prov" ? "Proveedores" : "Productores" }}
+                        </h4>
+                    </div>
+
                     <br />
                     <!--BOTONES DE TIPO-->
                     <div v-if="!mode_list">
@@ -63,6 +71,10 @@ export default {
             this.type_user = type;
             this.mode_list = true;
         },
+        back_select() {
+            this.type_user = null;
+            this.mode_list = false;
+        },
         test_click() {
             console.warn("YEI! Hiciste click");
         },
@@ -77,5 +89,9 @@ body {
 
 .main {
     height: 100vh;
+}
+
+.pointer {
+    cursor: pointer;
 }
 </style>
