@@ -86,7 +86,7 @@ export default {
                     title: "Gestión de datos",
                     icon: "pencil-square",
                     items: [
-                        { item: "Datos proveedor", link: "/prov" },
+                        { item: "Datos proveedor", link: { name: "datosProv" } },
                         { item: "Materia Prima", link: "#" },
                         { item: "Condiciones de pago", link: "/prov/otoro" },
                         { item: "Condiciones de envío", link: "/" },

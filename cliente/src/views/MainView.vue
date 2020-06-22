@@ -4,7 +4,9 @@
             <b-col cols="2">
                 <sidebar></sidebar>
             </b-col>
-            <b-col cols="10"></b-col>
+            <b-col cols="10">
+                <router-view></router-view>
+            </b-col>
         </b-row>
     </b-container>
 </template>

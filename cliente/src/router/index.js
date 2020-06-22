@@ -18,8 +18,15 @@ const routes = [
     },
     /*RUTAS PROVEEDOR */
     {
-        path: "/prov",
+        path: "/prov/:id",
         component: () => import("../views/MainView.vue"),
+        children: [
+            {
+                name: "datosProv",
+                path: "datos",
+                component: () => import("../views/DatosProv.vue"),
+            },
+        ],
     },
 
     /*RUTAS PRODUCTOR */
