@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { FormaPagoCont }= require('../controllers/FormaPagoCont')
+const { ContratoCont }= require('../controllers/ContratoCont')
 
 //Se crea clase Controller y se llaman a los métodos de esa clase
 var formaPago = new FormaPagoCont;
+var contrato = new ContratoCont;
+
+//Lista de contratos de un proveedor
+router.get('/:id_prov/contrato', contrato.getContratosSiendoProv);
 
 //Formas de Pago
 router.post('/:id_prov/forma_pago', formaPago.createFormaPago);
