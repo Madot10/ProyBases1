@@ -34,16 +34,6 @@ export default {
         return {
             navigation_prod: [
                 {
-                    title: "Gestión de datos",
-                    icon: "pencil-square",
-                    items: [
-                        { item: "Datos productor", link: "/prov" },
-                        { item: "Perfumes", link: "#" },
-
-                        { item: "Membresía IFRA", link: "/" },
-                    ],
-                },
-                {
                     title: "Pedidos",
                     icon: "card-list",
                     items: [
@@ -52,23 +42,11 @@ export default {
                     ],
                 },
                 {
-                    title: "Facturas",
-                    icon: "files",
-                    items: [
-                        { item: "Ver todas", link: "/" },
-                        { item: "Ver pendientes", link: "/" },
-                    ],
-                },
-                {
-                    title: "Pagos",
-                    icon: "wallet2",
-                    items: [{ item: "Ver todos", link: "/" }],
-                },
-                {
                     title: "Contratos",
                     icon: "file-earmark-check",
                     items: [
-                        { item: "Ver todos", link: "/" },
+                        { item: "Ver todos", link: { name: "ContratosProd" } },
+                        { item: "A vencer", link: { name: "ContratosVencer" } },
                         { item: "Agregar nuevo", link: "/" },
                     ],
                 },
@@ -83,41 +61,17 @@ export default {
             ],
             navigation_prov: [
                 {
-                    title: "Gestión de datos",
-                    icon: "pencil-square",
-                    items: [
-                        { item: "Datos proveedor", link: { name: "datosProv" } },
-                        { item: "Materia Prima", link: "#" },
-                        { item: "Condiciones de pago", link: "/prov/otoro" },
-                        { item: "Condiciones de envío", link: "/" },
-                        { item: "Membresía IFRA", link: "/" },
-                    ],
-                },
-                {
                     title: "Pedidos",
                     icon: "card-list",
                     items: [
-                        { item: "Ver todos", link: "/" },
+                        { item: "Ver todos", link: { name: "datosProv" } },
                         { item: "Ver pendientes", link: "/" },
                     ],
-                },
-                {
-                    title: "Facturas",
-                    icon: "files",
-                    items: [{ item: "Ver todas", link: "/" }],
-                },
-                {
-                    title: "Pagos",
-                    icon: "wallet2",
-                    items: [{ item: "Ver todos", link: "/" }],
                 },
                 {
                     title: "Contratos",
                     icon: "file-earmark-check",
-                    items: [
-                        { item: "Ver todos", link: "/" },
-                        { item: "Ver pendientes", link: "/" },
-                    ],
+                    items: [{ item: "Ver todos", link: { name: "ContratosProv" } }],
                 },
             ],
             select_navigation: [],

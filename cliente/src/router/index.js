@@ -22,17 +22,33 @@ const routes = [
         component: () => import("../views/MainView.vue"),
         children: [
             {
-                name: "datosProv",
-                path: "datos",
-                component: () => import("../views/DatosProv.vue"),
+                path: "",
+                component: () => import("../views/Home.vue"),
+            },
+            {
+                name: "ContratosProv",
+                path: "contratos",
+                component: () => import("../views/Contratos.vue"),
             },
         ],
     },
 
     /*RUTAS PRODUCTOR */
     {
-        path: "/prod",
+        path: "/prod/:id",
         component: () => import("../views/MainView.vue"),
+        children: [
+            {
+                name: "ContratosProd",
+                path: "contratos",
+                component: () => import("../views/Contratos.vue"),
+            },
+            {
+                name: "ContratosVencer",
+                path: "contratos/vencer",
+                component: () => import("../views/Contratos.vue"),
+            },
+        ],
     },
 
     /* 404 => REDIRECT  */
