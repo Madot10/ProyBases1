@@ -22,7 +22,7 @@ CREATE TABLE VAM_PERFUMES(
    descrip_perf VARCHAR(400),
    CONSTRAINT check_genero CHECK(genero in ('m','f','u')),
    CONSTRAINT check_rgo_edad CHECK(rango_edad in ('inf','juv','adu','ate')),
-   CONSTRAINT check_tipo_est CHECK(tipo_estructura in ('m','f')),
+   CONSTRAINT check_tipo_est CHECK(tipo_estructura in ('m','f'))
 );
 
 CREATE TABLE VAM_FLIA_OLFAT(
@@ -71,7 +71,7 @@ CREATE TABLE VAM_NOTAS_PERFUMES(
    tipo_nota CHAR(1),
    CONSTRAINT check_tipo CHECK(tipo_nota in ('s','c','f')),
    CONSTRAINT fk_perf FOREIGN KEY(id_perf) REFERENCES VAM_PERFUMES(id) ON DELETE CASCADE,
-   CONSTRAINT fk_esencia FOREIGN KEY(id_esencia_perf) REFERENCES VAM_ESENCIAS_PERF(id) ON DELETE CASCADE,
+   CONSTRAINT fk_esencia FOREIGN KEY(id_esencia_perf) REFERENCES VAM_ESENCIAS_PERF(tsca_cas) ON DELETE CASCADE,
    CONSTRAINT pk_notas_perf PRIMARY KEY(id,id_perf,id_esencia_perf)
 );
 
@@ -86,7 +86,7 @@ CREATE TABLE VAM_FO_PRINCIPAL(
 CREATE TABLE VAM_PERF_INTENSIDADES(
     id SERIAL,
     id_perfume INTEGER,
-    tipo CHAR(3) NOT NULL
+    tipo CHAR(3) NOT NULL,
     porc_concentracion INTEGER,
     descripcion VARCHAR(400),
     CONSTRAINT check_tipo_perf CHECK(tipo IN ('p','edp','edt','edc','eds')),
@@ -252,7 +252,7 @@ CREATE TABLE VAM_PEDIDOS(
    total_usd NUMERIC(9,2),
    CONSTRAINT check_estado CHECK(estado in ('a','p','anpv','anpd')),
    CONSTRAINT fk_id_prov FOREIGN KEY(id_prov) REFERENCES VAM_PROVEEDORES(id) ON DELETE SET NULL,
-   CONSTRAINT fk_id_prod FOREIGN KEY(id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE SET NULL,
+   CONSTRAINT fk_id_prod FOREIGN KEY(id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE SET NULL
 );
 
 CREATE TABLE VAM_PAGOS(
@@ -261,7 +261,7 @@ CREATE TABLE VAM_PAGOS(
    fecha DATE NOT NULL,
    monto NUMERIC(9,2) NOT NULL,
    CONSTRAINT fk_id_pedido FOREIGN KEY(id_pedido) REFERENCES VAM_PEDIDOS(id) ON DELETE CASCADE,
-   CONSTRAINT pk_pago PRIMARY KEY(id,id_ped)
+   CONSTRAINT pk_pago PRIMARY KEY(id,id_pedido)
 );
 
 CREATE TABLE VAM_INGREDIENTE_ESENCIAS(
@@ -350,7 +350,7 @@ CREATE TABLE VAM_RENOVACIONES(
    id_cont_prov INTEGER,
    id_cont_prod INTEGER,
    fecha DATE NOT NULL,
-   CONSTRAINT fk_renov_cont FOREIGN KEY(id_contrato, id_prov, id_prod) REFERENCES VAM_CONTRATOS(id, id_prov, id_prod) ON DELETE CASCADE,
+   CONSTRAINT fk_renov_cont FOREIGN KEY(id_contrato, id_cont_prov, id_cont_prod) REFERENCES VAM_CONTRATOS(id, id_prov, id_prod) ON DELETE CASCADE,
    CONSTRAINT pk_renov PRIMARY KEY(id, id_contrato, id_cont_prov, id_cont_prod)
 );
 
@@ -380,7 +380,7 @@ CREATE TABLE VAM_ING_OTROS(
     id_prov INTEGER,
     id_otro INTEGER,
     CONSTRAINT fk_ing_prov FOREIGN KEY (id_ing, id_prov) REFERENCES VAM_INGREDIENTE_ESENCIAS(cas, id_proveedor) ON DELETE CASCADE,
-    CONSTRAINT fk_otro_ing FOREIGN KEY (id_otro) REFERENCES VAM_OTROS_ING_COMP(id) ON DELETE CASCADE
+    CONSTRAINT fk_otro_ing FOREIGN KEY (id_otro) REFERENCES VAM_OTROS_ING_COMP(id) ON DELETE CASCADE,
     CONSTRAINT pk_ing_otro PRIMARY KEY (id_ing, id_prov, id_otro)
 );
 
