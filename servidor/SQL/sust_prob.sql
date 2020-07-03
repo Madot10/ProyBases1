@@ -139,8 +139,8 @@ insert into MP_PROHIBIDA values(90046041, 'Specification of Savin oil');
 insert into MP_PROHIBIDA values(68916949, 'Savin oil');
 insert into MP_PROHIBIDA values(90046030, 'Savin oil');
 
-insert into MP_PROHIBIDA values(90131434, 'Restriction and Specification of Tagetes patula and Tagetes minuta');
-insert into MP_PROHIBIDA values(8016840, 'Restriction and Specification of Tagetes patula and Tagetes minuta');
+insert into MP_PROHIBIDA values(90131434, 'Tagetes oil and absolute');
+insert into MP_PROHIBIDA values(8016840, 'Tagetes oil and absolute');
 insert into MP_PROHIBIDA values(91722291, 'Tagetes oil and absolute');
 insert into MP_PROHIBIDA values(8016840, 'Tagetes oil and absolute');
 insert into MP_PROHIBIDA values( 91770751, 'Tagetes oil and absolute');

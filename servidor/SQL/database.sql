@@ -4,35 +4,9 @@ CREATE DATABASE sistema_vam;
 --Listar BD: \l o \list
 --Listar tablas de una BD: \dt
 
-CREATE TABLE VAM_MP_PROHIBIDAS(
-   cas NUMERIC(12) PRIMARY KEY,
-   nombre VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE VAM_ESENCIAS_PERF(
-   tsca_cas NUMERIC(12) PRIMARY KEY,
-   nombre VARCHAR(20) NOT NULL UNIQUE,
-   tipo CHAR(1) NOT NULL,
-   descripcion VARCHAR(400),
-   CONSTRAINT check_tipo CHECK(tipo in ('n','s'))
-);
-
-CREATE TABLE VAM_PERFUMES(
-   id SERIAL PRIMARY KEY,
-   nombre VARCHAR(20) NOT NULL UNIQUE,
-   genero CHAR(1) NOT NULL,
-   rango_edad CHAR(3) NOT NULL,
-   descrip_componentes VARCHAR(400) NOT NULL,
-   tipo_estructura CHAR(1) NOT NULL,
-   descrip_perf VARCHAR(400),
-   CONSTRAINT check_genero CHECK(genero in ('m','f','u')),
-   CONSTRAINT check_rgo_edad CHECK(rango_edad in ('inf','juv','adu')),
-   CONSTRAINT check_tipo_est CHECK(tipo_estructura in ('m','f')),
-);
-
 CREATE TABLE NOTAS_PERFUMES(
    id SERIAL,
-   id_perf INT,
+   id_perf INT NOT NULL,
    id_esencia_perf INT,
    tipo_nota CHAR(1) NOT NULL,
    CONSTRAINT check_tipo CHECK(tipo_nota in ('s','c','f')),
@@ -42,13 +16,7 @@ CREATE TABLE NOTAS_PERFUMES(
    
 );
 
-CREATE TABLE VAM_ASOC_NACIONALES(
-   id SERIAL PRIMARY KEY,
-   nombre VARCHAR(20) NOT NULL UNIQUE,
-   region CHAR(2) NOT NULL,
-   descripcion VARCHAR(400),
-   CONSTRAINT check_asoc CHECK( region in ('ap','eu','la','na'))
-);
+
 
 CREATE TABLE VAM_PAISES(
    id SERIAL PRIMARY KEY,
