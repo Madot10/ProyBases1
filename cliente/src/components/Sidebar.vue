@@ -47,7 +47,7 @@ export default {
                     items: [
                         { item: "Ver todos", link: { name: "ContratosProd" } },
                         { item: "A vencer", link: { name: "ContratosVencer" } },
-                        { item: "Agregar nuevo", link: "/" },
+                        { item: "Agregar nuevo", link: { name: "ContratoNuevo" } },
                     ],
                 },
                 {

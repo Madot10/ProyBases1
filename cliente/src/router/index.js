@@ -9,7 +9,6 @@ const routes = [
         //Recomendador?
         path: "/",
         name: "Home",
-        component: Home,
     },
     {
         path: "/admin",
@@ -47,6 +46,11 @@ const routes = [
                 name: "ContratosVencer",
                 path: "contratos/vencer",
                 component: () => import("../views/Contratos.vue"),
+            },
+            {
+                name: "ContratoNuevo",
+                path: "contratos/nuevo",
+                component: () => import("../views/NuevoContrato.vue"),
             },
         ],
     },

@@ -1,6 +1,6 @@
 <template>
     <!-- The modal -->
-    <b-modal id="con-modal" centered size="xl" title="Contrato">
+    <b-modal id="prov-det-modal" centered size="xl" title="Proveedor">
         <!-- CONTENIDO MODAL -->
         <b-container fluid>
             <b-row>
@@ -10,61 +10,49 @@
                         label-cols="3"
                         label-class="font-weight-bold"
                     >
-                        <!-- F_emision -->
+                        <!-- Nombre Empresa -->
                         <b-form-group
                             label-cols-sm="5"
-                            label="Fecha de emisión:"
+                            label="Nombre de empresa:"
                             label-align-sm="right"
                         >
-                            <b-form-input plaintext v-model="contrato.fecha_inicio"></b-form-input>
+                            <b-form-input plaintext v-model="proveedor.nombre"></b-form-input>
                         </b-form-group>
-                        <div v-if="contrato.fecha_can">
-                            <!-- F_can -->
-                            <b-form-group
-                                label-cols-sm="5"
-                                label="Fecha de cancelación:"
-                                label-align-sm="right"
-                            >
-                                <b-form-input plaintext v-model="contrato.fecha_can"></b-form-input>
-                            </b-form-group>
+                    </b-form-group>
 
-                            <!-- Motiva CAn -->
-                            <b-form-group
-                                label-cols-sm="5"
-                                label="Motivo de cancelación:"
-                                label-align-sm="right"
-                            >
-                                <b-form-textarea
-                                    id="textarea"
-                                    rows="3"
-                                    max-rows="6"
-                                    readonly
-                                    v-model="contrato.mov_can"
-                                ></b-form-textarea>
-                            </b-form-group>
-                        </div>
-
-                        <!-- Exclusividad -->
+                    <b-form-group
+                        label="Datos de contacto"
+                        label-cols="3"
+                        label-class="font-weight-bold"
+                    >
+                        <!-- Correo -->
                         <b-form-group
                             label-cols-sm="5"
-                            label="Exclusividad:"
+                            label="Correo electónico:"
                             label-align-sm="right"
                         >
-                            <b-form-input
-                                plaintext
-                                v-model="contrato.exclusividad ? 'Si' : 'No'"
-                            ></b-form-input>
+                            <b-form-input plaintext v-model="proveedor.email"></b-form-input>
                         </b-form-group>
 
-                        <!-- Clausula -->
-                        <b-form-group label-cols-sm="5" label="Clausula:" label-align-sm="right">
-                            <b-form-textarea
-                                id="textarea"
-                                rows="3"
-                                max-rows="6"
-                                readonly
-                                v-model="contrato.clausula"
-                            ></b-form-textarea>
+                        <!-- telefono -->
+                        <b-form-group label-cols-sm="5" label="Teléfono:" label-align-sm="right">
+                            <b-form-input plaintext v-model="proveedor.telefono"></b-form-input>
+                        </b-form-group>
+
+                        <!-- Pag web -->
+                        <b-form-group label-cols-sm="5" label="Página Web:" label-align-sm="right">
+                            <b-form-input plaintext v-model="proveedor.pag_web"></b-form-input>
+                        </b-form-group>
+                    </b-form-group>
+
+                    <b-form-group
+                        label="Ubicación Geográfica"
+                        label-cols="3"
+                        label-class="font-weight-bold"
+                    >
+                        <!-- pais -->
+                        <b-form-group label-cols-sm="5" label="Pais:" label-align-sm="right">
+                            <b-form-input plaintext v-model="proveedor.pais"></b-form-input>
                         </b-form-group>
                     </b-form-group>
 
@@ -79,7 +67,7 @@
                         small
                         striped
                         hover
-                        :items="contrato.formas_envios"
+                        :items="proveedor.formas_envios"
                         :fields="fields_fe"
                     ></b-table>
 
@@ -94,13 +82,13 @@
                         small
                         striped
                         hover
-                        :items="contrato.formas_pagos"
+                        :items="proveedor.formas_pagos"
                         :fields="fields_fp"
                     ></b-table>
 
-                    <!-- Ingredientes contratados-->
+                    <!-- Ingredientes ofrecidos-->
                     <b-form-group
-                        label="Ingredientes contratados"
+                        label="Ingredientes"
                         label-cols="4"
                         label-class="font-weight-bold"
                     >
@@ -109,8 +97,8 @@
                         small
                         striped
                         hover
-                        :items="contrato.ingredientes"
-                        :fields="fields_con"
+                        :items="proveedor.ingredientes"
+                        :fields="fields_ing"
                     ></b-table>
                 </b-col>
             </b-row>
@@ -127,10 +115,10 @@
 
 <script>
 export default {
-    props: ["contrato"],
+    props: ["proveedor"],
     data() {
         return {
-            fields_con: [
+            fields_ing: [
                 {
                     key: "cas",
                     sortable: false,
@@ -148,6 +136,11 @@ export default {
                 {
                     key: "volumen",
                     label: "Volumen (ml)",
+                    sortable: false,
+                },
+                {
+                    key: "precio",
+                    label: "Precio (usd)",
                     sortable: false,
                 },
             ],
