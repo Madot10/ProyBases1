@@ -38,9 +38,9 @@
                 </template>
                 <template v-slot:cell(acciones2)="row">
                     <!-- {{ row.index }} -->
-                    <b-button variant="outline-danger">CANCELAR</b-button>
-                    <span v-show="mode_renovar"> - </span>
                     <b-button v-show="mode_renovar" variant="outline-primary">RENOVAR</b-button>
+                    <span v-show="mode_renovar"> - </span>
+                    <b-button variant="outline-danger">CANCELAR</b-button>
                 </template>
             </b-table>
 

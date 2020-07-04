@@ -105,9 +105,12 @@
         </b-container>
 
         <!-- FOOTER MODAL -->
-        <template v-slot:modal-footer="{ ok }">
-            <b-button @click="ok()">
-                Cerrar
+        <template v-slot:modal-footer="{ cancel, ok }">
+            <b-button @click="cancel()" variant="outline-danger">
+                CERRAR
+            </b-button>
+            <b-button @click="okEvaluar(ok)" variant="primary">
+                EVALUAR
             </b-button>
         </template>
     </b-modal>
@@ -184,6 +187,12 @@ export default {
                 },
             ],
         };
+    },
+    methods: {
+        okEvaluar(funOk) {
+            this.$emit("evaluar");
+            funOk();
+        },
     },
 };
 </script>

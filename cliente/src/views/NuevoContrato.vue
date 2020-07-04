@@ -1,12 +1,34 @@
 <template>
     <card-main>
-        <template v-slot:title>Nuevo Contrato</template>
-        <template v-slot:content>
+        <template #title>Nuevo Contrato</template>
+        <template #content>
             <!-- MODAL DETALLE PROV -->
-            <modal-prov-detalle :proveedor="proveedores[index_selected_prov]"></modal-prov-detalle>
+            <modal-prov-detalle
+                :proveedor="proveedores[index_selected_prov]"
+                @evaluar="continuarEvaluarProv"
+            ></modal-prov-detalle>
+
+            <!-- MODAL EXCLUSIVIDAD -->
+            <modal-exclusividad @optionSelect="exclSelect"></modal-exclusividad>
 
             <!-- TABLA small -->
-            <b-table small striped hover :items="proveedores" :fields="fields" id="con-table">
+            <b-table
+                :busy="isLoadingProv"
+                small
+                striped
+                hover
+                :items="proveedores"
+                :fields="fields"
+                id="con-table"
+            >
+                <!-- CARGA -->
+                <template v-slot:table-busy>
+                    <div class="text-center text-primary my-2">
+                        <b-spinner class="align-middle"></b-spinner>
+                        <strong> Cargando...</strong>
+                    </div>
+                </template>
+
                 <!-- BOTON Acciones -->
                 <template v-slot:cell(acciones)="row">
                     <b-button variant="outline-primary" @click="verDetallePreov(row.index)"
@@ -21,14 +43,17 @@
 <script>
 import CardMain from "../components/CardMain";
 import ModalProvDetalle from "../components/ModalProvDetalle.vue";
+import ModalExclusividad from "../components/ModalExclusividad.vue";
 
 export default {
     components: {
         CardMain,
         ModalProvDetalle,
+        ModalExclusividad,
     },
     data() {
         return {
+            isLoadingProv: true,
             index_selected_prov: 0,
             proveedores: [
                 {
@@ -85,6 +110,16 @@ export default {
             this.index_selected_prov = index;
             this.$bvModal.show("prov-det-modal");
         },
+        continuarEvaluarProv() {
+            console.log("A EVALUAR EL PROV ", this.index_selected_prov);
+            this.$bvModal.show("exclusividad-modal");
+        },
+        exclSelect(opt) {
+            console.log("Exclusividad seleccionada ", opt);
+        },
+    },
+    created() {
+        this.isLoadingProv = false;
     },
 };
 </script>
