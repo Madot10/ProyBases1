@@ -2,7 +2,7 @@
     <b-modal id="exclusividad-modal" size="lg" centered title="Exclusividad">
         <!-- CONTENIDO MODAL -->
         <p class="text-center">
-            ¿Desea solicitar exclusividad de las materias primas de este contrato?
+            ¿Desea solicitar exclusividad de las materias primas para el contrato?
         </p>
 
         <template v-slot:modal-footer="{ ok, cancel }">

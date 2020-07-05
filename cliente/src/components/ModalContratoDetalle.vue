@@ -1,5 +1,4 @@
 <template>
-    <!-- The modal -->
     <b-modal id="con-modal" centered size="xl" title="Contrato">
         <!-- CONTENIDO MODAL -->
         <b-container fluid>

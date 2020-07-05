@@ -9,6 +9,12 @@
                 :contrato="contratos[index_selected_contrato]"
             ></modal-contrato-detalle>
 
+            <!-- MODAL RENOV CONTRATO -->
+            <modal-renovacion @renovSelect="renovacionSelected"></modal-renovacion>
+
+            <!-- MODAL EXCLUSIVIDAD -->
+            <modal-exclusividad @optionSelect="exclusividadSelect"></modal-exclusividad>
+
             <!-- TABLA small -->
             <b-table
                 striped
@@ -38,7 +44,12 @@
                 </template>
                 <template v-slot:cell(acciones2)="row">
                     <!-- {{ row.index }} -->
-                    <b-button v-show="mode_renovar" variant="outline-primary">RENOVAR</b-button>
+                    <b-button
+                        v-show="mode_renovar"
+                        variant="outline-primary"
+                        @click="openRenovModal"
+                        >RENOVAR</b-button
+                    >
                     <span v-show="mode_renovar"> - </span>
                     <b-button variant="outline-danger">CANCELAR</b-button>
                 </template>
@@ -63,11 +74,15 @@
 <script>
 import CardMain from "../components/CardMain.vue";
 import ModalContratoDetalle from "../components/ModalContratoDetalle.vue";
+import ModalRenovacion from "../components/ModalRenovacion.vue";
+import ModalExclusividad from "../components/ModalExclusividad.vue";
 
 export default {
     components: {
         CardMain,
         ModalContratoDetalle,
+        ModalRenovacion,
+        ModalExclusividad,
     },
     data() {
         return {
@@ -103,6 +118,7 @@ export default {
             ],
             contratos: [
                 {
+                    id_prov: 3,
                     fecha_inicio: "24/07/2020",
                     exclusividad: true,
                     fecha_can: "27/07/2020",
@@ -116,11 +132,13 @@ export default {
                     ],
                 },
                 {
+                    id_prov: 6,
                     fecha_inicio: "24/07/2020",
                     exclusividad: false,
                     fecha_can: "",
                 },
                 {
+                    id_prov: 7,
                     fecha_inicio: "10/07/2020",
                     exclusividad: false,
                     fecha_can: "27/07/2020",
@@ -144,13 +162,33 @@ export default {
         checkModeContratos() {
             let url = this.$route.path;
             if (url.includes("vencer")) {
-                console.warn(url);
+                //console.warn(url);
                 //Modo mostrar BOTONES RENOVACION
                 this.mode_renovar = true;
             } else {
                 //nop
                 this.mode_renovar = false;
             }
+        },
+        openRenovModal() {
+            this.$bvModal.show("ask-renov-modal");
+        },
+        renovacionSelected(typeRenov) {
+            //console.log("Type Renov", typeRenov);
+            if (typeRenov) {
+                //Igual cond
+            } else {
+                //Hacer nuevo
+                this.$bvModal.show("exclusividad-modal");
+            }
+        },
+        exclusividadSelect(opt) {
+            console.log("Exclusividad seleccionada ", opt);
+            this.$router.push({
+                name: "DetalleContrato",
+                params: { id_prov: this.contratos[this.index_selected_contrato].id_prov },
+                query: { e: opt ? "y" : "n" },
+            });
         },
     },
     watch: {

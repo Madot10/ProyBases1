@@ -134,6 +134,8 @@ export default {
     },
     computed: {},
     created() {
+        //console.warn(this.$route.params); {id: "5", id_prov: "2"}
+        //console.warn(this.$route.query); {e: "n"}
         this.mat_prima_disp = this.mat_prima.map((mp) => {
             return {
                 value: mp.cas,

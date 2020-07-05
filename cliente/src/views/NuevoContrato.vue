@@ -59,6 +59,7 @@ export default {
             index_selected_prov: 0,
             proveedores: [
                 {
+                    id: 1,
                     nombre: "Empresita 1",
                     email: "test@gdsf.com",
                     telefono: 4545456898,
@@ -80,6 +81,7 @@ export default {
                     ],
                 },
                 {
+                    id: 2,
                     nombre: "Empresita 2",
                     email: "test@dsfdsfsdfsdf.com",
                     telefono: 2124423258,
@@ -117,7 +119,12 @@ export default {
             this.$bvModal.show("exclusividad-modal");
         },
         exclSelect(opt) {
-            console.log("Exclusividad seleccionada ", opt);
+            //console.log("Exclusividad seleccionada ", opt);
+            this.$router.push({
+                name: "DetalleContrato",
+                params: { id_prov: this.proveedores[this.index_selected_prov].id },
+                query: { e: opt ? "y" : "n" },
+            });
         },
     },
     created() {
