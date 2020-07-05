@@ -2,6 +2,10 @@
     <card-main>
         <template #title>Nuevo Contrato</template>
         <template #content>
+            <!-- MODAL PROPUESTA -->
+            <modal-propuesta-contrato @condReady="contratoReady"></modal-propuesta-contrato>
+
+            <!-- CONTENIDO VISTA -->
             <h3>Contrato</h3>
             <br />
             <b-table-simple>
@@ -17,6 +21,11 @@
                     <b-tr v-show="flag_null">
                         <b-th class="text-danger">
                             *Debe llenar todos los renglones
+                        </b-th>
+                    </b-tr>
+                    <b-tr v-show="mat_prim_selected.length < 1">
+                        <b-th class="text-danger">
+                            *Debe llenar al menos un renglón
                         </b-th>
                     </b-tr>
                 </b-thead>
@@ -63,11 +72,13 @@
 </template>
 
 <script>
-import CardMain from "../components/CardMain";
+import CardMain from "../components/CardMain.vue";
+import ModalPropuestaContrato from "../components/ModalPropuestaContrato.vue";
 
 export default {
     components: {
         CardMain,
+        ModalPropuestaContrato,
     },
     data() {
         return {
@@ -92,7 +103,6 @@ export default {
             this.mat_prim_selected.splice(index, 1);
         },
         checkRepNull() {
-            console.warn("Verificando...");
             this.flag_repited = false;
             this.flag_null = false;
 
@@ -112,9 +122,14 @@ export default {
         },
         nextCondiciones() {
             this.checkRepNull();
-            if (this.flag_repited && this.flag_null) {
+            if (!(this.flag_repited || this.flag_null) && this.mat_prim_selected.length > 0) {
                 //ABRIR MODAL
+                console.log("Se puede continuar");
+                this.$bvModal.show("prop-con-modal");
             }
+        },
+        contratoReady(obj_data) {
+            console.log("READY COND: ", obj_data);
         },
     },
     computed: {},
