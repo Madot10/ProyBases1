@@ -197,7 +197,7 @@ CREATE TABLE VAM_RESULT_EVAL(
     id_prod INTEGER,
     id_prov INTEGER,
     resultado NUMERIC(2) NOT NULL,
-    tipo_eval CHAR(1) NOT NULL,
+    tipo_eval CHAR(1) NOT NULL, 
     CONSTRAINT check_tipo_eval CHECK (tipo_eval in ('i','r')),
     CONSTRAINT fk_prod_eval FOREIGN KEY (id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT fk_prov_eval FOREIGN KEY (id_prov) REFERENCES VAM_PROVEEDORES(id) ON DELETE CASCADE,
@@ -287,7 +287,7 @@ CREATE TABLE VAM_ING_PRESENTACIONES(
     id_proveedor INTEGER,
     volumen NUMERIC(3) NOT NULL,
     precio NUMERIC(9,2) NOT NULL,
-    CONSTRAINT fk_ing_presentacion FOREIGN KEY (cas_ingrediente, id_proveedor) REFERENCES VAM_INGREDIENTE_ESENCIAS (cas, id_proveedor),
+    CONSTRAINT fk_ing_presentacion FOREIGN KEY (cas_ingrediente, id_proveedor) REFERENCES VAM_INGREDIENTE_ESENCIAS (cas, id_proveedor) ON DELETE CASCADE,
     CONSTRAINT pk_ing_presentacion PRIMARY KEY (id, cas_ingrediente, id_proveedor)
 );
 
@@ -358,9 +358,10 @@ CREATE TABLE VAM_EVAL_CRITERIOS(
     fecha_inicio DATE,
     id_prod INTEGER,
     id_var_crit INTEGER,
-    peso INTEGER,
-    tipo_formula INTEGER,
-    fecha_fin INTEGER,
+    peso NUMERIC(2) NOT NULL,
+    tipo_formula CHAR(1) NOT NULL,
+    fecha_fin DATE,
+    CONSTRAINT check_tipo CHECK(tipo in ('i','r')),
     CONSTRAINT fk_prod_criterios FOREIGN KEY (id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT fk_var_criterio FOREIGN KEY (id_var_crit) REFERENCES VAM_VAR_CRITERIOS(id) ON DELETE CASCADE,
     CONSTRAINT pk_eval_criterio PRIMARY KEY (fecha_inicio, id_prod, id_var_crit)
@@ -387,12 +388,12 @@ CREATE TABLE VAM_ING_OTROS(
 CREATE TABLE VAM_DET_PEDIDO(
     id SERIAL,
     id_pedido INTEGER,
-    cantidad NUMERIC(6),
+    cantidad NUMERIC(6) NOT NULL,
     id_ing_presentacion INTEGER,
     cas_ingrediente INTEGER,
     id_prov_ing INTEGER,
     CONSTRAINT fk_det_pedido FOREIGN KEY (id_pedido) REFERENCES VAM_PEDIDOS(id) ON DELETE CASCADE,
-    CONSTRAINT fk_det_ing FOREIGN KEY (id_ing_presentacion, cas_ingrediente, id_prov_ing) REFERENCES VAM_ING_PRESENTACIONES(id, cas_ingrediente, id_proveedor) ON DELETE CASCADE,
+    CONSTRAINT fk_det_ing FOREIGN KEY (id_ing_presentacion, cas_ingrediente, id_prov_ing) REFERENCES VAM_ING_PRESENTACIONES(id, cas_ingrediente, id_proveedor),
     CONSTRAINT pk_det_pedido PRIMARY KEY (id, id_pedido)
 );
 
