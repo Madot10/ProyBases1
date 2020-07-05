@@ -11,6 +11,8 @@
             <!-- MODAL EXCLUSIVIDAD -->
             <modal-exclusividad @optionSelect="exclSelect"></modal-exclusividad>
 
+            <h3>Proveedores</h3>
+
             <!-- TABLA small -->
             <b-table
                 :busy="isLoadingProv"
