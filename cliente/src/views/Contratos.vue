@@ -15,6 +15,9 @@
             <!-- MODAL EXCLUSIVIDAD -->
             <modal-exclusividad @optionSelect="exclusividadSelect"></modal-exclusividad>
 
+            <!-- MODAL CANCELAR -->
+            <modal-cancelar @optionCancelar="cancelarConfirm"></modal-cancelar>
+
             <!-- TABLA small -->
             <b-table
                 striped
@@ -51,7 +54,7 @@
                         >RENOVAR</b-button
                     >
                     <span v-show="mode_renovar"> - </span>
-                    <b-button variant="outline-danger">CANCELAR</b-button>
+                    <b-button variant="outline-danger" @click="openCancelar">CANCELAR</b-button>
                 </template>
             </b-table>
 
@@ -76,6 +79,7 @@ import CardMain from "../components/CardMain.vue";
 import ModalContratoDetalle from "../components/ModalContratoDetalle.vue";
 import ModalRenovacion from "../components/ModalRenovacion.vue";
 import ModalExclusividad from "../components/ModalExclusividad.vue";
+import ModalCancelar from "../components/ModalCancelar.vue";
 
 export default {
     components: {
@@ -83,6 +87,7 @@ export default {
         ModalContratoDetalle,
         ModalRenovacion,
         ModalExclusividad,
+        ModalCancelar,
     },
     data() {
         return {
@@ -189,6 +194,12 @@ export default {
                 params: { id_prov: this.contratos[this.index_selected_contrato].id_prov },
                 query: { e: opt ? "y" : "n" },
             });
+        },
+        openCancelar() {
+            this.$bvModal.show("cancelar-modal");
+        },
+        cancelarConfirm(text) {
+            console.error("Cancelar con motivo: ", text);
         },
     },
     watch: {
