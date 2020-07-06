@@ -318,7 +318,7 @@ CREATE TABLE VAM_MP_C(
 );
 
 CREATE TABLE VAM_FE_FP_C(
-    id INTEGER,
+    id SERIAL,
     id_contrato INTEGER,
     id_prov_cont INTEGER,
     id_prod_cont INTEGER,
@@ -361,7 +361,7 @@ CREATE TABLE VAM_EVAL_CRITERIOS(
     peso NUMERIC(2) NOT NULL,
     tipo_formula CHAR(1) NOT NULL,
     fecha_fin DATE,
-    CONSTRAINT check_tipo CHECK(tipo in ('i','r')),
+    CONSTRAINT check_tipo CHECK(tipo_formula in ('i','r')),
     CONSTRAINT fk_prod_criterios FOREIGN KEY (id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT fk_var_criterio FOREIGN KEY (id_var_crit) REFERENCES VAM_VAR_CRITERIOS(id) ON DELETE CASCADE,
     CONSTRAINT pk_eval_criterio PRIMARY KEY (fecha_inicio, id_prod, id_var_crit)
