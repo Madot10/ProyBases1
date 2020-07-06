@@ -1,4 +1,4 @@
-CREATE DATABASE sistema_vam;
+CREATE DATABASE demostracion_sistema_vam;
 
 --Cambiarse a la BS: \c database_name
 --Listar BD: \l o \list
