@@ -1,11 +1,13 @@
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
+const cors = require("cors");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
 var app = express();
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(cookieParser());
@@ -17,7 +19,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("port", process.env.PORT || 3000);
 
 //Rutas
-app.use('/',require('./routes'));
+app.use("/mp_prob", require("./routes"));
 
 // Middleware para Vue.js router modo history
 const history = require("connect-history-api-fallback");
@@ -25,12 +27,12 @@ app.use(history());
 app.use(express.static(__dirname + "/public"));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get("env") === "development" ? err : {};
