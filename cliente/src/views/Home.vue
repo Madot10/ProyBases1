@@ -1,7 +1,16 @@
 <template>
     <div class="home">
-        <h2>MATERIA PRIMA PROHIBIDA</h2>
+        <!-- Aviso -->
+        <b-toast id="toast-aviso" :variant="aviso.tipo" :title="aviso.titulo" solid>
+            {{ aviso.mensaje }}
+        </b-toast>
 
+        <!-- MODAL -->
+        <modal-m-p :datos="mp_p[mp_selected_i]" :mode="mode" @crear="crearNuevoMP"></modal-m-p>
+
+        <h2>MATERIA PRIMA PROHIBIDA</h2>
+        <b-button variant="outline-primary" block @click="openModal(null, 'a')">Agregar +</b-button>
+        <br />
         <!--- TABLA DE DATOS -->
         <b-table
             striped
@@ -30,6 +39,7 @@
                     variant="dark"
                     v-b-tooltip.hover
                     title="Ver detalle"
+                    @click="openModal(row.index, 'v')"
                 ></b-icon>
                 <span class="ml-2"></span>
                 <b-icon
@@ -39,6 +49,7 @@
                     variant="dark"
                     v-b-tooltip.hover
                     title="Editar"
+                    @click="openModal(row.index, 'e')"
                 ></b-icon>
             </template>
         </b-table>
@@ -59,10 +70,18 @@
 </template>
 
 <script>
+import ModalMP from "../components/ModalMP.vue";
+
 export default {
+    components: {
+        ModalMP,
+    },
     data() {
         return {
+            aviso: { mensaje: "", titulo: "", tipo: "success" },
             isLoading: true,
+            mp_selected_i: null,
+            mode: "",
             currentPage: 1,
             perPage: 10,
             mp_p: [],
@@ -75,6 +94,32 @@ export default {
                 },
             ],
         };
+    },
+    methods: {
+        openModal(index, mode) {
+            this.mp_selected_i = index;
+            this.mode = mode;
+            this.$bvModal.show("detalle-modal");
+        },
+        crearNuevoMP(obj) {
+            //console.log("evento nuevo", obj);
+            this.axios
+                .post("http://localhost:3000/mp_prob", obj)
+                .then((res) => {
+                    this.mp_p.push(obj);
+                    this.aviso.mensaje = "¡Guardado correctamente!";
+                    this.aviso.titulo = "Éxito";
+                    this.aviso.tipo = "success";
+                    this.$bvToast.show("toast-aviso");
+                })
+                .catch((err) => {
+                    this.aviso.mensaje = "¡Ha ocurrido un error!";
+                    this.aviso.titulo = "Error";
+                    this.aviso.tipo = "danger";
+                    this.$bvToast.show("toast-aviso");
+                    console.log("ERROR ", err);
+                });
+        },
     },
     computed: {
         rows() {
@@ -103,7 +148,7 @@ body {
 }
 .home {
     background-color: white;
-    height: 92vh;
+    min-height: 92vh;
     border-radius: 10px;
     margin: 25px;
     padding: 25px;
