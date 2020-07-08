@@ -67,6 +67,7 @@ export default {
         guardarCambios(funOk) {
             if (this.checkNonEmpty()) {
                 if (this.mode == "e") {
+                    this.$emit("actualizar", this.aux_mp);
                 } else if (this.mode == "a") {
                     this.$emit("crear", this.aux_mp);
                 }
@@ -89,7 +90,7 @@ export default {
         },
     },
     mounted() {
-        this.$root.$on("bv::modal::show", (bvEvent, modalId) => {
+        this.$root.$on("bv::modal::shown", (bvEvent, modalId) => {
             if (modalId == "detalle-modal") {
                 this.flag_nonEmpty_name = null;
                 this.flag_nonEmpty_cas = null;

@@ -6,7 +6,12 @@
         </b-toast>
 
         <!-- MODAL -->
-        <modal-m-p :datos="mp_p[mp_selected_i]" :mode="mode" @crear="crearNuevoMP"></modal-m-p>
+        <modal-m-p
+            :datos="mp_p[mp_selected_i]"
+            :mode="mode"
+            @crear="crearNuevoMP"
+            @actualizar="actualizarMP"
+        ></modal-m-p>
 
         <h2>MATERIA PRIMA PROHIBIDA</h2>
         <b-button variant="outline-primary" block @click="openModal(null, 'a')">Agregar +</b-button>
@@ -107,6 +112,7 @@ export default {
                 .post("http://localhost:3000/mp_prob", obj)
                 .then((res) => {
                     this.mp_p.push(obj);
+
                     this.aviso.mensaje = "¡Guardado correctamente!";
                     this.aviso.titulo = "Éxito";
                     this.aviso.tipo = "success";
@@ -117,6 +123,28 @@ export default {
                     this.aviso.titulo = "Error";
                     this.aviso.tipo = "danger";
                     this.$bvToast.show("toast-aviso");
+
+                    console.log("ERROR ", err);
+                });
+        },
+        actualizarMP(obj) {
+            this.axios
+                .put(`http://localhost:3000/mp_prob/${this.mp_p[this.mp_selected_i].cas}`, obj)
+                .then((res) => {
+                    this.mp_p[this.mp_selected_i].cas = obj.cas;
+                    this.mp_p[this.mp_selected_i].nombre = obj.nombre;
+
+                    this.aviso.mensaje = "¡Guardado correctamente!";
+                    this.aviso.titulo = "Éxito";
+                    this.aviso.tipo = "success";
+                    this.$bvToast.show("toast-aviso");
+                })
+                .catch((err) => {
+                    this.aviso.mensaje = "¡Ha ocurrido un error!";
+                    this.aviso.titulo = "Error";
+                    this.aviso.tipo = "danger";
+                    this.$bvToast.show("toast-aviso");
+
                     console.log("ERROR ", err);
                 });
         },

@@ -37,7 +37,12 @@ class ProdProhibCont {
             .then(function (prod) {
                 res.status(200).json({ message: "Producto actualizado con éxito" });
             })
-            .catch((e) => console.error(e.stack));
+            .catch((e) =>
+                res.status(400).json({
+                    mensaje: "Ocurrio un error",
+                    e,
+                })
+            );
     }
 }
 

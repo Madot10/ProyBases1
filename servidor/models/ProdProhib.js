@@ -21,7 +21,7 @@ class ProdProhib {
                 .query("INSERT INTO VAM_MP_PROHIBIDAS VALUES ($1, $2)", [cas, nombre])
                 .then(function (response) {
                     //console.log(response);
-                    resolve();
+                    resolve(true);
                 })
                 .catch((e) => {
                     console.error("ERROR", e.stack);
@@ -37,7 +37,10 @@ class ProdProhib {
                 .then(function () {
                     resolve(true);
                 })
-                .catch((e) => console.error(e.stack));
+                .catch((e) => {
+                    console.error("ERROR", e.stack);
+                    reject(e.stack);
+                });
         });
     }
 }
