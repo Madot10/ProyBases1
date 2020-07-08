@@ -125,7 +125,7 @@ CREATE TABLE VAM_PRODUCTORES(
    email VARCHAR(50) NOT NULL UNIQUE,
    telefono NUMERIC(12) NOT NULL UNIQUE,
    pag_web VARCHAR(100) NOT NULL UNIQUE,
-   id_asoc_nac INT,
+   id_asoc_nac INTEGER,
    CONSTRAINT fk_id_asociacion FOREIGN KEY(id_asoc_nac) REFERENCES VAM_ASOC_NACIONALES(id) ON DELETE SET NULL
 );
 
@@ -270,7 +270,7 @@ CREATE TABLE VAM_INGREDIENTE_ESENCIAS(
    nombre VARCHAR(50) NOT NULL,
    tipo CHAR(1) NOT NULL,
    descripcion VARCHAR(400) NOT NULL,
-   taxonomia VARCHAR(50) NOT NULL,
+   taxonomia VARCHAR(60) NOT NULL,
    punto_ebul NUMERIC(4),
    punto_inflam NUMERIC(4),
    proc_extrac VARCHAR(400),
@@ -283,9 +283,9 @@ CREATE TABLE VAM_INGREDIENTE_ESENCIAS(
 
 CREATE TABLE VAM_ING_PRESENTACIONES(
     id SERIAL,
-    cas_ingrediente INTEGER,
-    id_proveedor INTEGER,
-    volumen NUMERIC(3) NOT NULL,
+    cas_ingrediente INTEGER, --hasta 8
+    id_proveedor INTEGER, --1
+    volumen NUMERIC(6) NOT NULL,
     precio NUMERIC(9,2) NOT NULL,
     CONSTRAINT fk_ing_presentacion FOREIGN KEY (cas_ingrediente, id_proveedor) REFERENCES VAM_INGREDIENTE_ESENCIAS (cas, id_proveedor) ON DELETE CASCADE,
     CONSTRAINT pk_ing_presentacion PRIMARY KEY (id, cas_ingrediente, id_proveedor)
