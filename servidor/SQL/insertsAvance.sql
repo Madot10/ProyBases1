@@ -13,6 +13,26 @@ INSERT INTO VAM_FLIA_OLFAT(nombre) VALUES ('Orientales');
 INSERT INTO VAM_FLIA_OLFAT(nombre) VALUES ('Otros');
 
 -- OTROS_ING_COMP
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('acetato de cinamilo');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('acetato de linalilo');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('alcohol feniletílico');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('aldehído cinámico');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('alfa-terpineol');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('benzaldehído');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('bergamoteno');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('beta-cariofileno');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('chavicol');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('cimas florecientes');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('cineol 1.3');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('citronelol');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('corteza');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('estearoptenos');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('geraniol');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('hojas');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('linalool');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('metil chavicol');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('raices');
+INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('tapas de floración');
 
 --Productor 
 INSERT INTO VAM_PRODUCTORES(nombre,email,telefono,pag_web,id_asoc_nac) VALUES ('Firmenich','daaid.lyon@firmenich.com',33170377661,'www.firmenich.com',NULL);
@@ -496,9 +516,68 @@ INSERT INTO VAM_ING_PRESENTACIONES(cas_ingrediente,id_proveedor,volumen,precio) 
 INSERT INTO VAM_ING_PRESENTACIONES(cas_ingrediente,id_proveedor,volumen,precio) VALUES (134203,5,250,24);
 INSERT INTO VAM_ING_PRESENTACIONES(cas_ingrediente,id_proveedor,volumen,precio) VALUES (134203,5,1000,79);
 
+--CONTRATOS
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (1,1,'06-01-2019','VERDADERO',NULL,NULL,NULL,NULL);
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (2,2,'10/19/2020','FALSO',NULL,NULL,NULL,NULL);
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (3,1,'1-12-2019','FALSO','Contrato formado por ambas partes de las empresas, en la que se acuerda vender sin exclusividad',NULL,NULL,NULL);
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (3,3,'02-09-2020','VERDADERO',NULL,NULL,NULL,NULL);
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (4,1,'02-01-2020','FALSO','Contrato acordado entre las empresas Firmenich y Mane, con fines comerciales de distribución de esencias','05/18/2020','Desacuerdo en la forma de envío, pues llegaban con retraso los pedidos','prod');
+
+--MP_C
+INSERT INTO VAM_MP_C(id_contrato,id_prov_cont,id_prod_cont,cas,id_prov_ing) VALUES (1,1,1,8007805,1);
+INSERT INTO VAM_MP_C(id_contrato,id_prov_cont,id_prod_cont,cas,id_prov_ing) VALUES (1,1,1,8016635,1);
+INSERT INTO VAM_MP_C(id_contrato,id_prov_cont,id_prod_cont,cas,id_prov_ing) VALUES (2,2,2,586629,2);
+INSERT INTO VAM_MP_C(id_contrato,id_prov_cont,id_prod_cont,cas,id_prov_ing) VALUES (2,2,2,4707475,2);
+INSERT INTO VAM_MP_C(id_contrato,id_prov_cont,id_prod_cont,cas,id_prov_ing) VALUES (3,3,1,78605966,3);
+INSERT INTO VAM_MP_C(id_contrato,id_prov_cont,id_prod_cont,cas,id_prov_ing) VALUES (3,3,1,140114,3);
+INSERT INTO VAM_MP_C(id_contrato,id_prov_cont,id_prod_cont,cas,id_prov_ing) VALUES (4,3,3,142927,3);
+INSERT INTO VAM_MP_C(id_contrato,id_prov_cont,id_prod_cont,cas,id_prov_ing) VALUES (5,4,1,29957435,5);
+
+--FE_FP_C
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (1,1,1,1,1,NULL,NULL,NULL);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (1,1,1,NULL,NULL,1,1,51);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (2,2,2,3,2,NULL,NULL,NULL);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (2,2,2,4,2,NULL,NULL,NULL);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (2,2,2,NULL,NULL,4,2,220);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (3,3,1,6,3,NULL,NULL,NULL);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (3,3,1,NULL,NULL,6,3,13);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (4,3,3,5,3,NULL,NULL,NULL);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (4,3,3,NULL,NULL,7,3,207);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (5,4,1,7,4,NULL,NULL,NULL);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (5,4,1,NULL,NULL,8,4,12);
+
+--RENOVACIONES
+INSERT INTO VAM_RENOVACIONES(id_contrato,id_cont_prov,id_cont_prod,fecha) VALUES (3,3,1,'12-15-2019');
+
 --ING_ORIGEN
+INSERT INTO VAM_ING_ORIGEN(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007805,1,46);
+INSERT INTO VAM_ING_ORIGEN(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8015734,1,243);
+INSERT INTO VAM_ING_ORIGEN(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8016635,1,46);
 
 --ING_OTRO
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007805,1,1);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007805,1,4);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007805,1,6);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007805,1,9);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007805,1,13);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007805,1,17);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007805,1,19);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8015734,1,7);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8015734,1,10);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8015734,1,11);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8015734,1,16);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8015734,1,17);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8015734,1,18);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8016635,1,2);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8016635,1,5);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8016635,1,8);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8016635,1,15);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8016635,1,17);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8016635,1,20);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007010,4,3);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007010,4,12);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007010,4,14);
+INSERT INTO VAM_ING_OTROS(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007010,4,15);
 
 --FLIA_IE 
 INSERT INTO VAM_FLIA_IE(id_flia_olfat,id_ing_esencia,id_ing_prov) VALUES (8,8007805,1);

@@ -300,7 +300,8 @@ CREATE TABLE VAM_CONTRATOS(
    clausula VARCHAR(1000),
    fecha_cancelacion DATE,
    motivo_cancel VARCHAR(400),
-   quien_cancela VARCHAR(10),
+   quien_cancela VARCHAR(4),
+   CONSTRAINT check_quien_cancela CHECK (quien_cancela in ('prov', 'prod')),
    CONSTRAINT fk_prov_cont FOREIGN KEY(id_prov) REFERENCES VAM_PROVEEDORES(id) ON DELETE CASCADE,
    CONSTRAINT fk_prod_cont FOREIGN KEY(id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
    CONSTRAINT pk_contrato PRIMARY KEY(id,id_prov,id_prod)
