@@ -6,6 +6,7 @@
             <modal-prov-detalle
                 :proveedor="proveedores[index_selected_prov]"
                 @evaluar="continuarEvaluarProv"
+                :only_view="false"
             ></modal-prov-detalle>
 
             <!-- MODAL EXCLUSIVIDAD -->

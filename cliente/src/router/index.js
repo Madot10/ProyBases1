@@ -38,6 +38,11 @@ const routes = [
         component: () => import("../views/MainView.vue"),
         children: [
             {
+                name: "ListaProveedores",
+                path: "proveedores",
+                component: () => import("../views/ListaProveedores.vue"),
+            },
+            {
                 name: "ContratosProd",
                 path: "contratos",
                 component: () => import("../views/Contratos.vue"),

@@ -54,7 +54,7 @@ export default {
                     title: "Proveedores",
                     icon: "truck",
                     items: [
-                        { item: "Ver todos", link: "/" },
+                        { item: "Ver todos", link: { name: "ListaProveedores" } },
                         { item: "Fórmulas de evaluar", link: "/" },
                     ],
                 },
@@ -79,14 +79,15 @@ export default {
     },
     methods: {
         getUserType(url) {
-            if (url.includes("prov")) {
-                return "prov";
-            } else {
+            if (url.includes("prod")) {
                 return "prod";
+            } else {
+                return "prov";
             }
         },
     },
     created() {
+        console.log("USER TYPE ", this.getUserType(this.$route.path));
         if (this.getUserType(this.$route.path) == "prov") {
             this.select_navigation = this.navigation_prov;
         } else {

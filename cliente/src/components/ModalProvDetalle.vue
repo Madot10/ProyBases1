@@ -106,19 +106,27 @@
 
         <!-- FOOTER MODAL -->
         <template v-slot:modal-footer="{ cancel, ok }">
-            <b-button @click="cancel()" variant="outline-danger">
-                CERRAR
-            </b-button>
-            <b-button @click="okEvaluar(ok)" variant="primary">
-                EVALUAR
-            </b-button>
+            <div v-if="only_view">
+                <b-button @click="cancel()" variant="outline-secondary">
+                    CERRAR
+                </b-button>
+            </div>
+            <div v-else>
+                <b-button @click="cancel()" variant="outline-danger">
+                    CERRAR
+                </b-button>
+                <span class="mr-2"></span>
+                <b-button @click="okEvaluar(ok)" variant="primary">
+                    EVALUAR
+                </b-button>
+            </div>
         </template>
     </b-modal>
 </template>
 
 <script>
 export default {
-    props: ["proveedor"],
+    props: ["proveedor", "only_view"],
     data() {
         return {
             fields_ing: [
