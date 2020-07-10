@@ -458,17 +458,18 @@ INSERT INTO VAM_FORMA_PAGOS(id_proveedor,tipo,porc_inicial,nro_cuotas,interes_me
 INSERT INTO VAM_FORMA_PAGOS(id_proveedor,tipo,porc_inicial,nro_cuotas,interes_mensual,nro_dia_entre_pago) VALUES (5,'cont',NULL,NULL,NULL,NULL);
 INSERT INTO VAM_FORMA_PAGOS(id_proveedor,tipo,porc_inicial,nro_cuotas,interes_mensual,nro_dia_entre_pago) VALUES (5,'cred',60,12,8,20);
 
---HIST_IFRA ?FECHA FORMATO
-INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('1/1/2008',NULL,1,'25/08/2012');
-INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('15/5/2013',NULL,1,NULL);
-INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('1/2/2016',NULL,2,NULL);
-INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('20/6/2013',NULL,3,NULL);
-INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('1/8/2018',NULL,4,NULL);
-INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('5/11/2017',1,NULL,NULL);
-INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('1/12/2012',2,NULL,NULL);
-INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('15/9/2014',3,NULL,NULL);
-INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('26/4/2002',4,NULL,NULL);
-INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('08/07/2002',5,NULL,NULL);
+
+--HIST_IFRA ?FECHA FORMATO VERSION AMERICANA
+INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('1/1/2008',NULL,1,'08/25/2012');
+INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('5/15/2013',NULL,1,NULL);
+INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('2/1/2016',NULL,2,NULL);
+INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('6/20/2013',NULL,3,NULL);
+INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('8/1/2018',NULL,4,NULL);
+INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('11/5/2017',1,NULL,NULL);
+INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('12/1/2012',2,NULL,NULL);
+INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('9/15/2014',3,NULL,NULL);
+INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('4/26/2002',4,NULL,NULL);
+INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin) VALUES ('07/08/2002',5,NULL,NULL);
 
 --ING_ESENCIA
 INSERT INTO VAM_INGREDIENTE_ESENCIAS(cas,id_proveedor,nombre,tipo,descripcion,taxonomia,punto_ebul,punto_inflam,proc_extrac,descrip_proceso) VALUES (8007805,1,'Cassia Oil','n','El aceite de casia se destila al vapor de las hojas de Cinnamomum Cassia, grandes árboles delgados que crecen en las partes del sudeste de China y Birmania y se conoce comúnmente como canela china','Cinnamomum cassia',194,199,'d','se aplica destilación a la temperatura indicada para alcanzar el punto de ebullición, así se obtienen las gotas');
@@ -516,13 +517,11 @@ INSERT INTO VAM_ING_PRESENTACIONES(cas_ingrediente,id_proveedor,volumen,precio) 
 INSERT INTO VAM_ING_PRESENTACIONES(cas_ingrediente,id_proveedor,volumen,precio) VALUES (134203,5,1000,79);
 
 --CONTRATOS
-INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (1,1,'01/06/2019',TRUE,NULL,NULL,NULL,NULL);
-INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (2,2,'19/10/2020',FALSE,NULL,NULL,NULL,NULL);
-INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (3,1,'12/1/2019',FALSE,'Contrato formado por ambas partes de las empresas, en la que se acuerda vender sin exclusividad',NULL,NULL,NULL);
-INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (3,3,'09/02/2020',TRUE,NULL,NULL,NULL,NULL);
-INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (4,1,'01/02/2020',FALSE,'Contrato acordado entre las empresas Firmenich y Mane, con fines comerciales de distribución de esencias','05/18/2020','Desacuerdo en la forma de envío, pues llegaban con retraso los pedidos','prod');
-
-INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (4,2,'14/02/2018',FALSE,NULL,NULL,NULL,NULL);
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (1,1,'06/01/2019',TRUE,NULL,NULL,NULL,NULL);
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (2,2,'10/19/2020',FALSE,NULL,NULL,NULL,NULL);
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (3,1,'1/12/2019',FALSE,'Contrato formado por ambas partes de las empresas, en la que se acuerda vender sin exclusividad',NULL,NULL,NULL);
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (3,3,'02/09/2020',TRUE,NULL,NULL,NULL,NULL);
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (4,1,'02/01/2020',FALSE,'Contrato acordado entre las empresas Firmenich y Mane, con fines comerciales de distribución de esencias','18/05/2020','Desacuerdo en la forma de envío, pues llegaban con retraso los pedidos','prod');
 
 --MP_C
 INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (1,1,1,8007805,1);
@@ -532,11 +531,7 @@ INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALU
 INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (3,3,1,78605966,3);
 INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (3,3,1,140114,3);
 INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (4,3,3,142927,3);
-INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (5,4,1,29957435,4);
-
-INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (6,4,2,110383,4);
-INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (6,4,2,8015956,4);
-INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (6,4,2,8007010,4);
+INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (5,4,1,29957435,5);
 
 --FE_FP_C
 INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (1,1,1,1,1,NULL,NULL,NULL);
@@ -551,15 +546,8 @@ INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_pr
 INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (5,4,1,7,4,NULL,NULL,NULL);
 INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (5,4,1,NULL,NULL,8,4,12);
 
-INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (6,4,2,NULL,NULL,9,4,179);
-INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (6,4,2,7,4,NULL,NULL,NULL);
-INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (6,4,2,8,4,NULL,NULL,NULL);
-
 --RENOVACIONES
-INSERT INTO VAM_RENOVACIONES(id_contrato,id_cont_prov,id_cont_prod,fecha) VALUES (3,3,1,'15/12/2019');
-
-INSERT INTO VAM_RENOVACIONES(id_contrato,id_cont_prov,id_cont_prod,fecha) VALUES (6,4,2,'14/1/2019');
-INSERT INTO VAM_RENOVACIONES(id_contrato,id_cont_prov,id_cont_prod,fecha) VALUES (6,4,2,'1/1/2020');
+INSERT INTO VAM_RENOVACIONES(id_contrato,id_cont_prov,id_cont_prod,fecha) VALUES (3,3,1,'12/15/2019');
 
 --ING_ORIGEN
 INSERT INTO VAM_ING_ORIGEN(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007805,1,46);
