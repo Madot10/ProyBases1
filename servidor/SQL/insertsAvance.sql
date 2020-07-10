@@ -522,6 +522,8 @@ INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fe
 INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (3,3,'09/02/2020',TRUE,NULL,NULL,NULL,NULL);
 INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (4,1,'01/02/2020',FALSE,'Contrato acordado entre las empresas Firmenich y Mane, con fines comerciales de distribución de esencias','18/05/2020','Desacuerdo en la forma de envío, pues llegaban con retraso los pedidos','prod');
 
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (4,2,'14/02/2018',FALSE,NULL,NULL,NULL,NULL);
+
 --MP_C
 INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (1,1,1,8007805,1);
 INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (1,1,1,8016635,1);
@@ -530,7 +532,11 @@ INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALU
 INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (3,3,1,78605966,3);
 INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (3,3,1,140114,3);
 INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (4,3,3,142927,3);
-INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (5,4,1,29957435,5);
+INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (5,4,1,29957435,4);
+
+INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (6,4,2,110383,4);
+INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (6,4,2,8015956,4);
+INSERT INTO VAM_MP_C(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES (6,4,2,8007010,4);
 
 --FE_FP_C
 INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (1,1,1,1,1,NULL,NULL,NULL);
@@ -545,8 +551,15 @@ INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_pr
 INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (5,4,1,7,4,NULL,NULL,NULL);
 INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (5,4,1,NULL,NULL,8,4,12);
 
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (6,4,2,NULL,NULL,9,4,179);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (6,4,2,7,4,NULL,NULL,NULL);
+INSERT INTO VAM_FE_FP_C(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES (6,4,2,8,4,NULL,NULL,NULL);
+
 --RENOVACIONES
 INSERT INTO VAM_RENOVACIONES(id_contrato,id_cont_prov,id_cont_prod,fecha) VALUES (3,3,1,'15/12/2019');
+
+INSERT INTO VAM_RENOVACIONES(id_contrato,id_cont_prov,id_cont_prod,fecha) VALUES (6,4,2,'14/1/2019');
+INSERT INTO VAM_RENOVACIONES(id_contrato,id_cont_prov,id_cont_prod,fecha) VALUES (6,4,2,'1/1/2020');
 
 --ING_ORIGEN
 INSERT INTO VAM_ING_ORIGEN(id_ing_esenc,id_ing_esenc_prov,id_pais) VALUES (8007805,1,46);
