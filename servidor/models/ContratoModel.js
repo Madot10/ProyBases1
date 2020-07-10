@@ -3,6 +3,8 @@ const { database } = require('../config/db.config');
 
 class ContratoModel{
 
+
+	//ARREGLAR EL QUERY
   getContratosSiendoProv(id_prov){
 		return new Promise((resolve, reject) => {
       
