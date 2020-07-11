@@ -1,10 +1,10 @@
 
 
-SELECT c.id AS ContratoID, cond.id_form_envio As FormaEnvioID, cond.id_form_pago AS FormaPagoID, fe.id AS FEID, fp.id AS FPIS 
-FROM vam_contratos AS c, vam_fe_fp_c AS cond 
-LEFT JOIN vam_forma_envios AS fe ON  fe.id = cond.id_form_envio 
-LEFT JOIN vam_forma_pagos AS fp ON  fp.id = cond.id_form_pago 
-WHERE c.id = 1 /*cond.id_contrato*/
+SELECT *
+FROM vam_contratos AS c, vam_fe_fp_c AS cond
+LEFT JOIN vam_forma_envios AS fe ON  fe.id = cond.id_form_envio
+LEFT JOIN vam_forma_pagos AS fp ON  fp.id = cond.id_form_pago
+WHERE c.id_prov = 3 AND cond.id_contrato = c.id
 ORDER BY c.id;
 
 SELECT *
