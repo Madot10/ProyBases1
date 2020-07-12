@@ -21,6 +21,7 @@ const routes = [
         component: () => import("../views/MainView.vue"),
         children: [
             {
+                name: "HomeProv",
                 path: "",
                 component: () => import("../views/Home.vue"),
             },
@@ -37,6 +38,11 @@ const routes = [
         path: "/prod/:id",
         component: () => import("../views/MainView.vue"),
         children: [
+            {
+                name: "HomeProd",
+                path: "",
+                component: () => import("../views/Home.vue"),
+            },
             {
                 name: "ListaProveedores",
                 path: "proveedores",
