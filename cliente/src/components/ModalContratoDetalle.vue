@@ -15,7 +15,7 @@
                             label="Fecha de emisión:"
                             label-align-sm="right"
                         >
-                            <b-form-input plaintext v-model="contrato.fecha_inicio"></b-form-input>
+                            <b-form-input plaintext v-model="contrato.fecha_emision"></b-form-input>
                         </b-form-group>
                         <div v-if="contrato.fecha_can">
                             <!-- F_can -->
@@ -38,7 +38,7 @@
                                     rows="3"
                                     max-rows="6"
                                     readonly
-                                    v-model="contrato.mov_can"
+                                    v-model="contrato.motivo_cancel"
                                 ></b-form-textarea>
                             </b-form-group>
                         </div>
@@ -80,7 +80,18 @@
                         hover
                         :items="contrato.formas_envios"
                         :fields="fields_fe"
-                    ></b-table>
+                    >
+                        <!-- Cells -->
+                        <template v-slot:cell(tipo)="row">
+                            {{
+                                row.value == "m"
+                                    ? "Marítimo"
+                                    : row.value == "a"
+                                    ? "Áereo"
+                                    : "Terrestre"
+                            }}
+                        </template>
+                    </b-table>
 
                     <!-- Forma de pago-->
                     <b-form-group
@@ -89,13 +100,21 @@
                         label-class="font-weight-bold"
                     >
                     </b-form-group>
-                    <b-table
-                        small
-                        striped
-                        hover
-                        :items="contrato.formas_pagos"
-                        :fields="fields_fp"
-                    ></b-table>
+                    <b-table small striped hover :items="contrato.formas_pagos" :fields="fields_fp">
+                        <!-- Cells -->
+                        <template v-slot:cell(tipo)="row">
+                            {{ row.value == "cred" ? "Crédito" : "Contado" }}
+                        </template>
+                        <template v-slot:cell(porc_inicial)="row">
+                            {{ row.item.tipo == "cred" ? row.value : "-" }}
+                        </template>
+                        <template v-slot:cell(nro_cuotas)="row">
+                            {{ row.item.tipo == "cred" ? row.value : "-" }}
+                        </template>
+                        <template v-slot:cell(interes_mensual)="row">
+                            {{ row.item.tipo == "cred" ? row.value : "-" }}
+                        </template>
+                    </b-table>
 
                     <!-- Ingredientes contratados-->
                     <b-form-group
@@ -110,7 +129,12 @@
                         hover
                         :items="contrato.ingredientes"
                         :fields="fields_con"
-                    ></b-table>
+                    >
+                        <!-- Cells -->
+                        <template v-slot:cell(tipo)="row">
+                            {{ row.value == "q" ? "Sintético" : "Natural" }}
+                        </template>
+                    </b-table>
                 </b-col>
             </b-row>
         </b-container>
@@ -157,7 +181,7 @@ export default {
                     sortable: false,
                 },
                 {
-                    key: "recargo",
+                    key: "cargo",
                     label: "Recargo (%)",
                     sortable: false,
                 },
@@ -184,7 +208,7 @@ export default {
                     sortable: false,
                 },
                 {
-                    key: "int_mensual",
+                    key: "interes_mensual",
                     label: "Interés mensual (%)",
                     sortable: false,
                 },
