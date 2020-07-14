@@ -38,4 +38,7 @@ router.get('/:id_prod/contratos/nuevo/ing/:id_prov', contrato.getContNuevoListIn
 //Ingredientes de un proveedor disponibles para contratar (pidiendo exclusividad)
 router.get('/:id_prod/contratos/nuevo/ing/exc/:id_prov', contrato.getContNuevoListIngExc);
 
+//Creación del contrato
+router.post('/:id_prod/contratos/nuevo/:id_prov', contrato.createContrato);
+
 module.exports = router;

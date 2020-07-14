@@ -16,6 +16,7 @@ class FormaPago{
   }
 
   getFormaPago(id){
+		
 		return new Promise((resolve, reject) => {
 
 			database.query('SELECT * FROM FORMA_PAGO WHERE id = $1', [id])
