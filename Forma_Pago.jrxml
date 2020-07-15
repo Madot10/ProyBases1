@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Form_Pago" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="2d22a99b-d1e9-4d7d-b29e-aba5abfa6db6">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sistema_vam"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="Proveedor:" class="java.lang.Integer">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$F{id_proveedor}]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select fp.id, fp.id_proveedor, fp.tipo, fp.nro_cuotas,
+ 			fp.interes_mensual
+ from vam_forma_pagos fp
+ where fp.id_proveedor =  $P{Proveedor:} ]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_forma_pagos"/>
+	</field>
+	<field name="id_proveedor" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_proveedor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_forma_pagos"/>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_forma_pagos"/>
+	</field>
+	<field name="nro_cuotas" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="nro_cuotas"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_forma_pagos"/>
+	</field>
+	<field name="interes_mensual" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="interes_mensual"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_forma_pagos"/>
+	</field>
+	<group name="id">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+	</group>
+	<group name="id_proveedor">
+		<groupExpression><![CDATA[$F{id_proveedor}]]></groupExpression>
+	</group>
+	<pageHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="d1bdf430-f5c6-451e-bda7-57653d3b68ab"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Forma de Pago:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="32" y="0" width="38" height="30" uuid="2090ed4c-fe26-43c5-8df3-8cfcf26e4c79">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a9175603-981a-44da-b768-e645760dbcac"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Tipo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="0" width="45" height="30" uuid="28fc91af-ec92-4a88-b346-28f57c8fb469">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9369e841-c671-4c8c-92d5-be99106278cf"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Cuotas:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="80" height="30" uuid="3330a4bd-be0d-49e3-b279-d6e8caaf75c0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="16e23393-0048-4a23-b396-8bdc48805a69"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Intereses (%):]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="70" y="0" width="115" height="30" uuid="92fadb46-de47-4e04-b289-2acc472339be">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a9175603-981a-44da-b768-e645760dbcac"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}.equals("cred") ? "Crédito" : "De Contado"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="230" y="0" width="90" height="30" uuid="1473e8cc-4852-45c6-9d56-15e25d1324b9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9369e841-c671-4c8c-92d5-be99106278cf"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nro_cuotas}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="450" y="0" width="70" height="30" uuid="5fd2a06e-81f3-49c3-b587-bc9c96abf960">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="16e23393-0048-4a23-b396-8bdc48805a69"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{interes_mensual}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
