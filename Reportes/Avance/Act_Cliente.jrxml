@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Act_Cliente" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="b40e2f4a-6688-4435-a8b7-ba9e189e598d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sistema_vam"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="Codigo Prov:" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT cont.id AS cont_id,
+	cont.id_prov,
+	cont.id_prod,
+	cont.fecha_emision,
+	prod.id AS prod_id,
+	prod.nombre,
+	prod.email,
+	prod.telefono
+FROM vam_contratos cont,
+	vam_productores prod
+WHERE
+	  cont.fecha_cancelacion IS NULL AND 
+	  (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = cont.id GROUP BY id_contrato)) <= '12 month' OR age(cont.fecha_emision) <= '12 month')
+	  AND
+	  prod.id =cont.id_prod
+	  AND cont.id_prov =  $P{Codigo Prov:} ]]>
+	</queryString>
+	<field name="cont_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cont_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<field name="id_prov" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_prov"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<field name="id_prod" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_prod"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<field name="fecha_emision" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_emision"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<field name="prod_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="prod_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_productores"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_productores"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_productores"/>
+	</field>
+	<field name="telefono" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="telefono"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_productores"/>
+	</field>
+	<group name="id_prov">
+		<groupExpression><![CDATA[$F{id_prov}]]></groupExpression>
+	</group>
+	<group name="id_prod">
+		<groupExpression><![CDATA[$F{id_prod}]]></groupExpression>
+	</group>
+	<pageHeader>
+		<band height="31">
+			<staticText>
+				<reportElement x="181" y="0" width="192" height="30" uuid="9dfa2bd2-e33e-4f2f-a19e-560039457ec7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[CLIENTES ACTIVOS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="138" y="0" width="141" height="30" backcolor="#DCF3F5" uuid="d7a3924e-85a0-4209-b268-099e5a821208">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bb122b5d-000d-48e6-977f-dbda7a413223"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[NRO CONTRATO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="138" height="30" backcolor="#DCF3F5" uuid="bc06ae3b-385f-4b3a-986a-b4d6ef04fe6d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0c6a68c0-b395-4886-ad2e-d6b0b88c7425"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="279" y="0" width="151" height="30" backcolor="#DCF3F5" uuid="f73082bf-5317-463b-b263-a8de35c24861">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="56c8ea2a-0145-44c6-bed4-34c6b225df6b"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[CORREO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="430" y="0" width="125" height="30" backcolor="#DCF3F5" uuid="89cf4b00-7acf-48d6-82b2-31a690a4e91e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e73b86d6-8d04-4561-9de3-156b939cd76d"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[TELÉFONO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="138" y="0" width="141" height="30" uuid="4fc16955-74ac-4f5a-9d07-1d35d07c53bb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bb122b5d-000d-48e6-977f-dbda7a413223"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cont_id}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="138" height="30" uuid="33884a72-fe18-40b8-b328-3fc0a50dfcf2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0c6a68c0-b395-4886-ad2e-d6b0b88c7425"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="279" y="0" width="151" height="30" uuid="c0d3e335-1d52-4930-9a4d-512cbcc36a57">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="56c8ea2a-0145-44c6-bed4-34c6b225df6b"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="430" y="0" width="125" height="30" uuid="b34b2e77-8479-4564-8479-e007a563545e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e73b86d6-8d04-4561-9de3-156b939cd76d"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
