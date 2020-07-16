@@ -90,27 +90,36 @@ export default {
         load_list_user() {
             let responseProvs = {
                 Proveedores: [
-                    { id: 1, nombre: "Ultra International Ltd" },
+                    /*                     { id: 1, nombre: "Ultra International Ltd" },
                     { id: 2, nombre: "Privi Organics Ltd" },
                     { id: 3, nombre: "Tennants" },
                     { id: 4, nombre: "Mane" },
-                    { id: 5, nombre: "Inoue Pergumery MFG" },
+                    { id: 5, nombre: "Inoue Pergumery MFG" }, */
                 ],
             };
             let responseProds = {
-                Productores: [
-                    { id: 1, nombre: "Firmenich" },
-                    { id: 2, nombre: "IFF" },
-                    { id: 3, nombre: "Estee Lauder Companies" },
-                    { id: 4, nombre: "L’Occitane" },
-                ],
+                Productores: [],
             };
+
+            let urlApi = "http://localhost:3000";
+
             if (this.type_user == "prov") {
-                this.list_users = responseProvs.Proveedores;
+                urlApi += "/provs";
             } else {
-                this.list_users = responseProds.Productores;
+                urlApi += "/prods";
             }
-            this.isLoading = false;
+
+            fetch(urlApi)
+                .then(function(response) {
+                    return response.json();
+                })
+                .then((res) => {
+                    console.log("ADMIN ", res);
+                    this.list_users = res.Proveedores || res.Productores;
+                    this.isLoading = false;
+                });
+
+            //this.list_users = responseProds.Productores;
         },
         click_user(id) {
             if (this.type_user == "prov") {
