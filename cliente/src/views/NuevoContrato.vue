@@ -4,7 +4,7 @@
         <template #content>
             <!-- MODAL DETALLE PROV -->
             <modal-prov-detalle
-                :proveedor="proveedores[index_selected_prov]"
+                :proveedor="proveedor"
                 @evaluar="continuarEvaluarProv"
                 :only_view="false"
             ></modal-prov-detalle>
@@ -23,7 +23,13 @@
                 :items="proveedores"
                 :fields="fields"
                 id="con-table"
+                show-empty
             >
+                <!--- VACIO -->
+                <template v-slot:empty>
+                    <h6 class="text-center">No hay registros que mostrar</h6>
+                </template>
+
                 <!-- CARGA -->
                 <template v-slot:table-busy>
                     <div class="text-center text-primary my-2">
@@ -58,39 +64,8 @@ export default {
         return {
             isLoadingProv: true,
             index_selected_prov: 0,
-            proveedores: [
-                {
-                    id: 1,
-                    nombre: "Empresita 1",
-                    email: "test@gdsf.com",
-                    telefono: 4545456898,
-                    pag_web: "www.google.com",
-                    pais: "Puerto Rico",
-                    ingredientes: [
-                        { cas: "1234", nombre: "Cacao", tipo: "natural", volumen: "10", precio: 5 },
-                        {
-                            cas: "1234",
-                            nombre: "Cacao",
-                            tipo: "natural",
-                            volumen: "15",
-                            precio: 50,
-                        },
-                    ],
-                    formas_envios: [{ tipo: "Maritimo", recargo: "10", pais: "Venezuela" }],
-                    formas_pagos: [
-                        { tipo: "Contado", porc_inicial: "15", nro_cuotas: "2", int_mensual: "6" },
-                    ],
-                },
-                {
-                    id: 2,
-                    nombre: "Empresita 2",
-                    email: "test@dsfdsfsdfsdf.com",
-                    telefono: 2124423258,
-                    pag_web: "www.gsdsadsaoogle.com",
-                    pais: "Estados Unidos de America",
-                },
-                { nombre: "Empresita 3", email: "sdfdsf@sdgfds.sd" },
-            ],
+            proveedor: {},
+            proveedores: [],
             fields: [
                 {
                     key: "nombre",
@@ -113,6 +88,7 @@ export default {
     methods: {
         verDetallePreov(index) {
             this.index_selected_prov = index;
+            this.proveedor = this.proveedores[this.index_selected_prov];
             this.$bvModal.show("prov-det-modal");
         },
         continuarEvaluarProv() {
@@ -127,9 +103,109 @@ export default {
                 query: { e: opt ? "y" : "n" },
             });
         },
+        generateProveedor(datos, datosFe, datosFp, datosIng) {
+            let aux_prov = [];
+
+            datos.forEach((p) => {
+                if (aux_prov[p.provid] == null) {
+                    //Crear Proveedor
+                    aux_prov[p.provid] = {
+                        id: p.provid,
+                        email: p.email,
+                        nombre: p.nombre,
+                        pag_web: p.pag_web,
+                        telefono: p.telefono,
+                        pais: p.paisnombre,
+                        ingredientes: [],
+                        formas_envios: [],
+                        formas_pagos: [],
+                    };
+                }
+            });
+
+            datosFe.forEach((feP) => {
+                aux_prov[feP.provid].formas_envios.push({
+                    id_form_envio: feP.id,
+                    pais: feP.nombre,
+                    tipo: feP.tipo,
+                    cargo: feP.cargo,
+                });
+            });
+
+            datosFp.forEach((fpP) => {
+                aux_prov[fpP.provid].formas_pagos.push({
+                    id_form_pago: fpP.id,
+                    porc_inicial: fpP.porc_inicial,
+                    tipo: fpP.tipo,
+                    nro_cuotas: fpP.nro_cuotas,
+                    interes_mensual: fpP.interes_mensual,
+                    nro_dia_entre_pago: fpP.nro_dia_entre_pago,
+                });
+            });
+
+            datosIng.forEach((ingP) => {
+                aux_prov[ingP.provid].ingredientes.push({
+                    cas: ingP.cas,
+                    nombre: ingP.nombre,
+                    tipo: ingP.tipo,
+                    volumen: ingP.volumen,
+                    precio: ingP.precio,
+                });
+            });
+
+            this.proveedores = aux_prov;
+            this.isLoadingProv = false;
+        },
     },
     created() {
-        this.isLoadingProv = false;
+        let idUser = this.$route.params.id;
+
+        fetch(`http://localhost:3000/prod/${idUser}/contratos/nuevo`)
+            .then((response) => {
+                return response.json();
+            })
+            .then((provs) => {
+                //Proveedores
+                console.log("PROVS", provs);
+
+                fetch(`http://localhost:3000/prod/${idUser}/contratos/nuevo/fe`)
+                    .then((response) => {
+                        return response.json();
+                    })
+
+                    .then((fes) => {
+                        //Formas de envios
+                        console.log("FES ", fes);
+
+                        fetch(`http://localhost:3000/prod/${idUser}/contratos/nuevo/fp`)
+                            .then((response) => {
+                                return response.json();
+                            })
+
+                            .then((fps) => {
+                                //Formas de pagos
+                                console.log("FPS ", fps);
+
+                                fetch(`http://localhost:3000/prod/${idUser}/contratos/nuevo/ing`)
+                                    .then((response) => {
+                                        return response.json();
+                                    })
+
+                                    .then((ings) => {
+                                        //Ingredientes
+                                        console.log("Ings ", ings);
+
+                                        //GENERAR TODOS
+                                        this.generateProveedor(
+                                            provs.Lista_de_proveedores,
+                                            fes.Lista_de_formas_de_envio,
+                                            fps.Lista_de_formas_de_pago,
+                                            ings.Lista_de_ingredientes
+                                        );
+                                    });
+                            });
+                    });
+            });
     },
 };
 </script>

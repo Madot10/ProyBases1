@@ -2,65 +2,59 @@
 const { database } = require("../config/db.config");
 
 //10.3 se ingresan datos en la entidad intersección entre fe_fp_c sobre formas de envío
-function createInsertFe(id_cont,id_prod, id_prov, cont) {
-    
+function createInsertFe(id_cont, id_prod, id_prov, cont) {
     return new Promise((resolve, reject) => {
-        for(var i=0; cont.id_fe[i] != null; i++){
-            console.log('Forma de envío ingresado:', i+1)
+        for (var i = 0; cont.id_fe[i] != null; i++) {
+            console.log("Forma de envío ingresado:", i + 1);
             database
-            .query(
-                `INSERT INTO vam_fe_fp_c(id_contrato,id_prov_cont,id_prod_cont,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES ($1,$2,$3,$4,$2,$5)`,
-                [id_cont,id_prov,id_prod,cont.id_fe[i],cont.id_pais[i]]
-            )
-            .then(function () {
-                resolve(true);
-            })
-            .catch((e) => console.error(e.stack));
-
+                .query(
+                    `INSERT INTO vam_fe_fp_c(id_contrato,id_prov_cont,id_prod_cont,id_form_envio,id_prov_fe,id_form_envio_pais) VALUES ($1,$2,$3,$4,$2,$5)`,
+                    [id_cont, id_prov, id_prod, cont.id_fe[i], cont.id_pais[i]]
+                )
+                .then(function () {
+                    resolve(true);
+                })
+                .catch((e) => console.error(e.stack));
         }
     });
 }
 
 //10.2 se ingresan datos en la entidad intersección entre fe_fp_c sobre formas de pago
-function createInsertFp(id_cont,id_prod, id_prov, cont) {
-    
+function createInsertFp(id_cont, id_prod, id_prov, cont) {
     return new Promise((resolve, reject) => {
-        for(var i=0; cont.id_fp[i] != null; i++){
-            console.log('Forma de pago insertado:', i+1)
+        for (var i = 0; cont.id_fp[i] != null; i++) {
+            console.log("Forma de pago insertado:", i + 1);
             database
-            .query(
-                `INSERT INTO vam_fe_fp_c(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp) VALUES ($1,$2,$3,$4,$2)`,
-                [id_cont,id_prov,id_prod,cont.id_fp[i]]
-            )
-            .catch((e) => console.error(e.stack));
+                .query(
+                    `INSERT INTO vam_fe_fp_c(id_contrato,id_prov_cont,id_prod_cont,id_form_pago,id_prov_fp) VALUES ($1,$2,$3,$4,$2)`,
+                    [id_cont, id_prov, id_prod, cont.id_fp[i]]
+                )
+                .catch((e) => console.error(e.stack));
         }
-        createInsertFe(id_cont,id_prod,id_prov,cont)
+        createInsertFe(id_cont, id_prod, id_prov, cont);
     });
 }
 
 //10.1 se ingresan datos en la entidad intersección entre ingredientes y contrato
-function createInsertMp_c(id_cont,id_prod, id_prov, cont) {
-    
+function createInsertMp_c(id_cont, id_prod, id_prov, cont) {
     return new Promise((resolve, reject) => {
-        for(var i=0; cont.cas[i] != null; i++){
-            console.log('Ingrediente ingresado:', i+1)
+        for (var i = 0; cont.cas[i] != null; i++) {
+            console.log("Ingrediente ingresado:", i + 1);
             database
-            .query(
-                `INSERT INTO vam_mp_c(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES ($1,$2,$3,$4,$2)`,
-                [id_cont,id_prov,id_prod,cont.cas[i]]
-            )
-            .catch((e) => console.error(e.stack));
+                .query(
+                    `INSERT INTO vam_mp_c(id_contrato,id_cont_prov,id_cont_prod,cas,id_prov_ing) VALUES ($1,$2,$3,$4,$2)`,
+                    [id_cont, id_prov, id_prod, cont.cas[i]]
+                )
+                .catch((e) => console.error(e.stack));
         }
-        createInsertFp(id_cont,id_prod,id_prov,cont)
+        createInsertFp(id_cont, id_prod, id_prov, cont);
     });
 }
-
 
 class ContratoProdModel {
     //4.1
     getContratos(id_prod) {
         return new Promise((resolve, reject) => {
-            
             database
                 .query(
                     `SELECT c.id, c.fecha_emision, c.exclusividad, c.clausula, c.fecha_cancelacion, c.motivo_cancel, c.quien_cancela, cond.id_form_envio, p.nombre, fe.tipo AS fe_tipo, fe.cargo, cond.id_form_pago, fp.tipo AS fp_tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
@@ -142,7 +136,7 @@ class ContratoProdModel {
         return new Promise((resolve, reject) => {
             database
                 .query(
-                    `SELECT prov.id AS provId, prov.nombre, prov.email, prov.telefono, prov.pag_web FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = $1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND NOT exists(SELECT * FROM vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1) UNION SELECT prov.id AS provId prov.nombre, prov.email, prov.telefono, prov.pag_web FROM vam_proveedores As prov, vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1 AND (c.fecha_cancelacion IS NOT NULL OR (age(c.fecha_emision) >= '12 month' AND age(COALESCE((SELECT MAX(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id AND c.id_prod = $1 GROUP BY r.id_contrato), now() - interval '13 month')) >= '12 month'))`,
+                    `SELECT prov.id AS provId, pais.nombre AS paisnombre, prov.nombre, prov.email, prov.telefono, prov.pag_web FROM vam_proveedores As prov, vam_paises AS pais WHERE prov.id_pais = pais.id AND prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = $1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND NOT exists(SELECT * FROM vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1) UNION SELECT prov.id AS provId, pais.nombre AS paisnombre, prov.nombre, prov.email, prov.telefono, prov.pag_web FROM vam_proveedores As prov, vam_contratos As c, vam_paises AS pais WHERE prov.id_pais = pais.id AND c.id_prov = prov.id AND c.id_prod = $1 AND (c.fecha_cancelacion IS NOT NULL OR (age(c.fecha_emision) >= '12 month' AND age(COALESCE((SELECT MAX(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id AND c.id_prod = $1 GROUP BY r.id_contrato), now() - interval '13 month')) >= '12 month'))`,
                     [id_prod]
                 )
                 .then(function (response) {
@@ -157,7 +151,7 @@ class ContratoProdModel {
         return new Promise((resolve, reject) => {
             database
                 .query(
-                    `SELECT prov.id, fe.id, fe.tipo, p.nombre FROM vam_proveedores AS prov INNER JOIN vam_forma_envios AS fe ON fe.id_prov = prov.id INNER JOIN vam_paises AS p ON p.id = fe.id_pais WHERE prov.id IN (SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = $1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND NOT exists(SELECT * FROM vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1) UNION SELECT prov.id AS provId FROM vam_proveedores As prov, vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1 AND (c.fecha_cancelacion IS NOT NULL OR (age(c.fecha_emision) >= '12 month' AND age(COALESCE((SELECT MAX(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id AND c.id_prod = $1 GROUP BY r.id_contrato), now() - interval '13 month')) >= '12 month')))`,
+                    `SELECT prov.id AS provId, fe.id, fe.tipo, fe.cargo, p.nombre FROM vam_proveedores AS prov INNER JOIN vam_forma_envios AS fe ON fe.id_prov = prov.id INNER JOIN vam_paises AS p ON p.id = fe.id_pais WHERE prov.id IN (SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = $1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND NOT exists(SELECT * FROM vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1) UNION SELECT prov.id AS provId FROM vam_proveedores As prov, vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1 AND (c.fecha_cancelacion IS NOT NULL OR (age(c.fecha_emision) >= '12 month' AND age(COALESCE((SELECT MAX(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id AND c.id_prod = $1 GROUP BY r.id_contrato), now() - interval '13 month')) >= '12 month')))`,
                     [id_prod]
                 )
                 .then(function (response) {
@@ -172,7 +166,7 @@ class ContratoProdModel {
         return new Promise((resolve, reject) => {
             database
                 .query(
-                    `SELECT prov.id, fp.id, fp.tipo FROM vam_proveedores AS prov INNER JOIN vam_forma_pagos AS fp ON fp.id_proveedor = prov.id WHERE prov.id IN(SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = $1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND NOT exists(SELECT * FROM vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1) UNION SELECT prov.id AS provId FROM vam_proveedores As prov, vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1 AND (c.fecha_cancelacion IS NOT NULL OR (age(c.fecha_emision) >= '12 month' AND age(COALESCE((SELECT MAX(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id AND c.id_prod = $1 GROUP BY r.id_contrato), now() - interval '13 month')) >= '12 month')))`,
+                    `SELECT prov.id AS provId, fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago FROM vam_proveedores AS prov INNER JOIN vam_forma_pagos AS fp ON fp.id_proveedor = prov.id WHERE prov.id IN(SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = $1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND NOT exists(SELECT * FROM vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1) UNION SELECT prov.id AS provId FROM vam_proveedores As prov, vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1 AND (c.fecha_cancelacion IS NOT NULL OR (age(c.fecha_emision) >= '12 month' AND age(COALESCE((SELECT MAX(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id AND c.id_prod = $1 GROUP BY r.id_contrato), now() - interval '13 month')) >= '12 month')))`,
                     [id_prod]
                 )
                 .then(function (response) {
@@ -187,7 +181,7 @@ class ContratoProdModel {
         return new Promise((resolve, reject) => {
             database
                 .query(
-                    `SELECT prov.id, ing.cas, ing.nombre, ing.tipo, present.precio, present.volumen FROM vam_proveedores AS prov INNER JOIN vam_ingrediente_esencias AS ing ON ing.id_proveedor = prov.id INNER JOIN vam_ing_presentaciones AS present ON present.cas_ingrediente = ing.cas WHERE prov.id IN (SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = $1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND NOT exists(SELECT * FROM vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1) UNION SELECT prov.id AS provId FROM vam_proveedores As prov, vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1 AND (c.fecha_cancelacion IS NOT NULL OR (age(c.fecha_emision) >= '12 month' AND age(COALESCE((SELECT MAX(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id AND c.id_prod = $1 GROUP BY r.id_contrato), now() - interval '13 month')) >= '12 month')))`,
+                    `SELECT prov.id AS provId, ing.cas, ing.nombre, ing.tipo, present.precio, present.volumen FROM vam_proveedores AS prov INNER JOIN vam_ingrediente_esencias AS ing ON ing.id_proveedor = prov.id INNER JOIN vam_ing_presentaciones AS present ON present.cas_ingrediente = ing.cas WHERE prov.id IN (SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = $1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND NOT exists(SELECT * FROM vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1) UNION SELECT prov.id AS provId FROM vam_proveedores As prov, vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = $1 AND (c.fecha_cancelacion IS NOT NULL OR (age(c.fecha_emision) >= '12 month' AND age(COALESCE((SELECT MAX(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id AND c.id_prod = $1 GROUP BY r.id_contrato), now() - interval '13 month')) >= '12 month')))`,
                     [id_prod]
                 )
                 .then(function (response) {
@@ -238,25 +232,21 @@ class ContratoProdModel {
         });
     }
 
-    
     //10
     createContrato(id_prod, id_prov, cont) {
-    
         return new Promise((resolve, reject) => {
-           
-           database
-           .query(
-               `INSERT INTO vam_contratos(id_prov,id_prod,fecha_emision,exclusividad,clausula) VALUES ($1,$2,current_date,$3,$4) RETURNING id`,
-               [id_prov,id_prod,cont.exclusividad,cont.clausula]
-           )
-           .then(function (response) {
-                const id_cont = response.rows[0].id
-                createInsertMp_c(id_cont,id_prod,id_prov,cont)
-            })
-            .catch((e) => console.error(e.stack));
+            database
+                .query(
+                    `INSERT INTO vam_contratos(id_prov,id_prod,fecha_emision,exclusividad,clausula) VALUES ($1,$2,current_date,$3,$4) RETURNING id`,
+                    [id_prov, id_prod, cont.exclusividad, cont.clausula]
+                )
+                .then(function (response) {
+                    const id_cont = response.rows[0].id;
+                    createInsertMp_c(id_cont, id_prod, id_prov, cont);
+                })
+                .catch((e) => console.error(e.stack));
         });
     }
-
 }
 
 module.exports = { ContratoProdModel };

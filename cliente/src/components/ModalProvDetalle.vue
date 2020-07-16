@@ -69,7 +69,18 @@
                         hover
                         :items="proveedor.formas_envios"
                         :fields="fields_fe"
-                    ></b-table>
+                    >
+                        <!-- Cells -->
+                        <template v-slot:cell(tipo)="row">
+                            {{
+                                row.value == "m"
+                                    ? "Marítimo"
+                                    : row.value == "a"
+                                    ? "Áereo"
+                                    : "Terrestre"
+                            }}
+                        </template>
+                    </b-table>
 
                     <!-- Forma de pago-->
                     <b-form-group
@@ -84,7 +95,21 @@
                         hover
                         :items="proveedor.formas_pagos"
                         :fields="fields_fp"
-                    ></b-table>
+                    >
+                        <!-- Cells -->
+                        <template v-slot:cell(tipo)="row">
+                            {{ row.value == "cred" ? "Crédito" : "Contado" }}
+                        </template>
+                        <template v-slot:cell(porc_inicial)="row">
+                            {{ row.item.tipo == "cred" ? row.value : "-" }}
+                        </template>
+                        <template v-slot:cell(nro_cuotas)="row">
+                            {{ row.item.tipo == "cred" ? row.value : "-" }}
+                        </template>
+                        <template v-slot:cell(interes_mensual)="row">
+                            {{ row.item.tipo == "cred" ? row.value : "-" }}
+                        </template>
+                    </b-table>
 
                     <!-- Ingredientes ofrecidos-->
                     <b-form-group
@@ -99,7 +124,12 @@
                         hover
                         :items="proveedor.ingredientes"
                         :fields="fields_ing"
-                    ></b-table>
+                    >
+                        <!-- Cells -->
+                        <template v-slot:cell(tipo)="row">
+                            {{ row.value == "q" ? "Sintético" : "Natural" }}
+                        </template>
+                    </b-table>
                 </b-col>
             </b-row>
         </b-container>
@@ -162,8 +192,8 @@ export default {
                     sortable: false,
                 },
                 {
-                    key: "recargo",
-                    label: "Recargo (%)",
+                    key: "cargo",
+                    label: "Cargo (%)",
                     sortable: false,
                 },
                 {
@@ -189,7 +219,7 @@ export default {
                     sortable: false,
                 },
                 {
-                    key: "int_mensual",
+                    key: "interes_mensual",
                     label: "Interés mensual (%)",
                     sortable: false,
                 },
