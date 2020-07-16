@@ -142,28 +142,18 @@
 
 <script>
 export default {
+    props: ["data"],
     data() {
         return {
             clausula_text: "",
             /*FE */
             flag_repited_fe: false,
             flag_null_fe: false,
-            fe: [
-                { id: 1, tipo: "m", cargo: 10, pais: "Venezuela" },
-                { id: 2, tipo: "a", cargo: 12, pais: "Venezuela" },
-                { id: 3, tipo: "m", cargo: 5, pais: "Colombia" },
-            ],
             fe_disp: [],
             fe_selected: [],
             /*FP*/
             flag_repited_fp: false,
             flag_null_fp: false,
-            fp: [
-                { id: 1, tipo: "cont" },
-                { id: 2, tipo: "cred", porc_inicial: 30, nro_cuotas: 10, interes_mensual: 2.5 },
-                { id: 3, tipo: "cred", porc_inicial: 15, nro_cuotas: 5, interes_mensual: 15 },
-                { id: 3, tipo: "cred", porc_inicial: 12, nro_cuotas: 7, interes_mensual: 5 },
-            ],
             fp_disp: [],
             fp_selected: [],
         };
@@ -251,9 +241,9 @@ export default {
     created() {
         console.warn("Creando componente...");
         //FORMA DE ENVIO
-        this.fe_disp = this.fe.map((fe) => {
+        this.fe_disp = this.data.formas_envios.map((fe) => {
             return {
-                value: fe.id,
+                value: fe.id_form_envio,
                 text: `${fe.pais} (${
                     fe.tipo == "m" ? "Marítimo" : fe.tipo == "a" ? "Aéreo" : "Terrestre"
                 }) - Recargo: ${fe.cargo}%`,
@@ -261,9 +251,9 @@ export default {
         });
 
         //FORMA DE PAGO
-        this.fp_disp = this.fp.map((fp) => {
+        this.fp_disp = this.data.formas_pagos.map((fp) => {
             return {
-                value: fp.id,
+                value: fp.id_form_pago,
                 text: `${fp.tipo == "cont" ? "Contado" : "Crédito"} ${
                     fp.tipo == "cred"
                         ? `(${fp.porc_inicial}% Inicial - ${fp.nro_cuotas} cuotas - ${fp.interes_mensual}% interes)`

@@ -67,6 +67,7 @@ const routes = [
                 name: "DetalleContrato",
                 path: "contratos/nuevo/:id_prov",
                 component: () => import("../views/DetalleContrato.vue"),
+                props: true,
             },
         ],
     },

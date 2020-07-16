@@ -2,6 +2,11 @@
     <card-main>
         <template #title>Nuevo Contrato</template>
         <template #content>
+            <!-- Aviso -->
+            <b-toast id="toast-aviso" :variant="aviso.tipo" :title="aviso.titulo" solid>
+                {{ aviso.mensaje }}
+            </b-toast>
+
             <!-- MODAL DETALLE PROV -->
             <modal-prov-detalle
                 :proveedor="proveedor"
@@ -62,6 +67,7 @@ export default {
     },
     data() {
         return {
+            aviso: { mensaje: "", titulo: "", tipo: "success" },
             isLoadingProv: true,
             index_selected_prov: 0,
             proveedor: {},
@@ -97,11 +103,62 @@ export default {
         },
         exclSelect(opt) {
             //console.log("Exclusividad seleccionada ", opt);
-            this.$router.push({
-                name: "DetalleContrato",
-                params: { id_prov: this.proveedores[this.index_selected_prov].id },
-                query: { e: opt ? "y" : "n" },
-            });
+            let aux_prov = this.proveedor;
+
+            let idUser = this.$route.params.id;
+            let urlBaseApi = `http://localhost:3000/prod/${idUser}/contratos/nuevo/ing/`;
+            let urlFinal = urlBaseApi;
+
+            //GET Nueva lista de ings
+            console.log("OPCION ", opt);
+            if (opt) {
+                //Con exc
+                urlFinal += `exc/${aux_prov.id}`;
+            } else {
+                //Sin exc
+                urlFinal += `${aux_prov.id}`;
+            }
+
+            fetch(urlFinal)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((newIngs) => {
+                    console.log("NUEVOS INGS", newIngs);
+
+                    if (newIngs.Lista_de_proveedores.length > 0) {
+                        //Hay ingredientes para contratar
+                        //console.log("Hay elementos ", newIngs.Lista_de_proveedores.length);
+
+                        aux_prov.ingredientes = [];
+
+                        newIngs.Lista_de_proveedores.forEach((ing) => {
+                            aux_prov.ingredientes.push({
+                                cas: ing.cas,
+                                nombre: ing.nombre,
+                                tipo: ing.tipo,
+                            });
+                        });
+
+                        //console.log("A enviar", aux_prov);
+
+                        this.$router.push({
+                            name: "DetalleContrato",
+                            params: {
+                                id_prov: this.proveedores[this.index_selected_prov].id,
+                                datosProv: aux_prov,
+                            },
+                            query: { e: opt ? "y" : "n" },
+                        });
+                    } else {
+                        //No hay ingredientes para contratar
+                        this.aviso.mensaje =
+                            "¡No se tiene ingredientes disponibles para esta solicitud!";
+                        this.aviso.titulo = "Aviso";
+                        this.aviso.tipo = "danger";
+                        this.$bvToast.show("toast-aviso");
+                    }
+                });
         },
         generateProveedor(datos, datosFe, datosFp, datosIng) {
             let aux_prov = [];
@@ -127,6 +184,7 @@ export default {
                 aux_prov[feP.provid].formas_envios.push({
                     id_form_envio: feP.id,
                     pais: feP.nombre,
+                    id_pais: feP.paisid,
                     tipo: feP.tipo,
                     cargo: feP.cargo,
                 });

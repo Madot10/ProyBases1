@@ -3,10 +3,13 @@
         <template #title>Nuevo Contrato</template>
         <template #content>
             <!-- MODAL PROPUESTA -->
-            <modal-propuesta-contrato @condReady="contratoReady"></modal-propuesta-contrato>
+            <modal-propuesta-contrato
+                @condReady="contratoReady"
+                :data="datosProv"
+            ></modal-propuesta-contrato>
 
             <!-- CONTENIDO VISTA -->
-            <h3>Contrato</h3>
+            <h3>Contrato <span v-show="$route.query.e != 'n'">exclusivo</span></h3>
             <br />
             <b-table-simple>
                 <b-thead>
@@ -80,19 +83,13 @@ export default {
         CardMain,
         ModalPropuestaContrato,
     },
+    props: ["datosProv"],
     data() {
         return {
             mat_prim_selected: [null],
             flag_repited: false,
             flag_null: false,
             mat_prima_disp: [],
-            mat_prima: [
-                { cas: 244, nombre: "AAAAAsdad sad " },
-                { cas: 45454564, nombre: "BBB sdsad dsds " },
-                { cas: 254545444, nombre: "AVVVAAAA sd sd sd a" },
-                { cas: 99999, nombre: "CCCC sd s" },
-                { cas: 2445478794, nombre: "SADS DFSADsad " },
-            ],
         };
     },
     methods: {
@@ -129,17 +126,46 @@ export default {
             }
         },
         contratoReady(obj_data) {
-            console.log("READY COND: ", obj_data);
+            console.log("READY COND: ", obj_data, this.$route);
+
+            let arr_pais = [];
+            this.datosProv.formas_envios.forEach((fe) => {
+                if (obj_data.form_env.indexOf(fe.id_form_envio) > -1) {
+                    arr_pais.push(fe.id_pais);
+                }
+            });
+
+            let contrato_final = {
+                clausula: obj_data.clausula ? obj_data.clausula : null,
+                exclusividad: this.$route.query.e == "n" ? false : true,
+                cas: this.mat_prim_selected,
+                id_fe: obj_data.form_env,
+                id_fp: obj_data.form_pago,
+                id_pais: arr_pais,
+            };
+
+            console.warn("FINAL ", contrato_final);
+
+            fetch(
+                `http://localhost:3000/prod/${this.$route.params.id}/contratos/nuevo/${this.$route.params.id_prov}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(contrato_final),
+                }
+            );
         },
     },
     computed: {},
     created() {
-        //console.warn(this.$route.params); {id: "5", id_prov: "2"}
-        //console.warn(this.$route.query); {e: "n"}
-        this.mat_prima_disp = this.mat_prima.map((mp) => {
+        console.log("PROP: ", this.datosProv);
+
+        this.mat_prima_disp = this.datosProv.ingredientes.map((mp) => {
             return {
                 value: mp.cas,
-                text: mp.nombre,
+                text: `${mp.nombre} (${mp.tipo == "q" ? "Sintético" : "Natural"})`,
             };
         });
     },
