@@ -1,10 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const { ContratoProdCont }= require('../controllers/ContratoProdCont')
+const { ContratoProdCont }= require('../controllers/ContratoProdCont');
+const { HomeCont }= require('../controllers/HomeCont');
+const { PedidoProdCont }= require('../controllers/PedidoProdCont');
 
 //Se crea clase Controller y se llaman a los métodos de esa clase
-var contrato = new ContratoProdCont;
+const contrato = new ContratoProdCont;
+const home = new HomeCont;
+const pedido = new PedidoProdCont;
 
+//Home
+//Lista de proveedores con IFRA activo
+router.get('/:id_prod/proveedores', home.getProvs);
+
+//Lista de formas de pago y de envío de proveedores con IFRA activo
+router.get('/:id_prod/proveedores/fefp', home.getProvsfefp);
+
+//Contrato
 //Lista de contratos activos con sus formas de pago y envío de un productor
 router.get('/:id_prod/contratos', contrato.getContratos);
 
@@ -40,5 +52,12 @@ router.get('/:id_prod/contratos/nuevo/ing/exc/:id_prov', contrato.getContNuevoLi
 
 //Creación del contrato
 router.post('/:id_prod/contratos/nuevo/:id_prov', contrato.createContrato);
+
+//Pedido
+//Crear del pedido
+router.post('/:id_prod/pedido/nuevo/:id_prov', pedido.createPedido)
+
+//Cancelar pedido siendo productor
+router.put('/:id_prod/pedido/cancelar/:id_ped', pedido.updateCancelarPedido)
 
 module.exports = router;

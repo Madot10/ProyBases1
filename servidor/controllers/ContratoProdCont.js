@@ -108,11 +108,12 @@ class ContratoProdCont {
 
 	//Creación del contrato
 	createContrato(req, res){
-		//const { contrato } = req.body;
+		const { cont } = req.body;
 		const id_prov = req.params.id_prov;
 		const id_prod = req.params.id_prod;
 
 		//ejemplo de id_prov=4, id_prod=2
+		/*
 		var cont = {
 			clausula: "prueba de clausula",
 			exclusividad: false,
@@ -121,6 +122,7 @@ class ContratoProdCont {
 			id_fe: [8,9],
 			id_pais: [12,179]
 		}
+		*/
 
 		contrato.createContrato(id_prod,id_prov,cont)
 			.then(res.status(200).json({message: 'Contrato creado con éxito'})

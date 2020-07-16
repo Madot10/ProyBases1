@@ -90,6 +90,21 @@ SELECT  mpcont.cas FROM vam_contratos AS c, vam_mp_c AS mpcont WHERE c.id = mpco
 SELECT 5 AS provId, ing.nombre, ing.tipo, ing.cas FROM vam_ingrediente_esencias AS ing WHERE ing.id_proveedor = 5 AND ing.cas NOT IN (SELECT  mpcont.cas FROM vam_contratos AS c, vam_mp_c AS mpcont WHERE c.id = mpcont.id_contrato AND c.id IN(SELECT  c.id AS id_contrato FROM vam_contratos AS c WHERE c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month')))
 
 
+11 --Select datos del proveedor, ingredientes y presentaciones de acuerdo al IFRA activo
+SELECT prov.id AS id_prov, prov.nombre AS nombre_prov, prov.email, prov.telefono, prov.pag_web, pais.nombre AS nombre_pais, ing.cas, ing.nombre AS nombre_ing, ing.tipo AS tipo_ing, ing_pres.volumen, ing_pres.precio,
+FROM vam_proveedores AS prov
+  LEFT JOIN vam_ingrediente_esencias AS ing ON ing.id_proveedor = prov.id
+  LEFT JOIN vam_ing_presentaciones AS ing_pres ON ing_pres.cas_ingrediente = ing.cas
+  LEFT JOIN vam_paises AS pais ON pais.id = prov.id_pais
+WHERE (SELECT fecha_fin FROM vam_historico_ifra WHERE id_proveedor = prov.id) IS NULL;
+
+11.1 --Select formas de pago y de envío de un proveedor de acuerdo al IFRA activo
+SELECT prov.id AS id_prov, fp.id AS id_fp, fp.tipo AS tipo_fp, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fe.id AS id_fe, fe.tipo AS tipo_fe, fe.cargo, pais.nombre AS destino
+FROM vam_proveedores AS prov
+  LEFT JOIN vam_forma_pagos AS fp ON fp.id_proveedor = prov.id
+  LEFT JOIN vam_forma_envios AS fe ON fe.id_prov = prov.id
+  LEFT JOIN vam_paises AS pais ON pais.id = fe.id_pais
+WHERE (SELECT fecha_fin FROM vam_historico_ifra WHERE id_proveedor = prov.id) IS NULL;
 
 
 12 --SELECT CONTRATOS ACTIVOS (USANDO SUBQUERY) A PUNTO DE VENCER (RANGO entre 11 y 12meses) DE UN PROD
@@ -104,3 +119,6 @@ SELECT c.id, ing.cas, ing.nombre, ing.tipo, ing.descripcion, ing.taxonomia, ing_
     LEFT JOIN vam_ingrediente_esencias AS ing ON ing.cas = cond.cas
     LEFT JOIN vam_ing_presentaciones AS ing_pres ON ing_pres.cas_ingrediente = cond.cas
 WHERE c.id_prod = 1 AND cond.id_contrato = c.id AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) BETWEEN '11 month' AND '12 month' OR age(c.fecha_emision) BETWEEN '11 month' AND '12 month');
+
+--Para quitar el Not Null en la fecha de confirmación del pedido
+alter table vam_pedidos alter column f_confirmacion drop not null;
