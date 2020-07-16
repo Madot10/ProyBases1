@@ -1,16 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const { FormaPagoCont }= require('../controllers/FormaPagoCont')
+const { ContratoProvCont }= require('../controllers/ContratoProvCont')
+const { PedidoProvCont }= require('../controllers/PedidoProvCont');
 
 //Se crea clase Controller y se llaman a los métodos de esa clase
-var formaPago = new FormaPagoCont;
+const contrato = new ContratoProvCont;
+const pedido = new PedidoProvCont;
 
-//Formas de Pago
-router.post('/:id_prov/forma_pago', formaPago.createFormaPago);
-router.get('/:id_prov/forma_pago/:id_pago', formaPago.getFormaPago);
-//Todos los pagos de un proveedor
-router.get('/:id_prov/forma_pago', formaPago.getAll);
-router.put('/:id_prov/forma_pago/:id_pago', formaPago.updateFormaPago);
-router.delete('/:id_prov/forma_pago/:id_pago', formaPago.deleteFormaPago);
+//Lista de contratos activos con sus formas de pago y envío de un proveedor
+router.get('/:id_prov/contratos', contrato.getContratos);
+
+//Lista de ingredientes en contratos activos de un proveedor
+router.get('/:id_prov/contratos/ing', contrato.getIngCont);
+
+//Cancelar pedido siendo proveedor
+router.put('/:id_prov/pedido/cancelar/:id_ped', pedido.updateCancelarPedido)
+
 
 module.exports = router;
