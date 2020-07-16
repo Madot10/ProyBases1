@@ -88,19 +88,6 @@ export default {
             this.mode_list = false;
         },
         load_list_user() {
-            let responseProvs = {
-                Proveedores: [
-                    /*                     { id: 1, nombre: "Ultra International Ltd" },
-                    { id: 2, nombre: "Privi Organics Ltd" },
-                    { id: 3, nombre: "Tennants" },
-                    { id: 4, nombre: "Mane" },
-                    { id: 5, nombre: "Inoue Pergumery MFG" }, */
-                ],
-            };
-            let responseProds = {
-                Productores: [],
-            };
-
             let urlApi = "http://localhost:3000";
 
             if (this.type_user == "prov") {
@@ -118,8 +105,6 @@ export default {
                     this.list_users = res.Proveedores || res.Productores;
                     this.isLoading = false;
                 });
-
-            //this.list_users = responseProds.Productores;
         },
         click_user(id) {
             if (this.type_user == "prov") {

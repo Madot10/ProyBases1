@@ -141,34 +141,6 @@ export default {
             ],
             contrato: {},
             contratos: [],
-            xcontratos: [
-                {
-                    id: 3,
-                    fecha_inicio: "24/07/2020",
-                    exclusividad: true,
-                    fecha_can: "27/07/2020",
-                    ingredientes: [
-                        { cas: "1234", nombre: "Cacao", tipo: "natural", volumen: "10" },
-                        { cas: "1234", nombre: "Cacao", tipo: "natural", volumen: "15" },
-                    ],
-                    formas_envios: [{ tipo: "Maritimo", recargo: "10", pais: "Venezuela" }],
-                    formas_pagos: [
-                        { tipo: "Contado", porc_inicial: "15", nro_cuotas: "2", int_mensual: "6" },
-                    ],
-                },
-                {
-                    id: 6,
-                    fecha_inicio: "24/07/2020",
-                    exclusividad: false,
-                    fecha_can: "",
-                },
-                {
-                    id: 7,
-                    fecha_inicio: "10/07/2020",
-                    exclusividad: false,
-                    fecha_can: "27/07/2020",
-                },
-            ],
             index_selected_contrato: 0,
         };
     },
@@ -294,137 +266,19 @@ export default {
             this.contratos = aux_cont;
         },
         getContratos() {
+            let idUser = this.$route.params.id;
+            let urlBaseApi = "http://localhost:3000";
+
+            let ApiContrato = urlBaseApi;
+            let ApiIngContrato = urlBaseApi;
+
             let datosUser;
             let datosIng;
 
             if (this.getUserType() == "prov") {
                 //Prov - activos
-                datosUser = {
-                    Info_Contratos: [
-                        {
-                            id: 3,
-                            fecha_emision: "2019-01-12T04:00:00.000Z",
-                            exclusividad: false,
-                            clausula:
-                                "Contrato formado por ambas partes de las empresas, en la que se acuerda vender sin exclusividad",
-                            fecha_cancelacion: null,
-                            motivo_cancel: null,
-                            quien_cancela: null,
-                            id_form_envio: null,
-                            id_pais: null,
-                            tipo: "cred",
-                            cargo: null,
-                            id_form_pago: 6,
-                            porc_inicial: "20",
-                            nro_cuotas: "12",
-                            interes_mensual: "10",
-                            nro_dia_entre_pago: "15",
-                        },
-                        {
-                            id: 3,
-                            fecha_emision: "2019-01-12T04:00:00.000Z",
-                            exclusividad: false,
-                            clausula:
-                                "Contrato formado por ambas partes de las empresas, en la que se acuerda vender sin exclusividad",
-                            fecha_cancelacion: null,
-                            motivo_cancel: null,
-                            quien_cancela: null,
-                            id_form_envio: 6,
-                            id_pais: 13,
-                            tipo: null,
-                            cargo: "25",
-                            id_form_pago: null,
-                            porc_inicial: null,
-                            nro_cuotas: null,
-                            interes_mensual: null,
-                            nro_dia_entre_pago: null,
-                        },
-                        {
-                            id: 4,
-                            fecha_emision: "2020-02-09T04:00:00.000Z",
-                            exclusividad: true,
-                            clausula: null,
-                            fecha_cancelacion: null,
-                            motivo_cancel: null,
-                            quien_cancela: null,
-                            id_form_envio: null,
-                            id_pais: null,
-                            tipo: "cont",
-                            cargo: null,
-                            id_form_pago: 5,
-                            porc_inicial: null,
-                            nro_cuotas: null,
-                            interes_mensual: null,
-                            nro_dia_entre_pago: null,
-                        },
-                        {
-                            id: 4,
-                            fecha_emision: "2020-02-09T04:00:00.000Z",
-                            exclusividad: true,
-                            clausula: null,
-                            fecha_cancelacion: null,
-                            motivo_cancel: null,
-                            quien_cancela: null,
-                            id_form_envio: 7,
-                            id_pais: 207,
-                            tipo: null,
-                            cargo: "13",
-                            id_form_pago: null,
-                            porc_inicial: null,
-                            nro_cuotas: null,
-                            interes_mensual: null,
-                            nro_dia_entre_pago: null,
-                        },
-                    ],
-                };
-                datosIng = {
-                    Ingredientes_Contratos: [
-                        {
-                            id: 3,
-                            cas: 78605966,
-                            nombre: "Aldehído Cinámico Amilo",
-                            tipo: "q",
-                            descripcion:
-                                "Un líquido amarillo claro con un olor floral, ligeramente graso que recuerda al jazmín cuando se diluye. Una opción popular para crear notas de jazmín que requieren una cierta inflexión grasa",
-                            taxonomia: "Alfa trans-n-amilcinamaldehído",
-                            volumen: "100",
-                            precio: "55.00",
-                        },
-                        {
-                            id: 3,
-                            cas: 140114,
-                            nombre: "Acetato de Benzilo",
-                            tipo: "q",
-                            descripcion:
-                                "Como componente principal en los aceites de jazmín y gardenia, el acetato de bencilo ocupa una posición destacada en la industria de sabores y fragancias",
-                            taxonomia: "Éster bencílico del ácido acético",
-                            volumen: "100",
-                            precio: "3.00",
-                        },
-                        {
-                            id: 3,
-                            cas: 140114,
-                            nombre: "Acetato de Benzilo",
-                            tipo: "q",
-                            descripcion:
-                                "Como componente principal en los aceites de jazmín y gardenia, el acetato de bencilo ocupa una posición destacada en la industria de sabores y fragancias",
-                            taxonomia: "Éster bencílico del ácido acético",
-                            volumen: "10000",
-                            precio: "2500.00",
-                        },
-                        {
-                            id: 4,
-                            cas: 142927,
-                            nombre: "Acetato de Hexilo",
-                            tipo: "q",
-                            descripcion:
-                                "Un éster con un olor dulce, afrutado, a bayas y a pera. Uno de los ésteres de hexilo más populares, se usa en composiciones de sabor para una variedad de tonos de bayas y frutas",
-                            taxonomia: "Éster hexil de ácido acético",
-                            volumen: "20",
-                            precio: "13.00",
-                        },
-                    ],
-                };
+                ApiContrato += `/prov/${idUser}/contratos`;
+                ApiIngContrato += `/prov/${idUser}/contratos/ing`;
             } else {
                 //Prod
                 if (this.mode_renovar) {
@@ -670,250 +524,36 @@ export default {
                     };
                 } else {
                     //activos
-                    datosUser = {
-                        Info_Contratos: [
-                            {
-                                id: 2,
-                                fecha_emision: "2020-10-19T04:00:00.000Z",
-                                exclusividad: false,
-                                clausula: null,
-                                fecha_cancelacion: null,
-                                motivo_cancel: null,
-                                quien_cancela: null,
-                                id_form_envio: null,
-                                id_pais: null,
-                                tipo: "cont",
-                                cargo: null,
-                                id_form_pago: 3,
-                                porc_inicial: null,
-                                nro_cuotas: null,
-                                interes_mensual: null,
-                                nro_dia_entre_pago: null,
-                            },
-                            {
-                                id: 2,
-                                fecha_emision: "2020-10-19T04:00:00.000Z",
-                                exclusividad: false,
-                                clausula: null,
-                                fecha_cancelacion: null,
-                                motivo_cancel: null,
-                                quien_cancela: null,
-                                id_form_envio: null,
-                                id_pais: null,
-                                tipo: "cred",
-                                cargo: null,
-                                id_form_pago: 4,
-                                porc_inicial: "35",
-                                nro_cuotas: "10",
-                                interes_mensual: "7",
-                                nro_dia_entre_pago: "15",
-                            },
-                            {
-                                id: 2,
-                                fecha_emision: "2020-10-19T04:00:00.000Z",
-                                exclusividad: false,
-                                clausula: null,
-                                fecha_cancelacion: null,
-                                motivo_cancel: null,
-                                quien_cancela: null,
-                                id_form_envio: 4,
-                                id_pais: 220,
-                                tipo: null,
-                                cargo: "12",
-                                id_form_pago: null,
-                                porc_inicial: null,
-                                nro_cuotas: null,
-                                interes_mensual: null,
-                                nro_dia_entre_pago: null,
-                            },
-                            {
-                                id: 6,
-                                fecha_emision: "2018-02-14T04:00:00.000Z",
-                                exclusividad: false,
-                                clausula: null,
-                                fecha_cancelacion: null,
-                                motivo_cancel: null,
-                                quien_cancela: null,
-                                id_form_envio: 9,
-                                id_pais: 179,
-                                tipo: null,
-                                cargo: "18",
-                                id_form_pago: null,
-                                porc_inicial: null,
-                                nro_cuotas: null,
-                                interes_mensual: null,
-                                nro_dia_entre_pago: null,
-                            },
-                            {
-                                id: 6,
-                                fecha_emision: "2018-02-14T04:00:00.000Z",
-                                exclusividad: false,
-                                clausula: null,
-                                fecha_cancelacion: null,
-                                motivo_cancel: null,
-                                quien_cancela: null,
-                                id_form_envio: null,
-                                id_pais: null,
-                                tipo: "cont",
-                                cargo: null,
-                                id_form_pago: 7,
-                                porc_inicial: null,
-                                nro_cuotas: null,
-                                interes_mensual: null,
-                                nro_dia_entre_pago: null,
-                            },
-                            {
-                                id: 6,
-                                fecha_emision: "2018-02-14T04:00:00.000Z",
-                                exclusividad: false,
-                                clausula: null,
-                                fecha_cancelacion: null,
-                                motivo_cancel: null,
-                                quien_cancela: null,
-                                id_form_envio: null,
-                                id_pais: null,
-                                tipo: "cred",
-                                cargo: null,
-                                id_form_pago: 8,
-                                porc_inicial: "40",
-                                nro_cuotas: "5",
-                                interes_mensual: "2",
-                                nro_dia_entre_pago: "20",
-                            },
-                        ],
-                    };
-
-                    datosIng = {
-                        Ingredientes_Contratos: [
-                            {
-                                id: 2,
-                                cas: 586629,
-                                nombre: "Terpinolene-40",
-                                tipo: "q",
-                                descripcion:
-                                    "Es un químico con  una fragancia dulce, fresca, cítrica de pino con un viejo matiz de cáscara de limón.",
-                                taxonomia:
-                                    "Mezcla de 1-metil-4-propan-2-ilideneciclohexeno y terpenos",
-                                volumen: "5000",
-                                precio: "20.00",
-                            },
-                            {
-                                id: 2,
-                                cas: 586629,
-                                nombre: "Terpinolene-40",
-                                tipo: "q",
-                                descripcion:
-                                    "Es un químico con  una fragancia dulce, fresca, cítrica de pino con un viejo matiz de cáscara de limón.",
-                                taxonomia:
-                                    "Mezcla de 1-metil-4-propan-2-ilideneciclohexeno y terpenos",
-                                volumen: "170000",
-                                precio: "600.00",
-                            },
-                            {
-                                id: 2,
-                                cas: 586629,
-                                nombre: "Terpinolene-40",
-                                tipo: "q",
-                                descripcion:
-                                    "Es un químico con  una fragancia dulce, fresca, cítrica de pino con un viejo matiz de cáscara de limón.",
-                                taxonomia:
-                                    "Mezcla de 1-metil-4-propan-2-ilideneciclohexeno y terpenos",
-                                volumen: "900000",
-                                precio: "3000.00",
-                            },
-                            {
-                                id: 2,
-                                cas: 4707475,
-                                nombre: "Prionyl",
-                                tipo: "q",
-                                descripcion:
-                                    "Es un químico en el que prevalecen los olores de musgo de roble, leñoso, fenólico y terroso",
-                                taxonomia: "2,4-dihidroxi-3,6-dimetilbenzoato de metilo",
-                                volumen: "15000",
-                                precio: "53.00",
-                            },
-                            {
-                                id: 6,
-                                cas: 110383,
-                                nombre: "Decanoato de etilo",
-                                tipo: "q",
-                                descripcion:
-                                    "También conocido como caprato de etilo, es un éster de ácido graso formado a partir de ácido cáprico y etanol",
-                                taxonomia: "C12 H24O2",
-                                volumen: "1",
-                                precio: "52.00",
-                            },
-                            {
-                                id: 6,
-                                cas: 110383,
-                                nombre: "Decanoato de etilo",
-                                tipo: "q",
-                                descripcion:
-                                    "También conocido como caprato de etilo, es un éster de ácido graso formado a partir de ácido cáprico y etanol",
-                                taxonomia: "C12 H24O2",
-                                volumen: "5",
-                                precio: "233.00",
-                            },
-                            {
-                                id: 6,
-                                cas: 8015956,
-                                nombre: "Cinnamon",
-                                tipo: "q",
-                                descripcion: "Aceite de esencia de hojas de safrol reducido",
-                                taxonomia: "Cinamaldehído",
-                                volumen: "1000",
-                                precio: "114.00",
-                            },
-                            {
-                                id: 6,
-                                cas: 8015956,
-                                nombre: "Cinnamon",
-                                tipo: "q",
-                                descripcion: "Aceite de esencia de hojas de safrol reducido",
-                                taxonomia: "Cinamaldehído",
-                                volumen: "5000",
-                                precio: "564.00",
-                            },
-                            {
-                                id: 6,
-                                cas: 8007010,
-                                nombre: "Aceite Rosa centifolia",
-                                tipo: "n",
-                                descripcion:
-                                    "también denominada rosa de Provenza o rosa repollo o rosa de mayo es un híbrido de rosa conseguido en el siglo XVII",
-                                taxonomia: "Rosa X Centifolia",
-                                volumen: "1000",
-                                precio: "9.00",
-                            },
-                            {
-                                id: 6,
-                                cas: 8007010,
-                                nombre: "Aceite Rosa centifolia",
-                                tipo: "n",
-                                descripcion:
-                                    "también denominada rosa de Provenza o rosa repollo o rosa de mayo es un híbrido de rosa conseguido en el siglo XVII",
-                                taxonomia: "Rosa X Centifolia",
-                                volumen: "5000",
-                                precio: "42.00",
-                            },
-                            {
-                                id: 6,
-                                cas: 8007010,
-                                nombre: "Aceite Rosa centifolia",
-                                tipo: "n",
-                                descripcion:
-                                    "también denominada rosa de Provenza o rosa repollo o rosa de mayo es un híbrido de rosa conseguido en el siglo XVII",
-                                taxonomia: "Rosa X Centifolia",
-                                volumen: "25000",
-                                precio: "160.00",
-                            },
-                        ],
-                    };
+                    ApiContrato += `/prod/${idUser}/contratos`;
+                    ApiIngContrato += `/prod/${idUser}/contratos/ing`;
                 }
             }
 
-            this.generateContratos(datosUser.Info_Contratos, datosIng.Ingredientes_Contratos);
-            this.isLoading = false;
+            //Info de contrato
+            fetch(ApiContrato)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((cont) => {
+                    datosUser = cont;
+
+                    //Info ingredientes contratos
+                    fetch(ApiIngContrato)
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((ings) => {
+                            datosIng = ings;
+
+                            console.log("INGS ", ings);
+
+                            this.generateContratos(
+                                datosUser.Info_Contratos,
+                                datosIng.Ingredientes_Contratos
+                            );
+                            this.isLoading = false;
+                        });
+                });
         },
     },
     watch: {

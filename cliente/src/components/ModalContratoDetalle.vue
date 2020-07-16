@@ -15,7 +15,10 @@
                             label="Fecha de emisión:"
                             label-align-sm="right"
                         >
-                            <b-form-input plaintext v-model="contrato.fecha_emision"></b-form-input>
+                            <b-form-input
+                                plaintext
+                                :value="getDateFormated(contrato.fecha_emision)"
+                            ></b-form-input>
                         </b-form-group>
                         <div v-if="contrato.fecha_can">
                             <!-- F_can -->
@@ -24,7 +27,10 @@
                                 label="Fecha de cancelación:"
                                 label-align-sm="right"
                             >
-                                <b-form-input plaintext v-model="contrato.fecha_can"></b-form-input>
+                                <b-form-input
+                                    plaintext
+                                    :value="getDateFormated(contrato.fecha_can)"
+                                ></b-form-input>
                             </b-form-group>
 
                             <!-- Motiva CAn -->
@@ -214,6 +220,18 @@ export default {
                 },
             ],
         };
+    },
+    methods: {
+        getDateFormated(date) {
+            let d = new Date(date);
+            if (date) {
+                return `${d.getDate()}/${
+                    d.getMonth() > 8 ? d.getMonth() + 1 : `0${d.getMonth() + 1}`
+                }/${d.getFullYear()}`;
+            } else {
+                return "";
+            }
+        },
     },
 };
 </script>
