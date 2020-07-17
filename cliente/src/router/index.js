@@ -1,29 +1,89 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+    {
+        //Recomendador?
+        path: "/",
+        name: "Home",
+        redirect: { name: "admin" },
+    },
+    {
+        path: "/admin",
+        name: "admin",
+        component: () => import("../views/admin.vue"),
+    },
+    /*RUTAS PROVEEDOR */
+    {
+        path: "/prov/:id",
+        component: () => import("../views/MainView.vue"),
+        children: [
+            {
+                name: "HomeProv",
+                path: "",
+                component: () => import("../views/Home.vue"),
+            },
+            {
+                name: "ContratosProv",
+                path: "contratos",
+                component: () => import("../views/Contratos.vue"),
+            },
+        ],
+    },
+
+    /*RUTAS PRODUCTOR */
+    {
+        path: "/prod/:id",
+        component: () => import("../views/MainView.vue"),
+        children: [
+            {
+                name: "HomeProd",
+                path: "",
+                component: () => import("../views/Home.vue"),
+            },
+            {
+                name: "ListaProveedores",
+                path: "proveedores",
+                component: () => import("../views/ListaProveedores.vue"),
+            },
+            {
+                name: "ContratosProd",
+                path: "contratos",
+                component: () => import("../views/Contratos.vue"),
+            },
+            {
+                name: "ContratosVencer",
+                path: "contratos/vencer",
+                component: () => import("../views/Contratos.vue"),
+            },
+            {
+                name: "ContratoNuevo",
+                path: "contratos/nuevo",
+                component: () => import("../views/NuevoContrato.vue"),
+            },
+            {
+                name: "DetalleContrato",
+                path: "contratos/nuevo/:id_prov",
+                component: () => import("../views/DetalleContrato.vue"),
+                props: true,
+            },
+        ],
+    },
+
+    /* 404 => REDIRECT  */
+    {
+        path: "*",
+        redirect: { name: "admin" },
+    },
+];
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
+    mode: "history",
+    base: process.env.BASE_URL,
+    routes,
+});
 
-export default router
+export default router;

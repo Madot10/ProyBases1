@@ -1,32 +1,36 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+        <router-view />
     </div>
-    <router-view/>
-  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<style lang="scss">
+body {
+    --main-color-vam: #17a2b8;
 }
 
-#nav {
-  padding: 30px;
-}
+//MAIN VAM COLOR = NEW MAIN
+$vam: "#17a2b8";
+$blue: #17a2b8;
+$primary: $blue;
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+// Import Bootstrap and BootstrapVue source SCSS files
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../node_modules/bootstrap-vue/src/index.scss";
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+$theme-colors: () !default;
+$theme-colors: map-merge(
+    (
+        "primary": $primary,
+        "secondary": $secondary,
+        "success": $success,
+        "info": $info,
+        "warning": $warning,
+        "danger": $danger,
+        "light": $light,
+        "dark": $dark,
+        "vam": $vam,
+    ),
+    $theme-colors
+);
 </style>
