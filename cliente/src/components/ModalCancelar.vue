@@ -1,5 +1,10 @@
 <template>
-    <b-modal id="cancelar-modal" size="lg" centered title="Cancelar contrato">
+    <b-modal
+        id="cancelar-modal"
+        size="lg"
+        centered
+        :title="mode_con ? 'Cancelar contrato' : 'Cancelar pedido'"
+    >
         <!-- CONTENIDO MODAL -->
         <b-container fluid>
             <b-row>
@@ -21,7 +26,7 @@
                 Cerrar
             </b-button>
             <b-button variant="primary" @click="selectCancelar(ok)">
-                Cancelar contrato
+                {{ mode_con ? "Cancelar contrato" : "Cancelar pedido" }}
             </b-button>
         </template>
     </b-modal>
@@ -29,6 +34,7 @@
 
 <script>
 export default {
+    props: ["mode_con"],
     data() {
         return {
             text_cancel: "",

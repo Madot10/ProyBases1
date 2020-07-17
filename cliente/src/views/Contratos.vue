@@ -16,7 +16,7 @@
             <modal-renovacion @renovSelect="renovacionSelected"></modal-renovacion>
 
             <!-- MODAL CANCELAR -->
-            <modal-cancelar @optionCancelar="cancelarConfirm"></modal-cancelar>
+            <modal-cancelar @optionCancelar="cancelarConfirm" :mode_con="true"></modal-cancelar>
 
             <!-- MODAL DENUEVO CONTRATO -->
             <modal-quiere-contrato-denuevo

@@ -64,8 +64,8 @@ export default {
                     title: "Pedidos",
                     icon: "card-list",
                     items: [
-                        { item: "Ver todos", link: { name: "ContratosProv" } },
-                        { item: "Ver pendientes", link: "/" },
+                        { item: "Ver todos", link: { name: "PedidosProv" } },
+                        { item: "Ver pendientes", link: { name: "PedidosPendientes" } },
                     ],
                 },
                 {

@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
@@ -30,6 +29,16 @@ const routes = [
                 name: "ContratosProv",
                 path: "contratos",
                 component: () => import("../views/Contratos.vue"),
+            },
+            {
+                name: "PedidosProv",
+                path: "pedidos",
+                component: () => import("../views/Pedidos.vue"),
+            },
+            {
+                name: "PedidosPendientes",
+                path: "pedidos/pendientes",
+                component: () => import("../views/Pedidos.vue"),
             },
         ],
     },
