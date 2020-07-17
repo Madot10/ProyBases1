@@ -37,8 +37,8 @@ export default {
                     title: "Pedidos",
                     icon: "card-list",
                     items: [
-                        { item: "Ver todos", link: "/" },
-                        { item: "Agregar nuevo", link: "/" },
+                        { item: "Ver todos", link: { name: "PedidosProd" } },
+                        { item: "Agregar nuevo", link: { name: "PedidosNuevo" } },
                     ],
                 },
                 {

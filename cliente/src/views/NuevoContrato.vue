@@ -10,8 +10,9 @@
             <!-- MODAL DETALLE PROV -->
             <modal-prov-detalle
                 :proveedor="proveedor"
-                @evaluar="continuarEvaluarProv"
+                @ok="continuarEvaluarProv"
                 :only_view="false"
+                mode="e"
             ></modal-prov-detalle>
 
             <!-- MODAL EXCLUSIVIDAD -->

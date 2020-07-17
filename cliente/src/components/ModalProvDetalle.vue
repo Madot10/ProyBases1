@@ -147,7 +147,7 @@
                 </b-button>
                 <span class="mr-2"></span>
                 <b-button @click="okEvaluar(ok)" variant="primary">
-                    EVALUAR
+                    {{ mode == "e" ? "EVALUAR" : "REALIZAR PEDIDO" }}
                 </b-button>
             </div>
         </template>
@@ -156,7 +156,7 @@
 
 <script>
 export default {
-    props: ["proveedor", "only_view"],
+    props: ["proveedor", "only_view", "mode"],
     data() {
         return {
             fields_ing: [
@@ -228,7 +228,7 @@ export default {
     },
     methods: {
         okEvaluar(funOk) {
-            this.$emit("evaluar");
+            this.$emit("ok");
             funOk();
         },
     },

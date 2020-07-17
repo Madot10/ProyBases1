@@ -79,6 +79,16 @@ const routes = [
                 component: () => import("../views/DetalleContrato.vue"),
                 props: true,
             },
+            {
+                name: "PedidosProd",
+                path: "pedidos",
+                component: () => import("../views/Pedidos.vue"),
+            },
+            {
+                name: "PedidosNuevo",
+                path: "pedidos/nuevo",
+                component: () => import("../views/NuevoPedido.vue"),
+            },
         ],
     },
 
