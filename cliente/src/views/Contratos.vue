@@ -73,11 +73,13 @@
                     <b-button
                         v-show="mode_renovar"
                         variant="outline-primary"
-                        @click="openRenovModal"
+                        @click="openRenovModal(row.index)"
                         >RENOVAR</b-button
                     >
                     <span v-show="mode_renovar"> - </span>
-                    <b-button variant="outline-danger" @click="openCancelar">CANCELAR</b-button>
+                    <b-button variant="outline-danger" @click="openCancelar(row.index)"
+                        >CANCELAR</b-button
+                    >
                 </template>
             </b-table>
 
@@ -208,11 +210,32 @@ export default {
                 query: { e: opt ? "y" : "n" },
             });
         },
-        openCancelar() {
+        openCancelar(index) {
+            this.index_selected_contrato = index;
+            this.contrato = this.contratos[index];
             this.$bvModal.show("cancelar-modal");
         },
         cancelarConfirm(text) {
-            console.error("Cancelar con motivo: ", text);
+            console.log("Cancelando ", this.contrato);
+            console.error("Cancelar con motivo: ", text, this.contrato);
+
+            let obj_can = {
+                motivo_cancel: text.text,
+                quien_cancela: this.getUserType(),
+            };
+
+            console.log("OBJ can", obj_can);
+
+            fetch(
+                `http://localhost:3000/prod/${this.$route.params.id}/contratos/${this.contrato.id}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(obj_can),
+                }
+            );
         },
         generateContratos(datos, datosIng) {
             let aux_cont = [];
