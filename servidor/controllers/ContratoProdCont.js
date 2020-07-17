@@ -164,6 +164,21 @@ class ContratoProdCont {
                 res.status(500);
             });
     }
+
+    //Renovación del contrato
+    renovarContrato(req, res) {
+        const id_prov = req.params.id_prov;
+        const id_prod = req.params.id_prod;
+        const id_cont = req.params.id_contrato;
+
+        contrato
+            .renovarContrato(id_prod, id_prov, id_cont)
+            .then(res.status(200).json({ message: "Contrato renovado con éxito" }))
+            .catch((e) => {
+                console.error(e.stack);
+                res.status(500);
+            });
+    }
 }
 
 module.exports = { ContratoProdCont };

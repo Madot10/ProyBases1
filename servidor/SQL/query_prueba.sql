@@ -122,3 +122,18 @@ WHERE c.id_prod = 1 AND cond.id_contrato = c.id AND c.fecha_cancelacion IS NULL 
 
 --Para quitar el Not Null en la fecha de confirmación del pedido
 alter table vam_pedidos alter column f_confirmacion drop not null;
+
+
+--Pedidos pendientes por confirmar por el proveedor
+SELECT p.id, p.estado, p.f_emision, p.f_confirmacion, p.id_prod, p.total_usd, ing.cas, ing.nombre, pres.volumen
+FROM vam_pedidos AS p, vam_det_pedido AS det
+    LEFT JOIN vam_ing_presentaciones AS pres ON pres.id = det.id_ing_presentacion
+    LEFT JOIN vam_ingrediente_esencias AS ing ON ing.cas = pres.cas_ingrediente
+WHERE p.estado = 'p' AND det.id_prov_ing = 2;
+
+--REVISAR
+--Formas de Pago de acuerdo al pedido y el id_prov
+SELECT fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
+FROM vam_cond_pedido AS cond
+    LEFT JOIN vam_forma_pagos AS fp ON cond.id_cond = fp.id
+WHERE cond.id_pedido = 9 AND fp.id_proveedor = 3;

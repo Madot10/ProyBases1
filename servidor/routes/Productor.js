@@ -56,6 +56,9 @@ router.get("/:id_prod/contratos/nuevo/ing/exc/:id_prov", contrato.getContNuevoLi
 //Creación del contrato
 router.post("/:id_prod/contratos/nuevo/:id_prov", contrato.createContrato);
 
+//Renovación de un contrato
+router.post("/:id_prod/contratos/:id_contrato/renovar/:id_prov", contrato.renovarContrato);
+
 //Pedido
 //Crear del pedido
 router.post("/:id_prod/pedido/nuevo/:id_prov", pedido.createPedido);

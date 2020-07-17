@@ -14,10 +14,13 @@ class PedidoProdCont {
     //ejemplo de id_prov=1, id_prod=1
     
 		var ped = {
+			id_contrato: 4,
+			id_fe_cond: 8,
+			id_fp_cond: 9,
 			total_usd: 2999.99,
-			cas: [8007805,8016635],
-			id_pres: [1,4],
-			cantidad: [1050,2000]
+			cas: [142927],
+			id_pres: [14],
+			cantidad: [700]
 		}
 		
 		pedido.createPedido(id_prod,id_prov,ped)

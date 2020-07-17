@@ -250,6 +250,20 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
+    renovarContrato(id_prod, id_prov, id_cont) {
+        return new Promise((resolve, reject) => {
+            database
+                .query(
+                    `INSERT INTO vam_renovaciones(id_contrato,id_cont_prov,id_cont_prod,fecha) VALUES ($1,$2,$3,current_date)`,
+                    [id_cont,id_prov, id_prod]
+                )
+                .then(function () {
+                    resolve(true);
+                })
+                .catch((e) => console.error(e.stack));
+        });
+    }
 }
 
 module.exports = { ContratoProdModel };
