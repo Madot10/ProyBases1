@@ -4,17 +4,24 @@
             {{ mode_renovar ? "Contratos a vencer" : "Contratos" }}
         </template>
         <template v-slot:content>
+            <!-- Aviso -->
+            <b-toast id="toast-aviso" :variant="aviso.tipo" :title="aviso.titulo" solid>
+                {{ aviso.mensaje }}
+            </b-toast>
+
             <!-- MODAL DETALLE CONTRATO -->
             <modal-contrato-detalle :contrato="contrato"></modal-contrato-detalle>
 
             <!-- MODAL RENOV CONTRATO -->
             <modal-renovacion @renovSelect="renovacionSelected"></modal-renovacion>
 
-            <!-- MODAL EXCLUSIVIDAD -->
-            <modal-exclusividad @optionSelect="exclusividadSelect"></modal-exclusividad>
-
             <!-- MODAL CANCELAR -->
             <modal-cancelar @optionCancelar="cancelarConfirm"></modal-cancelar>
+
+            <!-- MODAL DENUEVO CONTRATO -->
+            <modal-quiere-contrato-denuevo
+                @optionSelect="decSelect"
+            ></modal-quiere-contrato-denuevo>
 
             <!-- TABLA small -->
             <b-table
@@ -103,28 +110,30 @@
 import CardMain from "../components/CardMain.vue";
 import ModalContratoDetalle from "../components/ModalContratoDetalle.vue";
 import ModalRenovacion from "../components/ModalRenovacion.vue";
-import ModalExclusividad from "../components/ModalExclusividad.vue";
 import ModalCancelar from "../components/ModalCancelar.vue";
+import ModalQuiereContratoDenuevo from "../components/ModalQuiereContratoDenuevo.vue";
 
 export default {
     components: {
         CardMain,
         ModalContratoDetalle,
         ModalRenovacion,
-        ModalExclusividad,
+        ModalQuiereContratoDenuevo,
         ModalCancelar,
     },
     data() {
         return {
+            aviso: { mensaje: "", titulo: "", tipo: "success" },
             isLoading: true,
             currentPage: 1,
             perPage: 20,
             mode_renovar: false,
             fields: [
+                { key: "prov_nombre", label: "Proveedor", sortable: true },
                 {
                     key: "fecha_emision",
                     label: "Fecha de emisión",
-                    sortable: true,
+                    sortable: false,
                 },
                 {
                     key: "fecha_can",
@@ -150,9 +159,28 @@ export default {
             contrato: {},
             contratos: [],
             index_selected_contrato: 0,
+            flag_redirect: false,
         };
     },
     methods: {
+        decSelect(opt) {
+            console.log("Va a hacer nuevo? ", opt);
+            if (opt) {
+                //Crear nuevo
+                //1- Cancelar
+                //2- Redirigir
+                this.flag_redirect = true;
+                this.openCancelar(this.index_selected_contrato);
+            } else {
+                //Hacer nada
+            }
+        },
+        openRenovModal(index) {
+            this.index_selected_contrato = index;
+            this.contrato = this.contratos[index];
+
+            this.$bvModal.show("ask-renov-modal");
+        },
         getDateFormated(date) {
             let d = new Date(date);
             if (date) {
@@ -190,24 +218,30 @@ export default {
 
             this.getContratos();
         },
-        openRenovModal() {
-            this.$bvModal.show("ask-renov-modal");
-        },
         renovacionSelected(typeRenov) {
-            //console.log("Type Renov", typeRenov);
+            console.log("Type Renov", typeRenov);
             if (typeRenov) {
                 //Igual cond
+                this.renovApi();
             } else {
                 //Hacer nuevo
-                this.$bvModal.show("exclusividad-modal");
+                this.$bvModal.show("quiere-modal");
             }
         },
-        exclusividadSelect(opt) {
-            console.log("Exclusividad seleccionada ", opt);
-            this.$router.push({
-                name: "DetalleContrato",
-                params: { id_prov: this.contratos[this.index_selected_contrato].id_prov },
-                query: { e: opt ? "y" : "n" },
+        renovApi() {
+            fetch(
+                `http://localhost:3000/prod/${this.$route.params.id}/contratos/${this.contrato.id}/renovar/${this.contrato.id_prov}`,
+                {
+                    method: "POST",
+                }
+            ).then(() => {
+                this.aviso.mensaje = "Renovado correctamente!";
+                this.aviso.titulo = "Éxito";
+                this.aviso.tipo = "success";
+                this.$bvToast.show("toast-aviso");
+
+                //Quitar de lista
+                this.contratos.splice(this.index_selected_contrato, 1);
             });
         },
         openCancelar(index) {
@@ -236,6 +270,17 @@ export default {
                     body: JSON.stringify(obj_can),
                 }
             );
+
+            //Quitar de lista
+            this.contratos.splice(this.index_selected_contrato, 1);
+
+            if (this.flag_redirect) {
+                //A nuevo
+                this.flag_redirect = false;
+                this.$router.push({
+                    name: "ContratoNuevo",
+                });
+            }
         },
         generateContratos(datos, datosIng) {
             let aux_cont = [];
@@ -245,6 +290,8 @@ export default {
                     //Crear Contrato
                     aux_cont[c.id] = {
                         id: c.id,
+                        id_prov: c.provid,
+                        prov_nombre: c.provnombre,
                         fecha_emision: c.fecha_emision,
                         clausula: c.clausula,
                         exclusividad: c.exclusividad,
@@ -328,6 +375,7 @@ export default {
                 })
                 .then((cont) => {
                     datosUser = cont;
+                    console.log("CONTS: ", cont);
 
                     //Info ingredientes contratos
                     fetch(ApiIngContrato)

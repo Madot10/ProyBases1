@@ -15,7 +15,10 @@
             ></modal-prov-detalle>
 
             <!-- MODAL EXCLUSIVIDAD -->
-            <modal-exclusividad @optionSelect="exclSelect"></modal-exclusividad>
+            <modal-exclusividad
+                @optionSelect="exclSelect"
+                :proveedor="proveedor"
+            ></modal-exclusividad>
 
             <h3>Proveedores</h3>
 
@@ -101,64 +104,41 @@ export default {
             console.log("A EVALUAR EL PROV ", this.index_selected_prov);
             this.$bvModal.show("exclusividad-modal");
         },
-        exclSelect(opt) {
+        exclSelect(newIngs, opt) {
             //console.log("Exclusividad seleccionada ", opt);
             let aux_prov = this.proveedor;
 
-            let idUser = this.$route.params.id;
-            let urlBaseApi = `http://localhost:3000/prod/${idUser}/contratos/nuevo/ing/`;
-            let urlFinal = urlBaseApi;
+            if (newIngs.Lista_de_proveedores.length > 0) {
+                //Hay ingredientes para contratar
+                //console.log("Hay elementos ", newIngs.Lista_de_proveedores.length);
 
-            //GET Nueva lista de ings
-            console.log("OPCION ", opt);
-            if (opt) {
-                //Con exc
-                urlFinal += `exc/${aux_prov.id}`;
-            } else {
-                //Sin exc
-                urlFinal += `${aux_prov.id}`;
-            }
+                aux_prov.ingredientes = [];
 
-            fetch(urlFinal)
-                .then((response) => {
-                    return response.json();
-                })
-                .then((newIngs) => {
-                    console.log("NUEVOS INGS", newIngs);
-
-                    if (newIngs.Lista_de_proveedores.length > 0) {
-                        //Hay ingredientes para contratar
-                        //console.log("Hay elementos ", newIngs.Lista_de_proveedores.length);
-
-                        aux_prov.ingredientes = [];
-
-                        newIngs.Lista_de_proveedores.forEach((ing) => {
-                            aux_prov.ingredientes.push({
-                                cas: ing.cas,
-                                nombre: ing.nombre,
-                                tipo: ing.tipo,
-                            });
-                        });
-
-                        //console.log("A enviar", aux_prov);
-
-                        this.$router.push({
-                            name: "DetalleContrato",
-                            params: {
-                                id_prov: this.proveedores[this.index_selected_prov].id,
-                                datosProv: aux_prov,
-                            },
-                            query: { e: opt ? "y" : "n" },
-                        });
-                    } else {
-                        //No hay ingredientes para contratar
-                        this.aviso.mensaje =
-                            "¡No se tiene ingredientes disponibles para esta solicitud!";
-                        this.aviso.titulo = "Aviso";
-                        this.aviso.tipo = "danger";
-                        this.$bvToast.show("toast-aviso");
-                    }
+                newIngs.Lista_de_proveedores.forEach((ing) => {
+                    aux_prov.ingredientes.push({
+                        cas: ing.cas,
+                        nombre: ing.nombre,
+                        tipo: ing.tipo,
+                    });
                 });
+
+                //console.log("A enviar", aux_prov);
+
+                this.$router.push({
+                    name: "DetalleContrato",
+                    params: {
+                        id_prov: this.proveedores[this.index_selected_prov].id,
+                        datosProv: aux_prov,
+                    },
+                    query: { e: opt ? "y" : "n" },
+                });
+            } else {
+                //No hay ingredientes para contratar
+                this.aviso.mensaje = "¡No se tiene ingredientes disponibles para esta solicitud!";
+                this.aviso.titulo = "Aviso";
+                this.aviso.tipo = "danger";
+                this.$bvToast.show("toast-aviso");
+            }
         },
         generateProveedor(datos, datosFe, datosFp, datosIng) {
             let aux_prov = [];

@@ -9,6 +9,7 @@ const routes = [
         //Recomendador?
         path: "/",
         name: "Home",
+        redirect: { name: "admin" },
     },
     {
         path: "/admin",

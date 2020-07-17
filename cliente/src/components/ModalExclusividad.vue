@@ -18,10 +18,35 @@
 
 <script>
 export default {
+    props: ["proveedor"],
     methods: {
         selectExclusividad(optFun, opt) {
-            this.$emit("optionSelect", opt);
-            optFun();
+            let aux_prov = this.proveedor;
+
+            let idUser = this.$route.params.id;
+            let urlBaseApi = `http://localhost:3000/prod/${idUser}/contratos/nuevo/ing/`;
+            let urlFinal = urlBaseApi;
+
+            //GET Nueva lista de ings
+            console.log("OPCION ", opt);
+            if (opt) {
+                //Con exc
+                urlFinal += `exc/${aux_prov.id || aux_prov.provid}`;
+            } else {
+                //Sin exc
+                urlFinal += `${aux_prov.id || aux_prov.provid}`;
+            }
+
+            fetch(urlFinal)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((newIngs) => {
+                    console.log("NUEVOS INGS", newIngs);
+
+                    this.$emit("optionSelect", newIngs, opt);
+                    optFun();
+                });
         },
     },
 };
