@@ -39,7 +39,6 @@ SELECT prov.id AS provId FROM vam_proveedores As prov WHERE  NOT exists(SELECT *
 --SECLT PRoveedores libres para hacer contrato con un Prod dado = 1
 SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id NOT IN (SELECT c.id_prov FROM vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = 1) UNION SELECT prov.id AS provId FROM vam_proveedores As prov, vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = 1 AND prov.id NOT IN (SELECT c.id_prov FROM vam_contratos As c WHERE c.id_prov = prov.id AND c.id_prod = 1) AND (c.fecha_cancelacion IS NOT NULL OR (age(c.fecha_emision) >= '12 month' AND age(COALESCE((SELECT MAX(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id AND c.id_prod = 1 GROUP BY r.id_contrato), now() - interval '13 month')) >= '12 month'));
 
-
 --Proveedores disponibles (No tienen contratos activos con dicho prod)
 SELECT prov.id, prov.nombre FROM vam_proveedores AS prov WHERE prov.id NOT IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'));
 
@@ -52,17 +51,17 @@ SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT D
 --LISTA HISTORICO DADO UN PROV = 1
 SELECT prov.id AS provId, ifra.fecha_inicio, ifra.fecha_fin FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE prov.id = 1 AND ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL;
 
---6 -- DAME LOS PROVEEDORES DISPONIBLES, CON CAPACIDAD DE ENVIO Y IFRA ACTIVO
+6 -- DAME LOS PROVEEDORES DISPONIBLES, CON CAPACIDAD DE ENVIO Y IFRA ACTIVO
 SELECT prov.id AS provId, pais.nombre AS paisnombre, prov.nombre, prov.email, prov.telefono, prov.pag_web FROM vam_proveedores As prov, vam_paises AS pais WHERE prov.id_pais = pais.id AND prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = 2) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND prov.id NOT IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'));
 
---6.1 --DAME DATO PROV Y FE con PAIS NOMBRE
-SELECT prov.id AS provId, fe.id, fe.tipo, fe.cargo, p.nombre, p.id AS paisId FROM vam_proveedores AS prov INNER JOIN vam_forma_envios AS fe ON fe.id_prov = prov.id INNER JOIN vam_paises AS p ON p.id = fe.id_pais WHERE prov.id IN (SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = 1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND prov.id NOT IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month')))
+  6.1 --DAME DATO PROV Y FE con PAIS NOMBRE
+  SELECT prov.id AS provId, fe.id, fe.tipo, fe.cargo, p.nombre, p.id AS paisId FROM vam_proveedores AS prov INNER JOIN vam_forma_envios AS fe ON fe.id_prov = prov.id INNER JOIN vam_paises AS p ON p.id = fe.id_pais WHERE prov.id IN (SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = 1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND prov.id NOT IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month')))
 
---6.2 --DAME DATO PROV Y FP
-SELECT prov.id AS provId, fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago FROM vam_proveedores AS prov INNER JOIN vam_forma_pagos AS fp ON fp.id_proveedor = prov.id WHERE prov.id IN(SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = 1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND prov.id NOT IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month')))
+  6.2 --DAME DATO PROV Y FP
+  SELECT prov.id AS provId, fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago FROM vam_proveedores AS prov INNER JOIN vam_forma_pagos AS fp ON fp.id_proveedor = prov.id WHERE prov.id IN(SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = 1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND prov.id NOT IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month')))
 
---  6.3 -- DAME LOS ING Y PRESENTACIONES
-SELECT prov.id AS provId, ing.cas, ing.nombre, ing.tipo, present.precio, present.volumen FROM vam_proveedores AS prov INNER JOIN vam_ingrediente_esencias AS ing ON ing.id_proveedor = prov.id INNER JOIN vam_ing_presentaciones AS present ON present.cas_ingrediente = ing.cas WHERE prov.id IN (SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = 1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND prov.id NOT IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month')))
+  6.3 -- DAME LOS ING Y PRESENTACIONES
+  SELECT prov.id AS provId, ing.cas, ing.nombre, ing.tipo, present.precio, present.volumen FROM vam_proveedores AS prov INNER JOIN vam_ingrediente_esencias AS ing ON ing.id_proveedor = prov.id INNER JOIN vam_ing_presentaciones AS present ON present.cas_ingrediente = ing.cas WHERE prov.id IN (SELECT prov.id AS provId FROM vam_proveedores As prov WHERE prov.id IN (SELECT DISTINCT prov.id AS provid FROM vam_proveedores AS prov, vam_forma_envios as fe INNER JOIN vam_pa_pr AS sedes ON sedes.id_pais = fe.id_pais and sedes.id_productor = 1) AND prov.id IN (SELECT prov.id FROM vam_proveedores AS prov, vam_historico_ifra AS ifra WHERE ifra.id_proveedor = prov.id AND (SELECT ifra.fecha_fin WHERE ifra.id_proveedor = prov.id) IS NULL) AND prov.id NOT IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month')))
 
 --DAME DATO PROV Y FE con PAIS NOMBRE
 -- FALTA PARA FILTRAR PROVEEDORES DISPONIBLES: WHERE prov.id IN (<SELECT DE ARRIBA>)
@@ -142,38 +141,55 @@ FROM vam_proveedores AS prov
 WHERE prov.id IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'));
 
 
+--CONTRATOS ACTIVOS de un PROD
+SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month');
 
 
---REVISAR DE AQUI PARA ABAJO
---porfanomeodienlosquieromucho
 
---Formas de Pago de acuerdo al pedido y el id_prov
-SELECT fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
-FROM vam_cond_pedido AS cond
-    LEFT JOIN vam_forma_pagos AS fp ON cond.id_cond = fp.id
-WHERE cond.id_pedido = 9 AND fp.id_proveedor = 3;
+--REVISADO atte Alana
+--IGUALMENTE HACER PRUEBAS PLS atte Miguel
 
---Forma de pago de pedido pendiente
-SELECT p.id, fp.id AS id_fp, fp.tipo AS tipofp, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
-                FROM vam_pedidos AS p, vam_fe_fp_c AS fefp
-                    LEFT JOIN vam_forma_pagos AS fp ON fp.id = fefp.id_form_pago
-                    LEFT JOIN vam_cond_pedido AS cond ON cond.id_cond = fefp.id_form_pago
-                WHERE p.estado = 'p' AND cond.id_pedido = p.id AND p.id_prov = 2 AND fefp.id_prov_fp = 2;
+--PEDIDOS pendientes de un prov = 2 (Prov con contrato activo)
+SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prov = 2 AND ped.estado = 'p' AND ped.id_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))
 
---Forma de de envio de pedido pendiente
-SELECT p.id, fe.id AS id_fe, fe.cargo, fe.tipo AS tipofe, fe.id_pais
-                FROM vam_pedidos AS p, vam_fe_fp_c AS fefp
-                    LEFT JOIN vam_forma_envios AS fe ON fe.id = fefp.id_form_envio
-                    LEFT JOIN vam_cond_pedido AS cond ON cond.id_cond = fefp.id_form_envio
-                WHERE p.estado = 'p' AND cond.id_pedido = p.id AND p.id_prov = 2 AND fefp.id_prov_fe = 2;
+--Condiciones de todos los pedidos de un prov
+SELECT condpe.id_pedido, condpe.id_contrato, condpe.id_cont_prov, condpe.id_cont_prod, condcon.id_form_pago, condcon.id_form_envio FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon WHERE condpe.id_cont_prov = 2 AND condpe.id_cond = condcon.id;
 
---Arreglar para que salgan las fe y fp que estén en los contratos
---24.1 fe y fp de Proveedores dentro de contrato con un productor (aptos para solicitar pedidos)
-SELECT prov.id, fp.id AS fp_id, fp.tipo AS tipo_fp, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago, fe.id AS fe_id, pais.nombre AS nombre_pais, fe.tipo AS tipo_fe, fe.cargo
-FROM vam_proveedores AS prov, vam_fe_fp_c AS fefpc
-    LEFT JOIN vam_forma_pagos AS fp ON fp.id = fefpc.id_form_pago
-    LEFT JOIN vam_forma_envios AS fe ON fe.id = fefpc.id_form_envio
-    LEFT JOIN vam_paises AS pais ON pais.id = fe.id_pais
-WHERE prov.id IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'));
+--Dame FP de pedidos de un prov = 2
+SELECT condpe.id_pedido, condpe.id_contrato, condpe.id_cont_prov, condpe.id_cont_prod, condcon.id_form_pago, condcon.id_form_envio, fp.tipo FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon LEFT JOIN vam_forma_pagos AS fp ON condcon.id_form_pago = fp.id WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = 2 AND condpe.id_cond = condcon.id;
+
+21 --Dame FP de pedidos PENDIENTES de un prov = 2 (Prov con contrato activo)
+SELECT condpe.id_pedido, fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
+FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+    LEFT JOIN vam_forma_pagos AS fp ON condcon.id_form_pago = fp.id
+WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = 2 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prov = 2 AND ped.estado = 'p')
+  AND condpe.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'));
+
+21 --Dame FE de pedidos PENDIENTES de un prov = 2 (Prov con contrato activo)
+SELECT condpe.id_pedido, fe.id, fe.tipo, pais.nombre AS nombre_pais
+FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+    INNER JOIN vam_forma_envios AS fe ON condcon.id_form_envio = fe.id
+    INNER JOIN vam_paises AS pais ON pais.id = condcon.id_form_envio_pais
+WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cont_prov = 2 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prov = 2 AND ped.estado = 'p')
+  AND condpe.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'));
+
+21--INgredeintes y presetnacion de pedidos pendientes de un prov = 2 (con contrato activo)
+SELECT p.id AS pedid, p.estado, p.f_emision, p.f_confirmacion, p.id_prod, p.total_usd, ing.cas, ing.nombre, pres.volumen
+                FROM vam_pedidos AS p, vam_det_pedido AS det
+                    INNER JOIN vam_ing_presentaciones AS pres ON pres.id = det.id_ing_presentacion
+                    INNER JOIN vam_ingrediente_esencias AS ing ON ing.cas = pres.cas_ingrediente
+                WHERE p.estado = 'p' AND p.id = det.id_pedido AND p.id_prov = 2 AND det.id_prov_ing = p.id_prov AND p.id_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))
 
 
+24--Proveedores activos (contratos activos con dicho prod = 2)
+SELECT prov.id, prov.nombre FROM vam_proveedores AS prov WHERE prov.id IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'));
+
+24.1--FE DE PROVs con contrato disponible con un prod = 1 (Prov con contrato activo)
+SELECT condc.id_contrato, condc.id_prov_cont, condc.id_prod_cont, condc.id_form_envio FROM vam_fe_fp_c AS condc WHERE condc.id_form_envio IS NOT NULL AND condc.id_prod_cont = 1 AND condc.id_prov_cont IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))
+
+24.2--FP DE PROVs con contrato disponible con un prod = 2
+SELECT condc.id_contrato, condc.id_prov_cont, condc.id_prod_cont, condc.id_form_pago FROM vam_fe_fp_c AS condc WHERE condc.id_form_pago IS NOT NULL AND condc.id_prod_cont = 2 AND condc.id_prov_cont IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))
+
+24.3 --Ing y presentaciones de prov disponibles para realizar pedido segun un prod (contratos activos con dicho prod = 2)
+--Ing y presentaciones de prov disponibles para realizar pedido segun un prod (contratos activos con dicho prod = 2)
+SELECT * FROM vam_mp_c AS mpc LEFT JOIN vam_ingrediente_esencias AS ing ON mpc.cas = ing.cas LEFT JOIN vam_ing_presentaciones AS ingpre ON ing.cas = ingpre.cas_ingrediente WHERE mpc.id_cont_prod = 2 AND mpc.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))
