@@ -5,11 +5,33 @@ const pedido = new PedidoProvModel;
 
 class PedidoProvCont {
 	
+	//Obtener pedidos aprobados
+	getPedidos(req, res) {
+		const id_prov = req.params.id_prov;
+
+		pedido.getPedidos(id_prov)
+				.then(function (pedidos) {
+						res.status(200).json({ Info_Pedidos: pedidos });
+				})
+				.catch((e) => console.error(e.stack));
+	}
+
 	//Obtener pedidos pendientes
 	getPedidosPendientes(req, res) {
 		const id_prov = req.params.id_prov;
 
 		pedido.getPedidosPendientes(id_prov)
+				.then(function (pedidos) {
+						res.status(200).json({ Info_Pedidos_Pendientes: pedidos });
+				})
+				.catch((e) => console.error(e.stack));
+	}
+
+	//Obtener fefp pedidos pendientes
+	getPedidosPendientesfefp(req, res) {
+		const id_prov = req.params.id_prov;
+
+		pedido.getPedidosPendientesfefp(id_prov)
 				.then(function (pedidos) {
 						res.status(200).json({ Info_Pedidos_Pendientes: pedidos });
 				})

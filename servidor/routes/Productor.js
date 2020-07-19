@@ -60,8 +60,17 @@ router.post("/:id_prod/contratos/nuevo/:id_prov", contrato.createContrato);
 router.post("/:id_prod/contratos/:id_contrato/renovar/:id_prov", contrato.renovarContrato);
 
 //Pedido
-//Crear del pedido
+//Creación del pedido
 router.post("/:id_prod/pedido/nuevo/:id_prov", pedido.createPedido);
+
+//Lista de proveedores aptos para generar pedidos
+router.get("/:id_prod/pedido/nuevo", pedido.getProvsParaPedido);
+
+//Lista de fe y fp de proveedores aptos para generar pedidos
+router.get("/:id_prod/pedido/nuevo/fefp", pedido.getProvsParaPedidofefp);
+
+//Lista de pedidos aprobados
+router.get("/:id_prov/pedidos", pedido.getPedidos)
 
 //Cancelar pedido siendo productor
 router.put("/:id_prod/pedido/cancelar/:id_ped", pedido.updateCancelarPedido);

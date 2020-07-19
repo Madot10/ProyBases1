@@ -51,7 +51,63 @@ class PedidoProdModel{
           .catch((e) => console.error(e.stack));
       });
   }
+  //24
+  getProvsParaPedido(id_prod) {
+    return new Promise((resolve, reject) => {
+        database
+            .query(
+                `SELECT prov.id, prov.nombre, prov.email, prov.telefono, prov.pag_web, pais.nombre, ing.cas, ing.nombre, ing.cas, ing.nombre, ing.tipo, pres.volumen, pres.precio
+                FROM vam_proveedores AS prov
+                    LEFT JOIN vam_paises AS pais ON pais.id = prov.id_pais
+                    LEFT JOIN vam_ingrediente_esencias AS ing ON ing.id_proveedor = prov.id
+                    LEFT JOIN vam_ing_presentaciones AS pres ON ing.cas = pres.cas_ingrediente
+                WHERE prov.id IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
+                [id_prod]
+            )
+            .then(function (response) {
+                const provs = response.rows;
+                resolve(provs);
+            })
+            .catch((e) => console.error(e.stack));
+    });
+  }
 
+  //REVISAR
+  //24.1
+  getProvsParaPedidofefp(id_prod) {
+    return new Promise((resolve, reject) => {
+        database
+            .query(
+                ``,
+                [id_prod]
+            )
+            .then(function (response) {
+                const provs = response.rows;
+                resolve(provs);
+            })
+            .catch((e) => console.error(e.stack));
+    });
+  }
+  //23
+  getPedidos(id_prod) {
+    return new Promise((resolve, reject) => {
+        database
+            .query(
+                `SELECT p.id, p.estado, p.f_emision, p.f_confirmacion, p.id_prod, p.total_usd, ing.cas, ing.nombre, pres.volumen
+                FROM vam_pedidos AS p, vam_det_pedido AS det
+                    LEFT JOIN vam_ing_presentaciones AS pres ON pres.id = det.id_ing_presentacion
+                    LEFT JOIN vam_ingrediente_esencias AS ing ON ing.cas = pres.cas_ingrediente
+                WHERE p.estado = 'a' AND det.id_prod_ing = $1 AND p.id_prod = $1`,
+                [id_prod]
+            )
+            .then(function (response) {
+                const prods = response.rows;
+                resolve(prods);
+            })
+            .catch((e) => console.error(e.stack));
+    });
+  }
+  //
   updateCancelarPedido(id_prod, id_ped, motivo_cancel) {
     return new Promise((resolve, reject) => {
         database
