@@ -129,7 +129,11 @@ export default {
             perPage: 20,
             mode_renovar: false,
             fields: [
-                { key: "prov_nombre", label: "Proveedor", sortable: true },
+                {
+                    key: this.getUserType() == "prod" ? "prov_nombre" : "prod_nombre",
+                    label: this.getUserType() == "prod" ? "Proveedor" : "Productor",
+                    sortable: true,
+                },
                 {
                     key: "fecha_emision",
                     label: "Fecha de emisión",
