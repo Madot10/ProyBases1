@@ -55,7 +55,7 @@ export default {
                     icon: "truck",
                     items: [
                         { item: "Ver todos", link: { name: "ListaProveedores" } },
-                        { item: "Fórmulas de evaluar", link: "/" },
+                        { item: "Fórmulas de evaluar", link: { name: "FormulaEval" } },
                     ],
                 },
             ],

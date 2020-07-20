@@ -95,6 +95,11 @@ const routes = [
                 component: () => import("../views/DetallePedido.vue"),
                 props: true,
             },
+            {
+                name: "FormulaEval",
+                path: "formulas",
+                component: () => import("../views/FormulaEval.vue"),
+            },
         ],
     },
 
