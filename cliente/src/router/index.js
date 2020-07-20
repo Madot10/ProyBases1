@@ -89,6 +89,12 @@ const routes = [
                 path: "pedidos/nuevo",
                 component: () => import("../views/NuevoPedido.vue"),
             },
+            {
+                name: "PedidosDetalle",
+                path: "pedidos/nuevo/:id_prov",
+                component: () => import("../views/DetallePedido.vue"),
+                props: true,
+            },
         ],
     },
 

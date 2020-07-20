@@ -71,9 +71,25 @@ export default {
                             precio: 50,
                         },
                     ],
-                    formas_envios: [{ tipo: "Maritimo", recargo: "10", pais: "Venezuela" }],
+                    formas_envios: [
+                        { idfe: 2, tipo: "m", cargo: "10", pais: "Venezuela" },
+                        { idfe: 2, tipo: "a", cargo: "5", pais: "Corea" },
+                    ],
                     formas_pagos: [
-                        { tipo: "Contado", porc_inicial: "15", nro_cuotas: "2", int_mensual: "6" },
+                        {
+                            idfp: 3,
+                            tipo: "cont",
+                            porc_inicial: null,
+                            nro_cuotas: null,
+                            int_mensual: null,
+                        },
+                        {
+                            idfp: 3,
+                            tipo: "cred",
+                            porc_inicial: "15",
+                            nro_cuotas: "2",
+                            interes_mensual: "6",
+                        },
                     ],
                 },
                 {
@@ -98,6 +114,14 @@ export default {
         pedirSelected() {
             //Iniciar proceso de pedido
             console.log("Pidiendo");
+
+            this.$router.push({
+                name: "PedidosDetalle",
+                params: {
+                    id_prov: this.proveedor.id,
+                    datosProv: this.proveedor,
+                },
+            });
         },
     },
 
