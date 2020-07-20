@@ -233,7 +233,6 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
-
     //10
     createContrato(id_prod, id_prov, cont) {
         return new Promise((resolve, reject) => {

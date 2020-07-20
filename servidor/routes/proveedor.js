@@ -22,13 +22,14 @@ router.get("/:id_prov/pedidos", pedido.getPedidos)
 router.get("/:id_prov/pedidos/pendientes", pedido.getPedidosPendientes)
 
 //Fe y Fp de pedidos pendientes por confirmar
-router.get("/:id_prov/pedidos/pendientes/fefp", pedido.getPedidosPendientesfefp)
+router.get("/:id_prov/pedidos/pendientes/fe", pedido.getPedidosPendientesfe)
+
+//Fe y Fp de pedidos pendientes por confirmar
+router.get("/:id_prov/pedidos/pendientes/fp", pedido.getPedidosPendientesfp)
 
 //Para aprobar pedido, se requieren de un post y de un put
 //Aprobar pedido
-router.put("/:id_prov/pedido/aprobar/:id_ped", pedido.updateAprobarPedido);
-//Generar Pagos
-router.post("/:id_prov/pedido/aprobar/:id_ped", pedido.createPagosPedido);
+router.post("/:id_prov/pedido/aprobar/:id_ped", pedido.updateAprobarPedido);
 
 //Cancelar pedido siendo proveedor
 router.put("/:id_prov/pedido/cancelar/:id_ped", pedido.updateCancelarPedido);
