@@ -62,8 +62,11 @@
                     <br />
                     <div v-for="(c, i) in formula.criterios" :key="i">
                         <!-- Nombre -->
+                        <h5>
+                            {{ c.nombre }}
+                        </h5>
                         <p>
-                            <b>{{ c.nombre }}</b>
+                            {{ c.descripcion }}
                         </p>
                         <b-form-group
                             label-cols-sm="4"
@@ -119,25 +122,9 @@ export default {
                 punt_exito: 70,
                 criterios: [
                     {
-                        nombre: "Ubicación geográfica del proveedor",
-                        peso: 10,
-                        descripcion: "HJADFJAS s dhd sdshdsd shdsdhb bshd",
-                    },
-                    {
-                        nombre:
-                            "Costos y alternativas de envíos de los pedidos según ubicación geográfica de los clientes",
-                        peso: 35,
-                        descripcion: "HJADFJAS s dhd sdshdsd shdsdhb bshd",
-                    },
-                    {
-                        nombre: "Alternativas y condiciones de pago",
-                        peso: 30,
-                        descripcion: "HJADFJAS s dhd sdshdsd shdsdhb bshd",
-                    },
-                    {
                         nombre:
                             "Cumplimiento de los pedidos en el tiempo solicitado por la compañía",
-                        peso: 30,
+                        peso: 100,
                         descripcion: "HJADFJAS s dhd sdshdsd shdsdhb bshd",
                     },
                 ],
