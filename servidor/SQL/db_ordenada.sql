@@ -492,7 +492,7 @@ CREATE TABLE VAM_EVAL_CRITERIOS(
     fecha_inicio DATE,
     id_prod SMALLINT,
     id_var_crit SMALLINT,
-    peso NUMERIC(2) NOT NULL,
+    peso NUMERIC(3) NOT NULL,
     tipo_formula CHAR(1) NOT NULL,
     fecha_fin DATE,
     CONSTRAINT check_tipo CHECK(tipo_formula in ('i','r')),
