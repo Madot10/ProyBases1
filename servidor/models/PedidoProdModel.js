@@ -17,7 +17,6 @@ function createInsertCondFeFp(id_pedido,id_prov,id_prod,pedido) {
 }
 
 function createInsertDetPedido(id_pedido,id_prov,id_prod,pedido) {
-    
   return new Promise((resolve, reject) => {
       for(var i=0; pedido.cas[i] != null; i++){
           console.log('Detalle de pedido ingresado:', i+1)
@@ -34,6 +33,7 @@ function createInsertDetPedido(id_pedido,id_prov,id_prod,pedido) {
 
 
 class PedidoProdModel{
+
     //28
     createPedido(id_prod, id_prov, pedido) {
       return new Promise((resolve, reject) => {
@@ -50,6 +50,7 @@ class PedidoProdModel{
           .catch((e) => console.error(e.stack));
       });
   }
+
   //24
   getProvsParaPedido(id_prod) {
     return new Promise((resolve, reject) => {
@@ -70,6 +71,7 @@ class PedidoProdModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
   //24.1
   getProvsParaPedidofe(id_prod) {
     return new Promise((resolve, reject) => {
@@ -89,6 +91,7 @@ class PedidoProdModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
   //24.2
   getProvsParaPedidofp(id_prod) {
     return new Promise((resolve, reject) => {
@@ -107,6 +110,7 @@ class PedidoProdModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
   //23
   getPedidos(id_prod) {
     return new Promise((resolve, reject) => {
@@ -126,7 +130,8 @@ class PedidoProdModel{
             .catch((e) => console.error(e.stack));
     });
   }
-  //
+
+  //26
   updateCancelarPedido(id_prod, id_ped, motivo_cancel) {
     return new Promise((resolve, reject) => {
         database

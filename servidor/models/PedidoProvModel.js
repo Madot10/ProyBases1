@@ -78,7 +78,9 @@ function createPagosPedido(id_prov, id_ped) {
     });
 }
 
+
 class PedidoProvModel{
+
   //22
   getPedidos(id_prov) {
     return new Promise((resolve, reject) => {
@@ -98,6 +100,7 @@ class PedidoProvModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
     //21
   getPedidosPendientes(id_prov) {
     return new Promise((resolve, reject) => {
@@ -117,6 +120,7 @@ class PedidoProvModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
   //21.1
   getPedidosPendientesfe(id_prov) {
     return new Promise((resolve, reject) => {
@@ -137,6 +141,7 @@ class PedidoProvModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
   //21.2
   getPedidosPendientesfp(id_prov) {
     return new Promise((resolve, reject) => {
@@ -157,6 +162,7 @@ class PedidoProvModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
   //25.1
   updateAprobarPedido(id_prov, id_ped, nro_factura) {
     return new Promise((resolve, reject) => {
@@ -173,6 +179,7 @@ class PedidoProvModel{
             .catch((e) => console.error(e.stack));
     });
   }
+  
   //26
   updateCancelarPedido(id_prov, id_ped, motivo_cancel) {
     return new Promise((resolve, reject) => {

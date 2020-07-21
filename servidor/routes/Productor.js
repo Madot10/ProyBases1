@@ -84,5 +84,25 @@ router.put("/:id_prod/pedido/cancelar/:id_ped", pedido.updateCancelarPedido);
 //Guardar puntaje obtenido según tipo de evaluación
 router.post("/:id_prod/eval/result/:id_prov", eval.guardarResultadoEval);
 
+//Crear Variable
+router.post("/variable/crear", eval.createVariable);
+
+//Listar escalas
+router.get("/:id_prod/escalas", eval.getEscalas);
+
+//Crear Escala
+router.post("/:id_prod/escala/crear", eval.createEscala);
+
+//Vencer Escala
+router.put("/:id_prod/escala/vencer", eval.updateEscala);
+
+//Crear evaluación de criterios y vencer otras
+router.post("/:id_prod/evaluacion_criterios", eval.createEvalCriterios);
+
+//Información de evaluación de criterios (inicial)
+router.get("/:id_prod/evaluacion_criterios/inicial", eval.getEvalCritInicial);
+
+//Información de evaluación de criterios (renovación)
+router.get("/:id_prod/evaluacion_criterios/renovacion", eval.getEvalCritRenov);
 
 module.exports = router;

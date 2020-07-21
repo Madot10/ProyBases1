@@ -206,3 +206,17 @@ FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
     INNER JOIN vam_pedidos AS ped ON ped.id = 9
 WHERE condpe.id_pedido = 9 AND condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = 2 AND condpe.id_cond = condcon.id;
 
+
+
+30.1--Información de evaluación de criterios (inicial)
+SELECT eval.fecha_inicio, var.nombre_crit, var.descripcion, eval.peso
+FROM vam_eval_criterios AS eval
+    INNER JOIN vam_var_criterios AS var ON var.id = eval.id_var_crit
+WHERE eval.id_prod = 4 AND eval.tipo_formula = 'i' AND eval.fecha_fin IS NULL;
+
+30.3--Escala activa de un productor
+SELECT fecha_inicio, valor_min, valor_max
+FROM vam_escalas
+WHERE id_prod = 4 AND fecha_fin IS NULL;
+
+
