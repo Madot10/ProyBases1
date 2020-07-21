@@ -73,7 +73,9 @@ CREATE SEQUENCE sec_VAM_PALABRA_CLAVE
 
 CREATE TABLE VAM_PALABRA_CLAVE(
     id SMALLINT DEFAULT nextval('sec_VAM_PALABRA_CLAVE') PRIMARY KEY,
-    palabra VARCHAR(40) NOT NULL
+    palabra VARCHAR(40) UNIQUE NOT NULL ,
+    tipo_palabra CHAR(1),
+    CONSTRAINT check_tipo_palabra CHECK( tipo_palabra in ('c','n','p'))
 );
 
 DROP SEQUENCE IF EXISTS sec_VAM_ASOC_NACIONALES;
