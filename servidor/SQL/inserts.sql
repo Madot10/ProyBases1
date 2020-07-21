@@ -682,9 +682,6 @@ INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formul
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('10/01/2015',4,2,25,'i',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('10/01/2015',4,3,30,'i',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('10/01/2015',4,5,80,'i',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('12/12/2015',4,1,25,'r',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('12/12/2015',4,2,25,'r',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('12/12/2015',4,3,25,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('12/12/2015',4,4,25,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('12/12/2015',4,5,85,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('01/04/2017',3,1,35,'i',NULL);
@@ -695,27 +692,18 @@ INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formul
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('01/02/2018',2,2,30,'i','5/11/2019');
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('01/02/2018',2,3,35,'i','5/11/2019');
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('01/02/2018',2,5,65,'i','5/11/2019');
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('01/02/2018',3,1,25,'r',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('01/02/2018',3,2,35,'r',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('01/02/2018',3,3,20,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('01/02/2018',3,4,20,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('01/02/2018',3,5,70,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('10/12/2018',1,1,35,'i',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('10/12/2018',1,2,35,'i',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('10/12/2018',1,3,30,'i',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('10/12/2018',1,5,70,'i',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('1/1/2019',2,1,15,'r',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('1/1/2019',2,2,30,'r',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('1/1/2019',2,3,20,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('1/1/2019',2,4,35,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('1/1/2019',2,5,75,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('5/11/2019',2,1,45,'i',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('5/11/2019',2,2,25,'i',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('5/11/2019',2,3,30,'i',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('5/11/2019',2,5,75,'i',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('14/12/2019',1,1,25,'r',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('14/12/2019',1,2,25,'r',NULL);
-INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('14/12/2019',1,3,30,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('14/12/2019',1,4,20,'r',NULL);
 INSERT INTO VAM_EVAL_CRITERIOS(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula,fecha_fin) VALUES ('14/12/2019',1,5,80,'r',NULL);
 
