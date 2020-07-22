@@ -17,7 +17,6 @@ function createInsertCondFeFp(id_pedido,id_prov,id_prod,pedido) {
 }
 
 function createInsertDetPedido(id_pedido,id_prov,id_prod,pedido) {
-    
   return new Promise((resolve, reject) => {
       for(var i=0; pedido.cas[i] != null; i++){
           console.log('Detalle de pedido ingresado:', i+1)
@@ -35,8 +34,8 @@ function createInsertDetPedido(id_pedido,id_prov,id_prod,pedido) {
 
 class PedidoProdModel{
 
+    //28
     createPedido(id_prod, id_prov, pedido) {
-    
       return new Promise((resolve, reject) => {
          
          database
@@ -51,6 +50,7 @@ class PedidoProdModel{
           .catch((e) => console.error(e.stack));
       });
   }
+
   //24
   getProvsParaPedido(id_prod) {
     return new Promise((resolve, reject) => {
@@ -72,13 +72,16 @@ class PedidoProdModel{
     });
   }
 
-  //REVISAR
   //24.1
-  getProvsParaPedidofefp(id_prod) {
+  getProvsParaPedidofe(id_prod) {
     return new Promise((resolve, reject) => {
         database
             .query(
-                ``,
+                `SELECT fe.id_prov, fe.id AS id_fe, pais.nombre, fe.tipo, fe.cargo
+                FROM vam_fe_fp_c AS condc
+                    INNER JOIN vam_forma_envios AS fe ON condc.id_form_envio = fe.id
+                    INNER JOIN vam_paises AS pais ON pais.id = condc.id_form_envio_pais
+                WHERE condc.id_form_envio IS NOT NULL AND condc.id_prod_cont = $1 AND condc.id_prov_cont IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                 [id_prod]
             )
             .then(function (response) {
@@ -88,6 +91,26 @@ class PedidoProdModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
+  //24.2
+  getProvsParaPedidofp(id_prod) {
+    return new Promise((resolve, reject) => {
+        database
+            .query(
+                `SELECT fp.id_proveedor, fp.id AS id_fp, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
+                FROM vam_fe_fp_c AS condc
+                    LEFT JOIN vam_forma_pagos AS fp ON condc.id_form_pago = fp.id
+                WHERE condc.id_form_pago IS NOT NULL AND condc.id_prod_cont = $1 AND condc.id_prov_cont IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
+                [id_prod]
+            )
+            .then(function (response) {
+                const provs = response.rows;
+                resolve(provs);
+            })
+            .catch((e) => console.error(e.stack));
+    });
+  }
+
   //23
   getPedidos(id_prod) {
     return new Promise((resolve, reject) => {
@@ -107,7 +130,8 @@ class PedidoProdModel{
             .catch((e) => console.error(e.stack));
     });
   }
-  //
+
+  //26
   updateCancelarPedido(id_prod, id_ped, motivo_cancel) {
     return new Promise((resolve, reject) => {
         database

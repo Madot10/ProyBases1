@@ -73,7 +73,9 @@ CREATE SEQUENCE sec_VAM_PALABRA_CLAVE
 
 CREATE TABLE VAM_PALABRA_CLAVE(
     id SMALLINT DEFAULT nextval('sec_VAM_PALABRA_CLAVE') PRIMARY KEY,
-    palabra VARCHAR(40) NOT NULL
+    palabra VARCHAR(40) UNIQUE NOT NULL ,
+    tipo_palabra CHAR(1),
+    CONSTRAINT check_tipo_palabra CHECK( tipo_palabra in ('c','n','p'))
 );
 
 DROP SEQUENCE IF EXISTS sec_VAM_ASOC_NACIONALES;
@@ -492,7 +494,7 @@ CREATE TABLE VAM_EVAL_CRITERIOS(
     fecha_inicio DATE,
     id_prod SMALLINT,
     id_var_crit SMALLINT,
-    peso NUMERIC(2) NOT NULL,
+    peso NUMERIC(3) NOT NULL,
     tipo_formula CHAR(1) NOT NULL,
     fecha_fin DATE,
     CONSTRAINT check_tipo CHECK(tipo_formula in ('i','r')),

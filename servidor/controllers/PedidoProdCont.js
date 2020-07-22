@@ -42,13 +42,25 @@ class PedidoProdCont {
 		
 	}
 
-	//Lista de fe y fp de proveedores aptos para generar pedidos
-	getProvsParaPedidofefp(req, res){
+	//Lista de fe de proveedores aptos para generar pedidos
+	getProvsParaPedidofe(req, res){
 		const id_prod = req.params.id_prod;
 
-		pedido.getProvsParaPedidofefp(id_prod)
+		pedido.getProvsParaPedidofe(id_prod)
 		.then(function (provs) {
-			res.status(200).json({ Lista_de_proveedores: provs });
+			res.status(200).json({ Lista_de_fe_proveedores: provs });
+		})
+		.catch((e) => console.error(e.stack));
+		
+	}
+
+	//Lista de fp de proveedores aptos para generar pedidos
+	getProvsParaPedidofp(req, res){
+		const id_prod = req.params.id_prod;
+
+		pedido.getProvsParaPedidofp(id_prod)
+		.then(function (provs) {
+			res.status(200).json({ Lista_de_fp_proveedores: provs });
 		})
 		.catch((e) => console.error(e.stack));
 		

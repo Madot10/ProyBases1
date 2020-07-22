@@ -52,6 +52,7 @@ function createInsertMp_c(id_cont, id_prod, id_prov, cont) {
 }
 
 class ContratoProdModel {
+
     //4.1
     getContratos(id_prod) {
         return new Promise((resolve, reject) => {
@@ -73,6 +74,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
     //4.2
     getIngCont(id_prod) {
         return new Promise((resolve, reject) => {
@@ -88,6 +90,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
     //12
     getContVencer(id_prod) {
         return new Promise((resolve, reject) => {
@@ -103,6 +106,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
     //12
     getIngContVencer(id_prod) {
         return new Promise((resolve, reject) => {
@@ -118,6 +122,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
     //5
     updateCancelarCont(id_prod, id_cont, motivo_cancel, quien_cancela) {
         return new Promise((resolve, reject) => {
@@ -132,6 +137,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
     //6
     getContNuevo(id_prod) {
         return new Promise((resolve, reject) => {
@@ -147,6 +153,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
     //6.1
     getContNuevoFe(id_prod) {
         return new Promise((resolve, reject) => {
@@ -162,6 +169,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
     //6.2
     getContNuevoFp(id_prod) {
         return new Promise((resolve, reject) => {
@@ -177,6 +185,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
     //6.3
     getContNuevoIng(id_prod) {
         return new Promise((resolve, reject) => {
@@ -193,6 +202,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
     //7
     getContNuevoListIng(id_prov) {
         return new Promise((resolve, reject) => {
@@ -213,6 +223,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+
     //8
     getContNuevoListIngExc(id_prov) {
         return new Promise((resolve, reject) => {
@@ -252,6 +263,7 @@ class ContratoProdModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+    
     //30
     renovarContrato(id_prod, id_prov, id_cont) {
         return new Promise((resolve, reject) => {

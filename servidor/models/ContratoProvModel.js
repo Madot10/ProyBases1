@@ -2,6 +2,7 @@
 const { database } = require("../config/db.config");
 
 class ContratoProvModel {
+
     //3.1
     getContratos(id_prov) {
         return new Promise((resolve, reject) => {
@@ -22,6 +23,7 @@ class ContratoProvModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+    
     //3.2
     getIngCont(id_prov) {
         return new Promise((resolve, reject) => {

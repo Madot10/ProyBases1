@@ -2,37 +2,35 @@
 const { database } = require('../config/db.config');
 
 //Se generan el o los pagos
-function generarPagos(id_prov, id_ped, fp) {
+function generarPagos(id_ped, fp) {
   return new Promise((resolve, reject) => {
-    //fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago, fp.subtotal_usd
-    
-    //Primer_pago
+
     var i = true;
     var primer_pago = 0.0;
     var pagos = 0.0;
     var cuota = 0;
 
     do{
-      //Logica loca para crear las iteracciones de los pagos
 
-
+      //Primer pago
       if(i === true){
-        if(fp.tipo === 'cred'){
-            primer_pago = fp.subtotal_usd *((fp.porc_inicial)/100);
-            fp.nro_cuotas--;
+        if(fp[0].tipo === 'cred'){
+            primer_pago = fp[0].subtotal_usd*((fp[0].porc_inicial)/100);
+            fp[0].nro_cuotas--;
             console.log(primer_pago);
-            pagos = (fp.subtotal_usd - primer_pago)/(fp.nro_cuotas - 1);
+            var resto = (fp[0].subtotal_usd - primer_pago)+((fp[0].subtotal_usd - primer_pago)*fp[0].interes_mensual/100);
+            pagos = resto/(fp[0].nro_cuotas);
             console.log(pagos);
         }
         else{
-            primer_pago = fp.subtotal_usd;
+            primer_pago = fp[0].subtotal_usd;
         }
         i = false;
-
+        console.log('realizó primer pago')
         database
             .query(
                 `INSERT INTO vam_pagos(id_pedido, fecha, monto) VALUES ($1,current_date,$2)`,
-                [id_ped,fecha_pago,primer_pago]
+                [id_ped,primer_pago]
             )
             .then(function () {
                 resolve(true);
@@ -40,25 +38,49 @@ function generarPagos(id_prov, id_ped, fp) {
             .catch((e) => console.error(e.stack));
       }
       else{
-        fp.nro_cuotas--;
+        fp[0].nro_cuotas--;
         cuota++;
-
+        var dias = fp[0].nro_dia_entre_pago*cuota;
         database
             .query(
-                `INSERT INTO vam_pagos(id_pedido, fecha, monto) VALUES ($1,current_date + concat($3' days'),$2)`,
-                [id_ped,pagos,fp.nro_dia_entre_pago*cuota]
+                `INSERT INTO vam_pagos(id_pedido, fecha, monto) VALUES ($1,now()+ interval '1 day' * $2,$3)`,
+                [id_ped,dias,pagos]
             )
             .then(function () {
                 resolve(true);
             })
             .catch((e) => console.error(e.stack));
       }
-
-    }while(fp.tipo !== 'cont' && fp.nro_cuotas !== 0);
+    }while(fp[0].tipo !== 'cont' && fp[0].nro_cuotas !== 0);
   });
 }
 
+//25.2
+function createPagosPedido(id_prov, id_ped) {
+    return new Promise((resolve, reject) => {
+        database
+            .query(
+                `SELECT fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago, ped.subtotal_usd
+                FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+                    LEFT JOIN vam_forma_pagos AS fp ON condcon.id_form_pago = fp.id
+                    INNER JOIN vam_pedidos AS ped ON ped.id = $1
+                WHERE condpe.id_pedido = $1 AND condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = $2 AND condpe.id_cond = condcon.id`,
+                [id_ped,id_prov]
+            )
+            .then(function (response) {
+                var fp = response.rows;
+                console.log(fp);
+                generarPagos(id_ped, fp).then(() => {
+                    resolve();
+                });
+            })
+            .catch((e) => console.error(e.stack));
+    });
+}
+
+
 class PedidoProvModel{
+
   //22
   getPedidos(id_prov) {
     return new Promise((resolve, reject) => {
@@ -78,16 +100,17 @@ class PedidoProvModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
     //21
   getPedidosPendientes(id_prov) {
     return new Promise((resolve, reject) => {
         database
             .query(
-                `SELECT p.id, p.estado, p.f_emision, p.f_confirmacion, p.id_prod, p.total_usd, ing.cas, ing.nombre, pres.volumen
+                `SELECT p.id AS pedid, p.estado, p.f_emision, p.id_prod, p.subtotal_usd, p.total_usd, ing.cas, ing.nombre, pres.volumen
                 FROM vam_pedidos AS p, vam_det_pedido AS det
-                    LEFT JOIN vam_ing_presentaciones AS pres ON pres.id = det.id_ing_presentacion
-                    LEFT JOIN vam_ingrediente_esencias AS ing ON ing.cas = pres.cas_ingrediente
-                WHERE p.estado = 'p' AND det.id_prov_ing = $1 AND p.id_prov = $1`,
+                    INNER JOIN vam_ing_presentaciones AS pres ON pres.id = det.id_ing_presentacion
+                    INNER JOIN vam_ingrediente_esencias AS ing ON ing.cas = pres.cas_ingrediente
+                WHERE p.estado = 'p' AND p.id = det.id_pedido AND p.id_prov = $1 AND det.id_prov_ing = p.id_prov AND p.id_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                 [id_prov]
             )
             .then(function (response) {
@@ -97,12 +120,18 @@ class PedidoProvModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
   //21.1
-  getPedidosPendientesfefp(id_prov) {
+  getPedidosPendientesfe(id_prov) {
     return new Promise((resolve, reject) => {
         database
             .query(
-                `SCRIPT ESTÁN EN sql_pruebas`,
+                `SELECT condpe.id_pedido, fe.id, fe.tipo, pais.nombre AS nombre_pais
+                FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+                    INNER JOIN vam_forma_envios AS fe ON condcon.id_form_envio = fe.id
+                    INNER JOIN vam_paises AS pais ON pais.id = condcon.id_form_envio_pais
+                WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cont_prov = $1 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prov = $1 AND ped.estado = 'p')
+                  AND condpe.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                 [id_prov]
             )
             .then(function (response) {
@@ -112,6 +141,28 @@ class PedidoProvModel{
             .catch((e) => console.error(e.stack));
     });
   }
+
+  //21.2
+  getPedidosPendientesfp(id_prov) {
+    return new Promise((resolve, reject) => {
+        database
+            .query(
+                `SELECT condpe.id_pedido, fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
+                FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+                    LEFT JOIN vam_forma_pagos AS fp ON condcon.id_form_pago = fp.id
+                WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = $1 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prov = $1 AND ped.estado = 'p')
+                  AND condpe.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'));
+                `,
+                [id_prov]
+            )
+            .then(function (response) {
+                const provs = response.rows;
+                resolve(provs);
+            })
+            .catch((e) => console.error(e.stack));
+    });
+  }
+
   //25.1
   updateAprobarPedido(id_prov, id_ped, nro_factura) {
     return new Promise((resolve, reject) => {
@@ -121,29 +172,14 @@ class PedidoProvModel{
                 [nro_factura, id_ped, id_prov]
             )
             .then(function () {
-                resolve(true);
-            })
-            .catch((e) => console.error(e.stack));
-    });
-  }
-  //25.2
-  createPagosPedido(id_prov, id_ped) {
-    return new Promise((resolve, reject) => {
-        database
-            .query(
-                `LO NECESITO PARA PRUEBAS DE PAGO :'C`,
-                [id_prov, id_ped]
-            )
-            .then(function (response) {
-                const fp = response.rows;
-                console.log(fp);
-                generarPagos(id_prov, id_ped, fp).then(() => {
+                createPagosPedido(id_prov, id_ped).then(() => {
                     resolve();
                 });
             })
             .catch((e) => console.error(e.stack));
     });
   }
+  
   //26
   updateCancelarPedido(id_prov, id_ped, motivo_cancel) {
     return new Promise((resolve, reject) => {
