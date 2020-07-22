@@ -82,6 +82,16 @@ export default {
             this.isEvaluating = false;
             this.isFinal = true;
         },
+        generateForm(datosF, datosPAll, datosPApro, datosEsc) {
+            this.formula.punt_exito = datosF[0].peso;
+            this.formula.valor_min = datosEsc[0].valor_min;
+            this.formula.valor_max = datosEsc[0].valor_max;
+
+            this.pedidos.aprobados = Number(datosPApro[0].count);
+            this.pedidos.realizados = Number(datosPAll[0].count);
+
+            this.evaluar();
+        },
     },
     mounted() {
         this.$root.$on("bv::modal::show", (bvEvent, modalId) => {
@@ -95,10 +105,10 @@ export default {
                 this.criterios = [
                     {
                         id: 4,
-                        nombre:
-                            "Cumplimiento de los pedidos en el tiempo solicitado por la compañía",
+                        nombre: "Pedidos Aprobados",
                         peso: 100,
-                        descripcion: "HJADFJAS s dhd sdshdsd shdsdhb bshd",
+                        descripcion:
+                            "Cumplimiento de los pedidos en el tiempo solicitado por la compañía",
                     },
                 ];
 
@@ -106,7 +116,35 @@ export default {
                 this.formula.valor_max = 10;
                 this.formula.punt_exito = 80;
 
-                this.evaluar();
+                let dataF = {
+                    Info_de_Evaluacion_inicial: [
+                        {
+                            fecha_inicio: "2018-12-10T04:00:00.000Z",
+                            nombre_crit: "Éxito",
+                            descripcion: "Puntaje objetivo de éxito",
+                            peso: "70",
+                        },
+                    ],
+                };
+
+                let dataEsc = {
+                    Info_de_Evaluacion_inicial: [
+                        {
+                            fecha_inicio: "2019-12-14T04:00:00.000Z",
+                            valor_min: "0",
+                            valor_max: "50",
+                        },
+                    ],
+                };
+                let dataAll = { Cantidad: [{ count: "20" }] };
+                let dataAprob = { Cantidad: [{ count: "5" }] };
+
+                this.generateForm(
+                    dataF.Info_de_Evaluacion_inicial,
+                    dataAll.Cantidad,
+                    dataAprob.Cantidad,
+                    dataEsc.Info_de_Evaluacion_inicial
+                );
             }
         });
     },

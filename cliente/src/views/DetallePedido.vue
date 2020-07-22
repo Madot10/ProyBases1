@@ -221,6 +221,20 @@ export default {
         };
     },
     methods: {
+        formatoNumero(num) {
+            let separador = ".";
+            let sepDecimal = ",";
+
+            num += "";
+            let splitStr = num.split(".");
+            let splitLeft = splitStr[0];
+            let splitRight = splitStr.length > 1 ? sepDecimal + splitStr[1] : "";
+            let regx = /(\d+)(\d{3})/;
+            while (regx.test(splitLeft)) {
+                splitLeft = splitLeft.replace(regx, "$1" + separador + "$2");
+            }
+            return splitLeft + splitRight;
+        },
         agregarItem() {
             this.mat_prim_selected.push({ cas: null, prec_u: null });
             this.cant_mat_prim.push(1);
@@ -296,7 +310,8 @@ export default {
                 for (let i = 0; i < ind; i++) {
                     if (
                         this.mat_prim_selected[i].cas == this.mat_prim_selected[ind].cas &&
-                        i != ind
+                        i != ind &&
+                        this.mat_prim_selected[i].prec_u == this.mat_prim_selected[ind].prec_u
                     ) {
                         this.flag_repited = true;
                         break;
@@ -360,20 +375,27 @@ export default {
     },
     computed: {
         subtotalizar() {
-            return this.subTotal();
+            return this.formatoNumero(this.subTotal());
         },
         rec_fe() {
-            return this.calc_fe();
+            return this.formatoNumero(this.calc_fe());
         },
         rec_fp() {
-            return this.calc_fp();
+            return this.formatoNumero(this.calc_fp());
         },
         totalizar() {
-            return this.totalizacion();
+            return this.formatoNumero(this.totalizacion());
         },
     },
     created() {
         console.log("Prov recibido: ", this.datosProv);
+
+        this.mat_prima_disp = this.datosProv.ingredientes.map((ing) => {
+            return {
+                value: { cas: ing.cas, prec_u: ing.precio },
+                text: `${ing.nombre} (${ing.volumen}ml)`,
+            };
+        });
     },
 };
 </script>

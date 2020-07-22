@@ -44,10 +44,10 @@
                     </div>
                 </template>
 
-                <!-- Campo fecha inicio 
+                <!--Campo fecha inicio -->
                 <template v-slot:cell(fecha_emision)="data">
                     {{ getDateFormated(data.value) }}
-                </template>-->
+                </template>
 
                 <!-- Cell estado -->
                 <template v-slot:cell(estado)="row">
@@ -152,7 +152,11 @@ export default {
                     fecha_confirmacion: "17/07/2020",
                     nro_factura: 694765,
                     motivo_cancel: null,
-                    forma_envio: { tipo: "Maritimo", recargo: "10", pais: "Venezuela" },
+                    forma_envio: {
+                        tipo: "Maritimo",
+                        recargo: "10",
+                        pais: "Venezuela",
+                    },
                     forma_pago: {
                         tipo: "Contado",
                         porc_inicial: "15",
@@ -232,6 +236,8 @@ export default {
                 //nop
                 this.mode_pen = false;
             }
+
+            this.getPedidos();
         },
         openAprobModal(index) {
             this.index_selected_pedido = index;
@@ -251,6 +257,93 @@ export default {
         },
         cancelarConfirm(text) {
             console.log("Cancelando ", this.pedido);
+        },
+        generatePedidos(pes, fes, fps) {
+            let aux_pe = [];
+
+            pes.forEach((p) => {
+                if (aux_pe[p.pedid] == null) {
+                    aux_pe[p.pedid] = {
+                        id: p.pedid,
+                        fecha_emision: p.f_emision,
+                        total_usd: Number(p.total_usd),
+                        subtotal_usd: Number(p.subtotal_usd),
+                        estado: p.estado.trim(),
+                        nro_factura: null,
+                        forma_envio: null,
+                        forma_pago: null,
+                        detalle: [],
+                    };
+                }
+
+                aux_pe[p.pedid].detalle.push({
+                    cas: Number(p.cas),
+                    nombre: p.nombre,
+                    volumen: Number(p.volumen),
+                    precio: null,
+                    cantidad: null,
+                });
+            });
+
+            fes.forEach((fe) => {
+                aux_pe[fe.id_pedido].forma_envio = {
+                    tipo: fe.tipo,
+                    recargo: null,
+                    pais: fe.nombre_pais,
+                };
+            });
+
+            fps.forEach((fp) => {
+                aux_pe[fp.id_pedido].forma_pago = {
+                    tipo: fp.tipo,
+                    porc_inicial: fp.porc_inicial,
+                    nro_cuotas: fp.nro_cuotas,
+                    int_mensual: fp.interes_mensual,
+                };
+            });
+
+            this.pedidos = aux_pe;
+        },
+        getPedidos() {
+            let datosPe = {
+                Info_Pedidos_Pendientes: [
+                    {
+                        pedid: 2,
+                        estado: "p   ",
+                        f_emision: "2020-03-19T04:00:00.000Z",
+                        id_prod: 2,
+                        subtotal_usd: "2240.00",
+                        total_usd: "2240.00",
+                        cas: "586629",
+                        nombre: "Terpinolene-40",
+                        volumen: "5000",
+                    },
+                ],
+            };
+            let datosFe = {
+                Info_Pedidos_Pendientes: [
+                    { id_pedido: 2, id: 4, tipo: "m", nombre_pais: "Tailandia" },
+                ],
+            };
+            let datosFp = {
+                Info_Pedidos_Pendientes: [
+                    {
+                        id_pedido: 2,
+                        id: 3,
+                        tipo: "cont",
+                        porc_inicial: null,
+                        nro_cuotas: null,
+                        interes_mensual: null,
+                        nro_dia_entre_pago: null,
+                    },
+                ],
+            };
+
+            this.generatePedidos(
+                datosPe.Info_Pedidos_Pendientes,
+                datosFe.Info_Pedidos_Pendientes,
+                datosFp.Info_Pedidos_Pendientes
+            );
         },
     },
     watch: {

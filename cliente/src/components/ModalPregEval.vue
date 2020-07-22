@@ -12,7 +12,7 @@
                     <!--CONTENIDO-->
 
                     <!--Ubicación Geográfica-->
-                    <div v-if="c.nombre == 'Ubicación geográfica del proveedor'">
+                    <div v-if="c.nombre == 'Ubicación'">
                         <b-form-group
                             label="Ubicación Geográfica"
                             label-cols="3"
@@ -26,12 +26,7 @@
                     </div>
 
                     <!-- Forma de envío-->
-                    <div
-                        v-if="
-                            c.nombre ==
-                                'Costos y alternativas de envíos de los pedidos según ubicación geográfica de los clientes'
-                        "
-                    >
+                    <div v-if="c.nombre == 'Formas de envíos'">
                         <b-table
                             small
                             striped
@@ -53,7 +48,7 @@
                     </div>
 
                     <!-- Forma de pago-->
-                    <div v-if="c.nombre == 'Alternativas y condiciones de pago'">
+                    <div v-if="c.nombre == 'Formas de pago'">
                         <b-table small striped hover :items="prov.formas_pagos" :fields="fields_fp">
                             <!-- Cells -->
                             <template v-slot:cell(tipo)="row">
@@ -235,6 +230,30 @@ export default {
             this.isEvaluating = false;
             this.isFinal = true;
         },
+        generateForm(crit, esc) {
+            let aux_crit = [];
+            let aux_form = {};
+
+            crit.forEach((c) => {
+                if (c.nombre_crit != "Éxito") {
+                    aux_crit.push({
+                        id: null,
+                        nombre: c.nombre_crit,
+                        descripcion: c.descripcion,
+                        peso: Number(c.peso),
+                    });
+                } else {
+                    aux_form = {
+                        punt_exito: Number(c.peso),
+                        valor_min: esc[0].valor_min,
+                        valor_max: esc[0].valor_max,
+                    };
+                }
+            });
+
+            this.formula = aux_form;
+            this.criterios = aux_crit;
+        },
     },
     mounted() {
         this.$root.$on("bv::modal::show", (bvEvent, modalId) => {
@@ -246,36 +265,55 @@ export default {
                 this.puntaje = 0;
                 this.isAprobado = null;
 
-                //Getters
-                this.criterios = [
-                    {
-                        id: 1,
-                        nombre: "Ubicación geográfica del proveedor",
-                        peso: 35,
-                        descripcion: "1 HJADFJAS s dhd sdshdsd shdsdhb bshd",
-                    },
-                    {
-                        id: 2,
-                        nombre:
-                            "Costos y alternativas de envíos de los pedidos según ubicación geográfica de los clientes",
-                        peso: 35,
-                        descripcion: "2 HJADFJAS s dhd sdshdsd shdsdhb bshd",
-                    },
-                    {
-                        id: 3,
-                        nombre: "Alternativas y condiciones de pago",
-                        peso: 30,
-                        descripcion: "3 HJADFJAS s dhd sdshdsd shdsdhb bshd",
-                    },
-                ];
+                let datosForm = {
+                    Info_de_Evaluacion_inicial: [
+                        {
+                            fecha_inicio: "2018-12-10T04:00:00.000Z",
+                            nombre_crit: "Ubicación",
+                            descripcion: "Ubicación geográfica del proveedor",
+                            peso: "35",
+                        },
+                        {
+                            fecha_inicio: "2018-12-10T04:00:00.000Z",
+                            nombre_crit: "Formas de envíos",
+                            descripcion:
+                                "Costos y alternativas de envíos de los pedidos según ubicación geográfica de los clientes",
+                            peso: "35",
+                        },
+                        {
+                            fecha_inicio: "2018-12-10T04:00:00.000Z",
+                            nombre_crit: "Formas de pago",
+                            descripcion:
+                                "Alternativas y condiciones de pago que ofrece el proveedor",
+                            peso: "30",
+                        },
+                        {
+                            fecha_inicio: "2018-12-10T04:00:00.000Z",
+                            nombre_crit: "Éxito",
+                            descripcion: "Puntaje objetivo de éxito",
+                            peso: "70",
+                        },
+                    ],
+                };
 
-                this.formula.valor_min = 0;
-                this.formula.valor_max = 10;
-                this.formula.punt_exito = 80;
+                let datosEscala = {
+                    Info_de_Evaluacion_inicial: [
+                        {
+                            fecha_inicio: "2019-12-14T04:00:00.000Z",
+                            valor_min: "0",
+                            valor_max: "50",
+                        },
+                    ],
+                };
 
                 this.valoracion = this.criterios.map(() => {
                     return 0;
                 });
+
+                this.generateForm(
+                    datosForm.Info_de_Evaluacion_inicial,
+                    datosEscala.Info_de_Evaluacion_inicial
+                );
             }
         });
     },
