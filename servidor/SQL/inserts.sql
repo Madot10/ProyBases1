@@ -518,7 +518,7 @@ INSERT INTO VAM_HISTORICO_IFRA(fecha_inicio,id_proveedor,id_productor,fecha_fin)
 INSERT INTO VAM_PEDIDOS(f_emision,estado,id_prov,id_prod,total_usd,subtotal_usd,f_confirmacion,motivo_cancel,nro_factura) VALUES ('10-01-2019','a',1,1,'1485','1485','11-01-2019',NULL,10101);
 INSERT INTO VAM_PEDIDOS(f_emision,estado,id_prov,id_prod,total_usd,subtotal_usd,f_confirmacion,motivo_cancel,nro_factura) VALUES ('19/03/2020','p',2,2,'2240','2240',NULL,NULL,NULL);
 INSERT INTO VAM_PEDIDOS(f_emision,estado,id_prov,id_prod,total_usd,subtotal_usd,f_confirmacion,motivo_cancel,nro_factura) VALUES ('1-1-2020','anpv',3,1,'18645','18645',NULL,'Falta de transporte para este mes',NULL);
-INSERT INTO VAM_PEDIDOS(f_emision,estado,id_prov,id_prod,total_usd,subtotal_usd,f_confirmacion,motivo_cancel,nro_factura) VALUES ('04-09-2020','anpd',3,3,'1842.64','1706.25',NULL,'Inconvenientes debido al Covid-19',NULL);
+INSERT INTO VAM_PEDIDOS(f_emision,estado,id_prov,id_prod,total_usd,subtotal_usd,f_confirmacion,motivo_cancel,nro_factura) VALUES ('04-07-2020','anpd',3,3,'1842.64','1706.25',NULL,'Inconvenientes debido al Covid-19',NULL);
 INSERT INTO VAM_PEDIDOS(f_emision,estado,id_prov,id_prod,total_usd,subtotal_usd,f_confirmacion,motivo_cancel,nro_factura) VALUES ('02-03-2020','a',4,1,'17487.6','17487.6','02-04-2020',NULL,2984);
 INSERT INTO VAM_PEDIDOS(f_emision,estado,id_prov,id_prod,total_usd,subtotal_usd,f_confirmacion,motivo_cancel,nro_factura) VALUES ('24/02/2018','p',4,2,'5899.16','5829.2',NULL,NULL,NULL);
 INSERT INTO VAM_PEDIDOS(f_emision,estado,id_prov,id_prod,total_usd,subtotal_usd,f_confirmacion,motivo_cancel,nro_factura) VALUES ('15-05-2019','anpv',5,4,'21275','21275',NULL,'Falta de transporte para este mes',NULL);
@@ -588,7 +588,7 @@ INSERT INTO VAM_ING_PRESENTACIONES(cas_ingrediente,id_proveedor,volumen,precio) 
 INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (1,1,'6/01/2019',TRUE,NULL,NULL,NULL,NULL);
 INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (2,2,'19/01/2020',FALSE,NULL,NULL,NULL,NULL);
 INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (3,1,'1/12/2019',FALSE,'Contrato formado por ambas partes de las empresas, en la que se acuerda vender sin exclusividad',NULL,NULL,NULL);
-INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (3,3,'2/09/2020',TRUE,NULL,NULL,NULL,NULL);
+INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (3,3,'2/07/2020',TRUE,NULL,NULL,NULL,NULL);
 INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (4,1,'2/01/2020',FALSE,'Contrato acordado entre las empresas Firmenich y Mane, con fines comerciales de distribución de esencias','18/05/2020','Desacuerdo en la forma de envío, pues llegaban con retraso los pedidos','prod');
 INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (4,2,'14/02/2018',FALSE,NULL,NULL,NULL,NULL);
 INSERT INTO VAM_CONTRATOS(id_prov,id_prod,fecha_emision,exclusividad,clausula,fecha_cancelacion,motivo_cancel,quien_cancela) VALUES (5,4,'3/04/2019',FALSE,NULL,NULL,NULL,NULL);
