@@ -103,6 +103,9 @@ router.post("/:id_prod/evaluacion_criterios", eval.createEvalCriterios);
 router.get("/:id_prod/evaluacion_criterios/inicial", eval.getEvalCritInicial);
 
 //Información de evaluación de criterios (renovación)
-router.get("/:id_prod/evaluacion_criterios/renovacion", eval.getEvalCritRenov);
+//Cantidad de pedidos desde la creación del contrato hasta hoy
+router.get("/:id_prod/evaluacion_criterios/renovacion/all/:id_prov", eval.getEvalCritRenovPedidos);
 
+//Cantidad de pedidos APROBADOS desde la creación del contrato hasta hoy
+router.get("/:id_prod/evaluacion_criterios/renovacion/:id_prov", eval.getEvalCritRenovPedidosAprobados);
 module.exports = router;

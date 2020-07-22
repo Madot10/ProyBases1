@@ -136,19 +136,36 @@ class EvalProdModel{
   }
   
   //30.2
-  getEvalCritRenov(id_prod) {
+  getEvalCritRenovPedidos(id_prod,id_prov,id_contrato) {
     return new Promise((resolve, reject) => {
         database
             .query(
-                `SELECT eval.fecha_inicio, var.nombre_crit, var.descripcion, eval.peso
-                FROM vam_eval_criterios AS eval
-                  INNER JOIN vam_var_criterios AS var ON var.id = eval.id_var_crit
-                WHERE eval.id_prod = $1 AND eval.tipo_formula = 'r' AND eval.fecha_fin IS NULL`,
-                [id_prod]
+                `SELECT count(ped)
+                FROM vam_contratos AS cont, vam_pedidos AS ped
+                WHERE cont.id = $1 AND ped.id_prod = $2 AND ped.id_prov = $3 AND ped.f_emision BETWEEN cont.fecha_emision AND current_date`,
+                [id_contrato,id_prod,id_prov]
             )
             .then(function (response) {
-                const prods = response.rows;
-                resolve(prods);
+                const ped = response.rows;
+                resolve(ped);
+            })
+            .catch((e) => console.error(e.stack));
+    });
+  }
+
+  //30.2
+  getEvalCritRenovPedidosAprobados(id_prod,id_prov,id_contrato) {
+    return new Promise((resolve, reject) => {
+        database
+            .query(
+                `SELECT count(ped)
+                FROM vam_contratos AS cont, vam_pedidos AS ped
+                WHERE ped.estado = 'a' AND cont.id = $1 AND ped.id_prod = $2 AND ped.id_prov = $3 AND ped.f_emision BETWEEN cont.fecha_emision AND current_date`,
+                [id_contrato,id_prod,id_prov]
+            )
+            .then(function (response) {
+                const ped = response.rows;
+                resolve(ped);
             })
             .catch((e) => console.error(e.stack));
     });

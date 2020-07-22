@@ -214,6 +214,12 @@ FROM vam_eval_criterios AS eval
     INNER JOIN vam_var_criterios AS var ON var.id = eval.id_var_crit
 WHERE eval.id_prod = 4 AND eval.tipo_formula = 'i' AND eval.fecha_fin IS NULL;
 
+30.2--Cantidad de pedidos desde la creación del contrato hasta hoy
+SELECT count(ped)
+FROM vam_contratos AS cont, vam_pedidos AS ped
+WHERE cont.id = 1 AND ped.id_prod = 5 AND ped.id_prov = 4 AND ped.f_emision BETWEEN cont.fecha_emision AND current_date;
+
+
 30.3--Escala activa de un productor
 SELECT fecha_inicio, valor_min, valor_max
 FROM vam_escalas

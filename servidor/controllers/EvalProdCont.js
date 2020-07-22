@@ -98,17 +98,31 @@ class EvalProdCont {
 				.catch((e) => console.error(e.stack));
 	}
 
-  //Información de evaluación de criterios (inicial)
-	getEvalCritRenov(req, res) {
-		const id_prod = req.params.id_prod;
+  //Cantidad de pedidos desde la creación del contrato hasta hoy
+  getEvalCritRenovPedidos(req, res) {
+    const { id_contrato } = req.body; 
+    const id_prod = req.params.id_prod;
+		const id_prov = req.params.id_prov;
 
-		evaluacion.getEvalCritRenov(id_prod)
-				.then(function (evalua) {
-						res.status(200).json({ Info_de_Evaluacion_renovacion: evalua });
+		evaluacion.getEvalCritRenovPedidos(id_prod,id_prov,id_contrato)
+				.then(function (ped) {
+						res.status(200).json({ Cantidad: ped });
 				})
 				.catch((e) => console.error(e.stack));
 	}
 
+  //Cantidad de pedidos APROBADOS desde la creación del contrato hasta hoy
+  getEvalCritRenovPedidosAprobados(req, res) {
+    const { id_contrato } = req.body; 
+    const id_prod = req.params.id_prod;
+    const id_prov = req.params.id_prov;
+
+    evaluacion.getEvalCritRenovPedidosAprobados(id_prod,id_prov,id_contrato)
+        .then(function (ped) {
+            res.status(200).json({ Cantidad: ped });
+        })
+        .catch((e) => console.error(e.stack));
+  }
 }
 
 module.exports = { EvalProdCont };
