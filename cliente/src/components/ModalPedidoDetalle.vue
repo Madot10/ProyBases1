@@ -144,7 +144,7 @@
                                 :value="
                                     pedido.hasOwnProperty('forma_pago')
                                         ? pedido.forma_pago.tipo == 'cred'
-                                            ? pedido.forma_pago.interes_mensual
+                                            ? pedido.forma_pago.int_mensual
                                             : '-'
                                         : ''
                                 "

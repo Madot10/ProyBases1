@@ -304,6 +304,7 @@ export default {
                         id: c.id,
                         id_prov: c.provid,
                         prov_nombre: c.provnombre,
+                        prod_nombre: c.prodnombre,
                         fecha_emision: c.fecha_emision,
                         clausula: c.clausula,
                         exclusividad: c.exclusividad,
@@ -324,6 +325,7 @@ export default {
                         id_pais: c.id_pais,
                         tipo: c.tipo,
                         cargo: c.cargo,
+                        pais: c.nombre,
                     });
                 } else if (c.id_form_pago != null) {
                     //fp
