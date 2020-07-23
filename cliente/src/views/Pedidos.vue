@@ -195,8 +195,32 @@ export default {
 
             this.$bvModal.show("pe-modal");
         },
-        aprobarSelected() {
-            console.log("Aprobuebeseeee");
+        aprobarSelected(nro_fact) {
+            console.log("Aprobuebeseeee", nro_fact);
+
+            let idUser = this.$route.params.id;
+            let urlApi = `http://localhost:3000/prov/${idUser}/pedido/aprobar/${this.pedido.id}`;
+
+            let obj_apro = {
+                nro_factura: Number(nro_fact),
+            };
+
+            fetch(urlApi, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(obj_apro),
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((res) => {
+                    console.log("Servidor dice Aprobado: ", res);
+
+                    //Quitar de la lista
+                    this.pedidos.splice(this.index_selected_pedido, 1);
+                });
         },
         openCancelar(index) {
             this.index_selected_pedido = index;
@@ -204,16 +228,37 @@ export default {
 
             this.$bvModal.show("cancelar-modal");
         },
-        cancelarConfirm(text) {
-            console.log("Cancelando ", this.pedido);
+        cancelarConfirm(res) {
+            let idUser = this.$route.params.id;
+            console.log("Cancelando ", this.pedido, res);
+
+            let urlApi = `http://localhost:3000/prov/${idUser}/pedido/cancelar/${this.pedido.id}`;
+            let obj_can = {
+                motivo_cancel: res.text,
+            };
+
+            fetch(urlApi, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(obj_can),
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((resp) => {
+                    //Quitar de la lista
+                    this.pedidos.splice(this.index_selected_pedido, 1);
+                });
         },
         generatePedidos(pes, fes, fps) {
             let aux_pe = [];
 
             pes.forEach((p) => {
-                if (aux_pe[p.id] == null) {
-                    aux_pe[p.id] = {
-                        id: p.id,
+                if (aux_pe[p.id || p.pedid] == null) {
+                    aux_pe[p.id || p.pedid] = {
+                        id: p.id || p.pedid,
                         prov_nom: p.prov_nom,
                         fecha_emision: p.f_emision,
                         total_usd: Number(p.total_usd),
@@ -226,7 +271,7 @@ export default {
                     };
                 }
 
-                aux_pe[p.id].detalle.push({
+                aux_pe[p.id || p.pedid].detalle.push({
                     cas: Number(p.cas),
                     nombre: p.nombre,
                     volumen: Number(p.volumen),
