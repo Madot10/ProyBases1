@@ -20,7 +20,7 @@ CREATE SEQUENCE sec_VAM_PERFUMES
 
 CREATE TABLE VAM_PERFUMES(
    id SMALLINT DEFAULT nextval('sec_VAM_PERFUMES') PRIMARY KEY,
-   nombre VARCHAR(20) NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
    genero CHAR(1) NOT NULL,
    rango_edad CHAR(3) NOT NULL,
    descrip_componentes VARCHAR(400) NOT NULL,
@@ -73,9 +73,10 @@ CREATE SEQUENCE sec_VAM_PALABRA_CLAVE
 
 CREATE TABLE VAM_PALABRA_CLAVE(
     id SMALLINT DEFAULT nextval('sec_VAM_PALABRA_CLAVE') PRIMARY KEY,
-    palabra VARCHAR(40) UNIQUE NOT NULL ,
-    tipo_palabra CHAR(1),
-    CONSTRAINT check_tipo_palabra CHECK( tipo_palabra in ('c','n','p'))
+    palabra VARCHAR(50) NOT NULL ,
+    tipo_palabra CHAR(1)  NOT NULL,
+    CONSTRAINT check_tipo_palabra CHECK( tipo_palabra in ('c','n','p')),
+    CONSTRAINT u_palabra_clave UNIQUE(palabra, tipo_palabra)
 );
 
 DROP SEQUENCE IF EXISTS sec_VAM_ASOC_NACIONALES;

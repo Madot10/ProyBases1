@@ -1,5 +1,19 @@
 --INSERTS PARA EL AVANCE DEL AVANCE
 
+--PERFUMES
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Léonard Homme','m','ate','alcohol, agua','f','Leonard Homme es una fragancia de la familia olfativa Amaderada Aromática para Hombres. Leonard Homme se lanzó en 2008. La Nariz detrás de esta fragrancia es Firmenich');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Love Fury Nine West','f','adu','alcohol, agua','f','Love Fury de Nine West es una fragancia de la familia olfativa Floral Frutal para Mujeres. Love Fury se lanzó en 2012. La Nariz detrás de esta fragrancia es Firmenich');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Fabulous Isaac Mizrahi','f','adu','alcohol, agua','f','Fabulous de Isaac Mizrahi es una fragancia de la familia olfativa Floral Frutal para Mujeres. Fabulous se lanzó en 2012. La Nariz detrás de esta fragrancia es Firmenich');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('I Love New York for All Bond No 9','u','ate','alcohol, agua','f','I Love New York for All de Bond No 9 es una fragancia de la familia olfativa Oriental Vainilla para Hombres y Mujeres. I Love New York for All se lanzó en 2011. La Nariz detrás de esta fragrancia es IFF');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Odeur 71 Comme des Garçons','u','ate','resina de abeto, musgo de roble, bambú, jacinto, incienso, malagueta, notas amaderadas, notas metálicas, tinta y pimienta blanca','m','Odeur 71 de Comme des Garcons es una fragancia de la familia olfativa Chipre Floral para Hombres y Mujeres. Odeur 71 se lanzó en 2000. La Nariz detrás de esta fragancia es IFF');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Blu Love Affair Byblos','f','ate','alcohol, agua','f','Blu Love Affair de Byblos es una fragancia de la familia olfativa Oriental Especiada para Mujeres. Blu Love Affair se lanzó en 2006. La Nariz detrás de esta fragancia es IFF');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Herbae par L''Occitane','f','ate','alcohol agua, Anthoxanthumm metoxicinamato de etilhexilo, ethylexil salicilato, butilo, methoxidibenzoylmethalo, cielanhalo','f','Herbae de L''OCCITANE fue diseñado para traducir esta forma de imperfección que nos hace únicos. Es por eso que Herbae de L''OCCITANE eligió hierbas silvestres para encarnar su fragancia');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Collection de Parfums 86 Champs – Cassis Rhubarbe','f','ate','alcohol, agua, limonene, linalol, aceite de cáscara de mandarina, Helichrysum italicum, aceite de flor de Lavandula angustifolia','f','Una fragancia viva, afrutada y picante que combina Cassis de Bourgogne y Ruibarbo. También disponible en nuestra tienda 86Champs');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Thé Vert','u','ate','alcohol, agua, hexilo cinamal, extracto de hoja de camelia sinensis, cítrico aurantium dulcis, (naranja), limoneno, linalol, citral, alcohol benclilico, geraniol, citronol','f','Un dulce aroma a cítricos, té y jazmín para alejarnos del ajetreo de la vida cotidiana.');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Rose de Grasse','f','ate','alcohol, agua','m','La rosa es un símbolo intemporal de belleza y feminidad. Como una obra de arte original, Rose de Grasse está meticulosamente elaborada con una atención artesanal a los detalles. En el fondo hay una fusión de rosas, incluida la rosa Centifolia de cien pétalos, cuidadosamente seleccionada en Grasse, la capital francesa de la perfumería desde el siglo XVI, donde la historia de las fragancias es arte');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Amber Musk','f','ate','alcohol, agua','m','Amber Musk combina flores sensuales, ámbar distintivo y almizcle cremoso. Ambrox causa una primera impresión aterciopelada, en contraste con una suculenta explosión de agua de coco y la feminidad de Rose Centifolia Absolute. Al igual que el resplandor de las llamas ámbar, el persistente Benzoin & Musk infunde calidez en la fragancia');
+INSERT INTO VAM_PERFUMES(nombre,genero,rango_edad,descrip_componentes,tipo_estructura,descrip_perf) VALUES ('Cashmere Mist Donna Karan','f','adu','alcohol, agua','m','Una suntuosa caricia de lujo. El eau de parfum Donna Karan Cashmere Mist es una fragancia floral pura e intoxicante inspirada en la sensación de la cachemira sobre la piel de una mujer. Combinando las esencias de jazmín marroquí, lirio de los valles y la frescura de la bergamota, contra un cálido fondo de sándalo, ámbar y almizcle, es un aroma sensualmente suave que seduce los sentidos');
+
 --FLIA OLFAT
 INSERT INTO VAM_FLIA_OLFAT(nombre) VALUES ('Verde');
 INSERT INTO VAM_FLIA_OLFAT(nombre) VALUES ('Cítrico');
@@ -16,6 +30,7 @@ INSERT INTO VAM_FLIA_OLFAT(nombre) VALUES ('Otros');
 INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Ubicación','Ubicación geográfica del proveedor');
 INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Formas de envíos','Costos y alternativas de envíos de los pedidos según ubicación geográfica de los clientes');
 INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Formas de pago','Alternativas y condiciones de pago que ofrece el proveedor');
+INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Pedidos Aprobados','Cumplimiento de los pedidos en el tiempo solicitado por la compañía');
 INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Exito','Puntaje objetivo de éxito');
 
 -- OTROS_ING_COMP
@@ -40,6 +55,67 @@ INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('metil chavicol');
 INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('raices');
 INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('tapas de floración');
 
+--PALABRA CLAVE
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Madera','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Aromática','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Floral','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Almizcle','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Ambar','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Vainilla','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Frutas Maduras','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Musgo','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Musks ámbar','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Hierbas aromáticas','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Pachulí','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Bálsamo','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Lavanda','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Musgo de Roble','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Bergamota','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Láudano','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Sándalo','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Cedro','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Vetiver','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Especias','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Flores exóticas','n');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Hierba recién cortada','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Tallos de plantas cubiertas de rocío','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Hojas crujientes','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Agujas de los pinos en el aire del bosque','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Verano','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Juventud','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Frutas','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Especias','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Alegría','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Ganas de vivir','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Calidez','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Lucidez','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Vigor','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Familiaridad','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Madera','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Vainilla','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Haba tonka','p');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Fresca','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Optimista','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Desinhibida','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Efímero','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Estimulante','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Floral','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Natural','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Luminosa','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Vital','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Asertivo','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Tenaz','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Energía','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Confianza','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Cálidos','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Secos','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Profundos','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Sensual','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Dulces','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Especiados','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Seductor','c');
+INSERT INTO VAM_PALABRA_CLAVE(palabra,tipo_palabra) VALUES ('Voluptuoso','c');
+
 --ASOC NACIONAL
 INSERT INTO VAM_ASOC_NACIONALES(nombre,region,descripcion) VALUES ('FFAANZ','ap','Flavour & Fragrance Association of Australia & New Zealand');
 INSERT INTO VAM_ASOC_NACIONALES(nombre,region,descripcion) VALUES ('CAFFCI','ap','China Association of Flavor, Fragrance & Cosmetic Industries');
@@ -62,6 +138,150 @@ INSERT INTO VAM_ASOC_NACIONALES(nombre,region,descripcion) VALUES ('ACHISAF','la
 INSERT INTO VAM_ASOC_NACIONALES(nombre,region,descripcion) VALUES ('CISF','la','Cámara de la Industria de Sabores y Fragrancias');
 INSERT INTO VAM_ASOC_NACIONALES(nombre,region,descripcion) VALUES ('ANFPA','la','Asociación Nacional de Fabricantes de Productos Aromáticos');
 INSERT INTO VAM_ASOC_NACIONALES(nombre,region,descripcion) VALUES ('FCA','na','Fragrance Creators Association');
+
+--FLIA PRINCIPAL
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (5,1);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (8,1);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (3,2);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (4,2);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (3,3);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (4,3);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (9,4);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (10,4);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (3,5);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (7,5);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (9,6);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (10,6);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (3,7);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (4,7);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (4,8);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (1,9);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (2,9);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (3,10);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (8,11);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (9,11);
+INSERT INTO VAM_FO_PRINCIPAL(id_flia_olf,id_perf) VALUES (3,12);
+
+--PERF INTENSIDAD
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (1,'edc',5);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (2,'edp',15);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (3,'edp',15);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (4,'edp',15);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (5,'edt',10);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (6,'edt',10);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (7,'edp',15);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (8,'edp',15);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (9,'edt',10);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (10,'edp',15);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (11,'edp',15);
+INSERT INTO VAM_PERF_INTENSIDADES(id_perfume,tipo,porc_concentracion) VALUES (12,'edp',15);
+
+--PRESENTACIONES
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (1,1,100);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (2,2,50);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (3,3,50);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (4,4,100);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (4,4,2);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (5,5,200);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (6,6,100);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (7,7,10);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (7,7,50);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (7,7,90);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (8,8,90);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (9,9,10);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (9,9,100);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (10,10,50);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (10,10,100);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (11,11,50);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (11,11,100);
+INSERT INTO VAM_PRESENTACIONES(id_perf_intensidad,id_perf,volumen) VALUES (12,12,100);
+
+--F FN
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (1,1);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (2,1);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (3,1);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,1);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,1);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (2,2);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (3,3);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,3);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (3,4);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (3,5);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,5);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (3,6);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,6);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,7);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,8);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,8);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (3,9);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,10);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,11);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (7,11);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (8,11);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,12);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (6,13);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (6,14);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (6,15);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (7,15);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (7,16);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,17);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (8,18);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (8,19);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,20);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,20);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,21);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,21);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,1);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,17);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (1,22);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (1,23);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (1,24);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (1,25);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (2,26);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (2,27);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,27);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (3,28);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,28);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (7,28);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (3,29);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,30);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,31);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,32);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,33);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,34);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,35);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (8,36);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,37);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,37);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,38);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,38);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (1,39);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (1,40);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (1,41);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (2,42);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (2,43);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (3,44);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,45);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (4,46);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,47);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,48);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (5,49);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (6,50);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (6,51);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (7,52);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (7,53);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (7,54);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,52);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,55);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,55);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,56);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,56);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,57);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,57);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,58);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,58);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (9,59);
+INSERT INTO VAM_F_FN(id_flia_olf,id_palabra_clave) VALUES (10,59);
 
 --Productor
 INSERT INTO VAM_PRODUCTORES(nombre,email,telefono,pag_web,id_asoc_nac) VALUES ('Firmenich','daaid.lyon@firmenich.com',33170377661,'www.firmenich.com',NULL);
@@ -338,6 +558,40 @@ INSERT INTO VAM_PROVEEDORES(nombre,email,telefono,pag_web,id_pais,id_asoc_nac) V
 INSERT INTO VAM_PROVEEDORES(nombre,email,telefono,pag_web,id_pais,id_asoc_nac) VALUES ('Mane','yaas.dumont@mane.com',34493097000,'www.mane.com/',237,21);
 INSERT INTO VAM_PROVEEDORES(nombre,email,telefono,pag_web,id_pais,id_asoc_nac) VALUES ('Inoue Pergumery MFG','overseas-div@ino-p.com',81337299147,'www.ino-p.com/en',115,4);
 
+--PERFUMISTAS
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Daniel','Moliere',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Cristophe','Raynord',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Jean-Marc','Chaillan',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Isaac','Mizrahi',237);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Laurent','Le Guernec',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('David','Apel',237);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Antoine','Lie',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Jean-Cristophe','Herault',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Philipe','Roque',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Ilias','Ermenidis',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Karin','Dubreuil',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Alexis','Dadier',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Olivier','Cresp',80);
+INSERT INTO VAM_PEFUMISTAS(nombre,apellido,id_pais) VALUES ('Rodrigo','Flores-Roux',143);
+
+--P_P
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (1,1);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (2,1);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (3,2);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (4,3);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (5,4);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (6,4);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (7,5);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (8,5);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (9,6);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (10,6);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (11,7);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (12,8);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (11,9);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (13,10);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (13,11);
+INSERT INTO VAM_P_P(id_perfumista,id_perfume) VALUES (14,12);
+
 --PA_PR
 INSERT INTO VAM_PA_PR(id_productor,id_pais) VALUES (1,217);
 INSERT INTO VAM_PA_PR(id_productor,id_pais) VALUES (1,237);
@@ -448,6 +702,20 @@ INSERT INTO VAM_PA_PR(id_productor,id_pais) VALUES (4,45);
 INSERT INTO VAM_PA_PR(id_productor,id_pais) VALUES (4,234);
 INSERT INTO VAM_PA_PR(id_productor,id_pais) VALUES (4,113);
 INSERT INTO VAM_PA_PR(id_productor,id_pais) VALUES (4,90);
+
+--PR FE
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (1,1);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (1,2);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (1,3);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (2,4);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (2,5);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (2,6);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (4,7);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (4,8);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (4,9);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (3,10);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (3,11);
+INSERT INTO VAM_PR_FE(id_productor,id_perfume) VALUES (3,12);
 
 --RESULT EVAL
 INSERT INTO VAM_RESULT_EVAL(fecha,id_prod,id_prov,resultado,tipo_eval) VALUES ('31/01/2015',4,1,80,'i');
