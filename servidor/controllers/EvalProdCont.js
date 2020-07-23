@@ -87,6 +87,16 @@ class EvalProdCont {
         });
   }
 
+  //Variables de evaluación inicial
+	getVarInicial(req, res) {
+
+		evaluacion.getVarInicial()
+				.then(function (variable) {
+						res.status(200).json({ Info_de_Evaluacion_inicial: variable });
+				})
+				.catch((e) => console.error(e.stack));
+  }
+  
   //Información de evaluación de criterios (inicial)
 	getEvalCritInicial(req, res) {
 		const id_prod = req.params.id_prod;

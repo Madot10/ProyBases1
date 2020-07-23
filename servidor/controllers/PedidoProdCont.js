@@ -77,6 +77,29 @@ class PedidoProdCont {
 				.catch((e) => console.error(e.stack));
 	}
 
+	
+	//Obtener fe pedidos aprobados
+	getPedidosfe(req, res) {
+		const id_prod = req.params.id_prod;
+
+		pedido.getPedidosfe(id_prod)
+				.then(function (pedidos) {
+						res.status(200).json({ Info_Pedidos_Pendientes: pedidos });
+				})
+				.catch((e) => console.error(e.stack));
+	}
+
+	//Obtener fp pedidos aprobados
+	getPedidosfp(req, res) {
+		const id_prod = req.params.id_prod;
+
+		pedido.getPedidosfp(id_prod)
+				.then(function (pedidos) {
+						res.status(200).json({ Info_Pedidos_Pendientes: pedidos });
+				})
+				.catch((e) => console.error(e.stack));
+	}
+
 	//Cancelar pedido siendo productor
 	updateCancelarPedido(req, res){
     const { motivo_cancel } = req.body;

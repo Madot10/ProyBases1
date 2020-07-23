@@ -155,12 +155,15 @@ SELECT condpe.id_pedido, condpe.id_contrato, condpe.id_cont_prov, condpe.id_cont
 SELECT condpe.id_pedido, condpe.id_contrato, condpe.id_cont_prov, condpe.id_cont_prod, condcon.id_form_pago, condcon.id_form_envio, fp.tipo FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon LEFT JOIN vam_forma_pagos AS fp ON condcon.id_form_pago = fp.id WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = 2 AND condpe.id_cond = condcon.id;
 
 21--INgredeintes y presetnacion de pedidos pendientes de un prov = 2 (con contrato activo)
-SELECT p.id AS pedid, p.estado, p.f_emision, p.id_prod, p.subtotal_usd, p.total_usd, ing.cas, ing.nombre, pres.volumen
-                FROM vam_pedidos AS p, vam_det_pedido AS det
-                    INNER JOIN vam_ing_presentaciones AS pres ON pres.id = det.id_ing_presentacion
-                    INNER JOIN vam_ingrediente_esencias AS ing ON ing.cas = pres.cas_ingrediente
-                WHERE p.estado = 'p' AND p.id = det.id_pedido AND p.id_prov = 2 AND det.id_prov_ing = p.id_prov AND p.id_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))
--
+SELECT p.id AS pedid, p.estado, p.f_emision, prod.nombre AS nom_prod, p.subtotal_usd, p.total_usd, ing.cas, ing.nombre AS nom_ing,  det.id AS id_det, det.cantidad, pres.volumen, pres.precio
+FROM vam_pedidos AS p
+    INNER JOIN vam_productores AS prod ON p.id_prod = prod.id
+    INNER JOIN vam_det_pedido AS det ON det.id_pedido = p.id
+    INNER JOIN vam_ing_presentaciones AS pres ON pres.id = det.id_ing_presentacion
+    INNER JOIN vam_ingrediente_esencias AS ing ON ing.cas = pres.cas_ingrediente
+WHERE p.estado = 'p' AND p.id = det.id_pedido AND p.id_prov = 2 AND det.id_prov_ing = p.id_prov AND p.id_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))
+
+
 21.1 --Dame FE de pedidos PENDIENTES de un prov = 2 (Prov con contrato activo)
 SELECT condpe.id_pedido, fe.id, fe.tipo, pais.nombre AS nombre_pais
 FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
@@ -178,12 +181,13 @@ WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = 2 AND condpe.id
 
 
 24--Proveedores activos con sus Ing y presentaciones para realizar pedido segun un prod (contratos activos con dicho prod = 2)
-SELECT prov.id, prov.nombre AS prov_nombre, prov.email, prov.telefono, prov.pag_web, ing.cas, ing.nombre AS ing_nombre, ing.tipo, ing.descripcion, ing.taxonomia, ingpre.volumen, ingpre.precio
+SELECT prov.id, prov.nombre AS nom_prov, prov.email, prov.telefono, prov.pag_web, pais.nombre AS nom_pais, ing.cas, ing.nombre AS nom_ing, ing.tipo, pres.volumen, pres.precio
 FROM vam_mp_c AS mpc
+    INNER JOIN vam_proveedores AS prov ON mpc.id_cont_prov = prov.id
+    LEFT JOIN vam_paises AS pais ON pais.id = prov.id_pais
     LEFT JOIN vam_ingrediente_esencias AS ing ON mpc.cas = ing.cas
-    LEFT JOIN vam_ing_presentaciones AS ingpre ON ing.cas = ingpre.cas_ingrediente
-    LEFT JOIN vam_proveedores AS prov ON prov.id = ing.id_proveedor
-WHERE mpc.id_cont_prod = 2 AND mpc.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 2 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))
+    LEFT JOIN vam_ing_presentaciones AS pres ON ing.cas = pres.cas_ingrediente
+WHERE mpc.id_cont_prov = prov.id AND mpc.id_cont_prod = 1 AND mpc.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = 1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))
 
 24.1--FE DE PROVs con contrato disponible con un prod = 1 (Prov con contrato activo)
 SELECT fe.id_prov, fe.id AS id_fe, pais.nombre, fe.tipo, fe.cargo
@@ -225,4 +229,15 @@ SELECT fecha_inicio, valor_min, valor_max
 FROM vam_escalas
 WHERE id_prod = 4 AND fecha_fin IS NULL;
 
+
+--Queries de recomendador
+--Datos principales del perfume
+SELECT perf.id, perf.nombre, perf.genero, perf.rango_edad, perf.descrip_componentes, perf.tipo_estructura, perf.descrip_perf, perfum.id AS id_perfumista, perfum.nombre AS nom_perfumista, perfum.apellido, pais.nombre, perf_int.id AS id_perf_int, perf_int.tipo AS tipo_int, perf_int.porc_concentracion, perf_int.descripcion, pres.id AS id_pres, pres.volumen
+FROM vam_perfumes AS perf
+    INNER JOIN vam_perf_intensidades AS perf_int ON perf.id = perf_int.id_perfume
+    INNER JOIN vam_presentaciones AS pres on perf_int.id = pres.id_perf_intensidad and perf_int.id_perfume = pres.id_perf
+    INNER JOIN vam_p_p AS vpp on perf.id = vpp.id_perfume
+    INNER JOIN vam_pefumistas AS perfum on perfum.id = vpp.id_perfumista
+    INNER JOIN vam_paises AS pais ON pais.id = perfum.id_pais
+WHERE perf.id = 1;
 

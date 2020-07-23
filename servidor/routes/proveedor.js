@@ -21,10 +21,10 @@ router.get("/:id_prov/pedidos", pedido.getPedidos)
 //Pedidos pendientes por confirmar por el proveedor
 router.get("/:id_prov/pedidos/pendientes", pedido.getPedidosPendientes)
 
-//Fe y Fp de pedidos pendientes por confirmar
+//Fe de pedidos pendientes por confirmar
 router.get("/:id_prov/pedidos/pendientes/fe", pedido.getPedidosPendientesfe)
 
-//Fe y Fp de pedidos pendientes por confirmar
+//Fp de pedidos pendientes por confirmar
 router.get("/:id_prov/pedidos/pendientes/fp", pedido.getPedidosPendientesfp)
 
 //Para aprobar pedido, se requieren de un post y de un put

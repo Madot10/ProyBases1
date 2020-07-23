@@ -16,8 +16,7 @@ INSERT INTO VAM_FLIA_OLFAT(nombre) VALUES ('Otros');
 INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Ubicación','Ubicación geográfica del proveedor');
 INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Formas de envíos','Costos y alternativas de envíos de los pedidos según ubicación geográfica de los clientes');
 INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Formas de pago','Alternativas y condiciones de pago que ofrece el proveedor');
-INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Pedidos Aprobados','Cumplimiento de los pedidos en el tiempo solicitado por la compañía');
-INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Éxito','Puntaje objetivo de éxito');
+INSERT INTO VAM_VAR_CRITERIOS(nombre_crit,descripcion) VALUES ('Exito','Puntaje objetivo de éxito');
 
 -- OTROS_ING_COMP
 INSERT INTO VAM_OTROS_ING_COMP(nombre) VALUES ('acetato de cinamilo');

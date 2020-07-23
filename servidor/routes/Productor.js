@@ -77,6 +77,12 @@ router.get("/:id_prod/pedido/nuevo/fp", pedido.getProvsParaPedidofp);
 //Lista de pedidos aprobados
 router.get("/:id_prod/pedidos", pedido.getPedidos);
 
+//Fe de pedidos aprobados
+router.get("/:id_prod/pedidos/fe", pedido.getPedidosfe)
+
+//Fp de pedidos aprobados
+router.get("/:id_prod/pedidos/fp", pedido.getPedidosfp)
+
 //Cancelar pedido siendo productor
 router.put("/:id_prod/pedido/cancelar/:id_ped", pedido.updateCancelarPedido);
 
@@ -97,7 +103,10 @@ router.post("/:id_prod/escala/crear", eval.createEscala);
 router.put("/:id_prod/escala/vencer", eval.updateEscala);
 
 //Crear evaluación de criterios y vencer otras
-router.post("/:id_prod/evaluacion_criterios", eval.createEvalCriterios);
+router.post("/evaluacion_criterios", eval.createEvalCriterios);
+
+//Variables de evaluación inicial
+router.get("/evaluacion/inicial/variables", eval.getVarInicial);
 
 //Información de evaluación de criterios (inicial)
 router.get("/:id_prod/evaluacion_criterios/inicial", eval.getEvalCritInicial);

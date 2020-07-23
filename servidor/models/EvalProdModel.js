@@ -116,6 +116,23 @@ class EvalProdModel{
     });
   }
 
+  //28
+  getVarInicial() {
+    return new Promise((resolve, reject) => {
+        database
+            .query(
+                `SELECT *
+                FROM vam_var_criterios
+                WHERE nombre_crit not like 'Exito'`,
+            )
+            .then(function (response) {
+                const prods = response.rows;
+                resolve(prods);
+            })
+            .catch((e) => console.error(e.stack));
+    });
+  }
+
   //30.1
   getEvalCritInicial(id_prod) {
     return new Promise((resolve, reject) => {
