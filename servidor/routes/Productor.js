@@ -3,11 +3,13 @@ const router = express.Router();
 const { ContratoProdCont } = require("../controllers/ContratoProdCont");
 const { HomeCont } = require("../controllers/HomeCont");
 const { PedidoProdCont } = require("../controllers/PedidoProdCont");
+const { EvalProdCont } = require("../controllers/EvalProdCont");
 
 //Se crea clase Controller y se llaman a los métodos de esa clase
 const contrato = new ContratoProdCont();
 const home = new HomeCont();
 const pedido = new PedidoProdCont();
+const eval = new EvalProdCont();
 
 //Home
 //Lista de proveedores con IFRA activo
@@ -60,10 +62,59 @@ router.post("/:id_prod/contratos/nuevo/:id_prov", contrato.createContrato);
 router.post("/:id_prod/contratos/:id_contrato/renovar/:id_prov", contrato.renovarContrato);
 
 //Pedido
-//Crear del pedido
+//Creación del pedido
 router.post("/:id_prod/pedido/nuevo/:id_prov", pedido.createPedido);
+
+//Lista de proveedores aptos para generar pedidos
+router.get("/:id_prod/pedido/nuevo", pedido.getProvsParaPedido);
+
+//Lista de fe de proveedores aptos para generar pedidos
+router.get("/:id_prod/pedido/nuevo/fe", pedido.getProvsParaPedidofe);
+
+//Lista de fp de proveedores aptos para generar pedidos
+router.get("/:id_prod/pedido/nuevo/fp", pedido.getProvsParaPedidofp);
+
+//Lista de pedidos aprobados
+router.get("/:id_prod/pedidos", pedido.getPedidos);
+
+//Fe de pedidos aprobados
+router.get("/:id_prod/pedidos/fe", pedido.getPedidosfe)
+
+//Fp de pedidos aprobados
+router.get("/:id_prod/pedidos/fp", pedido.getPedidosfp)
 
 //Cancelar pedido siendo productor
 router.put("/:id_prod/pedido/cancelar/:id_ped", pedido.updateCancelarPedido);
 
+//Evaluación de Proveedores
+//Guardar puntaje obtenido según tipo de evaluación
+router.post("/:id_prod/eval/result/:id_prov", eval.guardarResultadoEval);
+
+//Crear Variable
+router.post("/variable/crear", eval.createVariable);
+
+//Listar escalas
+router.get("/:id_prod/escalas", eval.getEscalas);
+
+//Crear Escala
+router.post("/:id_prod/escala/crear", eval.createEscala);
+
+//Vencer Escala
+router.put("/:id_prod/escala/vencer", eval.updateEscala);
+
+//Crear evaluación de criterios y vencer otras
+router.post("/evaluacion_criterios", eval.createEvalCriterios);
+
+//Variables de evaluación inicial
+router.get("/evaluacion/inicial/variables", eval.getVarInicial);
+
+//Información de evaluación de criterios (inicial)
+router.get("/:id_prod/evaluacion_criterios/inicial", eval.getEvalCritInicial);
+
+//Información de evaluación de criterios (renovación)
+//Cantidad de pedidos desde la creación del contrato hasta hoy
+router.get("/:id_prod/evaluacion_criterios/renovacion/all/:id_prov", eval.getEvalCritRenovPedidos);
+
+//Cantidad de pedidos APROBADOS desde la creación del contrato hasta hoy
+router.get("/:id_prod/evaluacion_criterios/renovacion/:id_prov", eval.getEvalCritRenovPedidosAprobados);
 module.exports = router;
