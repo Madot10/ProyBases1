@@ -129,9 +129,10 @@ export default {
             console.log("READY COND: ", obj_data, this.$route);
 
             let arr_pais = [];
-            this.datosProv.formas_envios.forEach((fe) => {
-                if (obj_data.form_env.indexOf(fe.id_form_envio) > -1) {
-                    arr_pais.push(fe.id_pais);
+            obj_data.form_env.forEach((fe) => {
+                let i = this.datosProv.formas_envios.indexOf(fe.id_form_env);
+                if (i > -1) {
+                    arr_pais.push(this.datosProv.formas_envios[i].id_pais);
                 }
             });
 
@@ -156,6 +157,10 @@ export default {
                     body: JSON.stringify(contrato_final),
                 }
             );
+
+            this.$router.push({
+                name: "HomeProd",
+            });
         },
     },
     computed: {},

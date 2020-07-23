@@ -9,6 +9,9 @@
                 {{ aviso.mensaje }}
             </b-toast>
 
+            <!--MODAL EVAL RENOV-->
+            <modal-renov-eval @vaRenov="openRenovModal"></modal-renov-eval>
+
             <!-- MODAL DETALLE CONTRATO -->
             <modal-contrato-detalle :contrato="contrato"></modal-contrato-detalle>
 
@@ -16,7 +19,7 @@
             <modal-renovacion @renovSelect="renovacionSelected"></modal-renovacion>
 
             <!-- MODAL CANCELAR -->
-            <modal-cancelar @optionCancelar="cancelarConfirm"></modal-cancelar>
+            <modal-cancelar @optionCancelar="cancelarConfirm" :mode_con="true"></modal-cancelar>
 
             <!-- MODAL DENUEVO CONTRATO -->
             <modal-quiere-contrato-denuevo
@@ -80,7 +83,7 @@
                     <b-button
                         v-show="mode_renovar"
                         variant="outline-primary"
-                        @click="openRenovModal(row.index)"
+                        @click="openModalEvalRenov(row.index)"
                         >RENOVAR</b-button
                     >
                     <span v-show="mode_renovar"> - </span>
@@ -112,6 +115,7 @@ import ModalContratoDetalle from "../components/ModalContratoDetalle.vue";
 import ModalRenovacion from "../components/ModalRenovacion.vue";
 import ModalCancelar from "../components/ModalCancelar.vue";
 import ModalQuiereContratoDenuevo from "../components/ModalQuiereContratoDenuevo.vue";
+import ModalRenovEval from "../components/ModalRenovEval.vue";
 
 export default {
     components: {
@@ -120,6 +124,7 @@ export default {
         ModalRenovacion,
         ModalQuiereContratoDenuevo,
         ModalCancelar,
+        ModalRenovEval,
     },
     data() {
         return {
@@ -129,7 +134,11 @@ export default {
             perPage: 20,
             mode_renovar: false,
             fields: [
-                { key: "prov_nombre", label: "Proveedor", sortable: true },
+                {
+                    key: this.getUserType() == "prod" ? "prov_nombre" : "prod_nombre",
+                    label: this.getUserType() == "prod" ? "Proveedor" : "Productor",
+                    sortable: true,
+                },
                 {
                     key: "fecha_emision",
                     label: "Fecha de emisión",
@@ -175,10 +184,13 @@ export default {
                 //Hacer nada
             }
         },
-        openRenovModal(index) {
+        openModalEvalRenov(index) {
             this.index_selected_contrato = index;
             this.contrato = this.contratos[index];
 
+            this.$bvModal.show("eval-renov-modal");
+        },
+        openRenovModal() {
             this.$bvModal.show("ask-renov-modal");
         },
         getDateFormated(date) {

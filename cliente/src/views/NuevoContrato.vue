@@ -7,11 +7,15 @@
                 {{ aviso.mensaje }}
             </b-toast>
 
+            <!-- MODAL PREG EVAL -->
+            <modal-preg-eval :prov="proveedor" @vaContrato="openExclModal"></modal-preg-eval>
+
             <!-- MODAL DETALLE PROV -->
             <modal-prov-detalle
                 :proveedor="proveedor"
-                @evaluar="continuarEvaluarProv"
+                @ok="continuarEvaluarProv"
                 :only_view="false"
+                mode="e"
             ></modal-prov-detalle>
 
             <!-- MODAL EXCLUSIVIDAD -->
@@ -61,12 +65,14 @@
 import CardMain from "../components/CardMain";
 import ModalProvDetalle from "../components/ModalProvDetalle.vue";
 import ModalExclusividad from "../components/ModalExclusividad.vue";
+import ModalPregEval from "../components/ModalPregEval.vue";
 
 export default {
     components: {
         CardMain,
         ModalProvDetalle,
         ModalExclusividad,
+        ModalPregEval,
     },
     data() {
         return {
@@ -102,6 +108,9 @@ export default {
         },
         continuarEvaluarProv() {
             console.log("A EVALUAR EL PROV ", this.index_selected_prov);
+            this.$bvModal.show("eval-preg-modal");
+        },
+        openExclModal() {
             this.$bvModal.show("exclusividad-modal");
         },
         exclSelect(newIngs, opt) {
