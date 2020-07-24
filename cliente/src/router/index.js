@@ -8,7 +8,7 @@ const routes = [
         //Recomendador?
         path: "/",
         name: "Home",
-        redirect: { name: "admin" },
+        component: () => import("../views/Recomendador.vue"),
     },
     {
         path: "/admin",
