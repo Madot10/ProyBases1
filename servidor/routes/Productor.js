@@ -78,10 +78,10 @@ router.get("/:id_prod/pedido/nuevo/fp", pedido.getProvsParaPedidofp);
 router.get("/:id_prod/pedidos", pedido.getPedidos);
 
 //Fe de pedidos aprobados
-router.get("/:id_prod/pedidos/fe", pedido.getPedidosfe)
+router.get("/:id_prod/pedidos/fe", pedido.getPedidosfe);
 
 //Fp de pedidos aprobados
-router.get("/:id_prod/pedidos/fp", pedido.getPedidosfp)
+router.get("/:id_prod/pedidos/fp", pedido.getPedidosfp);
 
 //Cancelar pedido siendo productor
 router.put("/:id_prod/pedido/cancelar/:id_ped", pedido.updateCancelarPedido);
@@ -103,7 +103,7 @@ router.post("/:id_prod/escala/crear", eval.createEscala);
 router.put("/:id_prod/escala/vencer", eval.updateEscala);
 
 //Crear evaluación de criterios y vencer otras
-router.post("/evaluacion_criterios", eval.createEvalCriterios);
+router.post("/:id_prod/evaluacion_criterios", eval.createEvalCriterios);
 
 //Variables de evaluación inicial
 router.get("/evaluacion/inicial/variables", eval.getVarInicial);
@@ -111,10 +111,16 @@ router.get("/evaluacion/inicial/variables", eval.getVarInicial);
 //Información de evaluación de criterios (inicial)
 router.get("/:id_prod/evaluacion_criterios/inicial", eval.getEvalCritInicial);
 
+//Información de evaluación de criterios (renov)
+router.get("/:id_prod/evaluacion_criterios/renovacion", eval.getEvalCritRenov);
+
 //Información de evaluación de criterios (renovación)
 //Cantidad de pedidos desde la creación del contrato hasta hoy
 router.get("/:id_prod/evaluacion_criterios/renovacion/all/:id_prov", eval.getEvalCritRenovPedidos);
 
 //Cantidad de pedidos APROBADOS desde la creación del contrato hasta hoy
-router.get("/:id_prod/evaluacion_criterios/renovacion/:id_prov", eval.getEvalCritRenovPedidosAprobados);
+router.get(
+    "/:id_prod/evaluacion_criterios/renovacion/:id_prov",
+    eval.getEvalCritRenovPedidosAprobados
+);
 module.exports = router;

@@ -501,7 +501,7 @@ CREATE TABLE VAM_EVAL_CRITERIOS(
     CONSTRAINT check_tipo CHECK(tipo_formula in ('i','r')),
     CONSTRAINT fk_prod_criterios FOREIGN KEY (id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT fk_var_criterio FOREIGN KEY (id_var_crit) REFERENCES VAM_VAR_CRITERIOS(id) ON DELETE CASCADE,
-    CONSTRAINT pk_eval_criterio PRIMARY KEY (fecha_inicio, id_prod, id_var_crit)
+    CONSTRAINT pk_eval_criterio PRIMARY KEY (fecha_inicio, id_prod, id_var_crit,tipo_formula)
 );
 
 CREATE TABLE VAM_ING_ORIGEN(
