@@ -103,6 +103,45 @@ class PedidoProvModel {
         });
     }
 
+    getPedidosFe(id_prov) {
+        return new Promise((resolve, reject) => {
+            database
+                .query(
+                    `SELECT condpe.id_pedido, fe.id, fe.tipo, fe.cargo, pais.nombre AS nombre_pais
+                    FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+                    INNER JOIN vam_pedidos AS p ON p.id_prod = condcon.id_prod_cont AND p.id_prov = condcon.id_prov_cont
+                        INNER JOIN vam_forma_envios AS fe ON condcon.id_form_envio = fe.id
+                        INNER JOIN vam_paises AS pais ON pais.id = condcon.id_form_envio_pais
+                    WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cont_prov = $1 AND condpe.id_cond = condcon.id AND  p.estado != 'p';`,
+                    [id_prov]
+                )
+                .then(function (response) {
+                    const provs = response.rows;
+                    resolve(provs);
+                })
+                .catch((e) => console.error(e.stack));
+        });
+    }
+
+    getPedidosFp(id_prov) {
+        return new Promise((resolve, reject) => {
+            database
+                .query(
+                    `SELECT condpe.id_pedido, fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
+                    FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+                    INNER JOIN vam_pedidos AS p ON p.id_prod = condcon.id_prod_cont AND p.id_prov = condcon.id_prov_cont
+                        LEFT JOIN vam_forma_pagos AS fp ON condcon.id_form_pago = fp.id
+                    WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = $1 AND condpe.id_cond = condcon.id AND  p.estado != 'p';`,
+                    [id_prov]
+                )
+                .then(function (response) {
+                    const provs = response.rows;
+                    resolve(provs);
+                })
+                .catch((e) => console.error(e.stack));
+        });
+    }
+
     //21
     getPedidosPendientes(id_prov) {
         return new Promise((resolve, reject) => {

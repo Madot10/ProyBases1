@@ -133,7 +133,7 @@ class EvalProdCont {
 
     //Cantidad de pedidos desde la creación del contrato hasta hoy
     getEvalCritRenovPedidos(req, res) {
-        const { id_contrato } = req.body;
+        const id_contrato = req.params.id_contrato;
         const id_prod = req.params.id_prod;
         const id_prov = req.params.id_prov;
 
@@ -147,7 +147,7 @@ class EvalProdCont {
 
     //Cantidad de pedidos APROBADOS desde la creación del contrato hasta hoy
     getEvalCritRenovPedidosAprobados(req, res) {
-        const { id_contrato } = req.body;
+        const id_contrato = req.params.id_contrato;
         const id_prod = req.params.id_prod;
         const id_prov = req.params.id_prov;
 

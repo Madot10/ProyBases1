@@ -174,11 +174,12 @@ export default {
         respuestaCreate(res) {
             console.warn("capturado", res);
             if (!res) {
-                this.aviso.mensaje = "¡No se ha podido registrar la fórmula!";
+                this.aviso.mensaje = "¡Ha ocurrido un error al registrar la fórmula!";
                 this.aviso.titulo = "Aviso";
                 this.aviso.tipo = "danger";
                 this.$bvToast.show("toast-aviso");
             }
+            this.$router.go();
         },
         openModalNuevo(esc) {
             console.log("Esc", esc);

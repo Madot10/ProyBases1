@@ -116,11 +116,14 @@ router.get("/:id_prod/evaluacion_criterios/renovacion", eval.getEvalCritRenov);
 
 //Información de evaluación de criterios (renovación)
 //Cantidad de pedidos desde la creación del contrato hasta hoy
-router.get("/:id_prod/evaluacion_criterios/renovacion/all/:id_prov", eval.getEvalCritRenovPedidos);
+router.get(
+    "/:id_prod/evaluacion_criterios/renovacion/all/:id_prov/:id_contrato",
+    eval.getEvalCritRenovPedidos
+);
 
 //Cantidad de pedidos APROBADOS desde la creación del contrato hasta hoy
 router.get(
-    "/:id_prod/evaluacion_criterios/renovacion/:id_prov",
+    "/:id_prod/evaluacion_criterios/renovacion/:id_prov/:id_contrato",
     eval.getEvalCritRenovPedidosAprobados
 );
 module.exports = router;

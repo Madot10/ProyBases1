@@ -282,7 +282,7 @@ CREATE TABLE VAM_RESULT_EVAL(
     CONSTRAINT check_tipo_eval CHECK (tipo_eval in ('i','r')),
     CONSTRAINT fk_prod_eval FOREIGN KEY (id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT fk_prov_eval FOREIGN KEY (id_prov) REFERENCES VAM_PROVEEDORES(id) ON DELETE CASCADE,
-    CONSTRAINT pk_result_eval PRIMARY KEY (fecha, id_prod, id_prov)
+    CONSTRAINT pk_result_eval PRIMARY KEY (fecha, id_prod, id_prov, tipo_eval)
 );
 
 DROP SEQUENCE IF EXISTS sec_VAM_FORMA_ENVIOS;

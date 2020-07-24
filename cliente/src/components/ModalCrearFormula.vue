@@ -30,6 +30,9 @@
             <p class="text-danger" v-show="flag_esc">
                 *Debe ingresar escalas superiores a 0 e inferiores a 999
             </p>
+            <p class="text-danger" v-show="flag_minmax">
+                *Escala mínima no puede ser mayor que la máxima
+            </p>
             <!-- Escala mínima-->
             <b-form-group
                 label-cols-sm="5"
@@ -193,6 +196,7 @@ export default {
             flag_exito: false,
             flag_esc_dec: false,
             flag_100: false,
+            flag_minmax: false,
         };
     },
     methods: {
@@ -282,6 +286,12 @@ export default {
                 this.flag_esc_dec = true;
             }
         },
+        checkMinMax() {
+            this.flag_minmax = false;
+            if (this.esc.valor_min > this.esc.valor_max) {
+                this.flag_minmax = true;
+            }
+        },
         crearFormula(fnOk) {
             //Verificar
             this.checkRepNull();
@@ -289,6 +299,7 @@ export default {
             this.checkEsc();
             this.checkExito();
             this.checkDec();
+            this.checkMinMax();
 
             if (
                 !(
@@ -298,7 +309,8 @@ export default {
                     this.flag_esc ||
                     this.flag_exito ||
                     this.flag_esc_dec ||
-                    this.flag_100
+                    this.flag_100 ||
+                    this.flag_minmax
                 )
             ) {
                 //console.warn("all ok");

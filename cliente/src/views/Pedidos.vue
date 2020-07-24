@@ -126,8 +126,8 @@ export default {
                     sortable: false,
                 },
                 {
-                    key: "prov_nom",
                     label: "Empresa",
+                    key: this.getUserType() == "prod" ? "prov_nombre" : "prod_nombre",
                     sortable: true,
                 },
                 {
@@ -255,11 +255,14 @@ export default {
         generatePedidos(pes, fes, fps) {
             let aux_pe = [];
 
+            console.log(pes, fes, fps);
+
             pes.forEach((p) => {
                 if (aux_pe[p.id || p.pedid] == null) {
                     aux_pe[p.id || p.pedid] = {
                         id: p.id || p.pedid,
                         prov_nom: p.prov_nom,
+                        prod_nombre: p.nom_prod,
                         fecha_emision: p.f_emision,
                         total_usd: Number(p.total_usd),
                         subtotal_usd: Number(p.subtotal_usd),
@@ -271,6 +274,7 @@ export default {
                     };
                 }
 
+                //ing
                 aux_pe[p.id || p.pedid].detalle.push({
                     cas: Number(p.cas),
                     nombre: p.nombre,
@@ -279,7 +283,9 @@ export default {
                     cantidad: Number(p.cantidad),
                 });
             });
+            console.log("AUX", aux_pe);
 
+            //fe
             fes.forEach((fe) => {
                 aux_pe[fe.id_pedido].forma_envio = {
                     tipo: fe.tipo,
@@ -287,7 +293,7 @@ export default {
                     pais: fe.nombre_pais,
                 };
             });
-
+            //fp
             fps.forEach((fp) => {
                 aux_pe[fp.id_pedido].forma_pago = {
                     tipo: fp.tipo,
@@ -357,8 +363,8 @@ export default {
                                     console.log("FPS ", fps);
                                     this.generatePedidos(
                                         datosPe.Info_Pedidos_Pendientes || datosPe.Info_Pedidos,
-                                        datosFe.Info_Pedidos_Pendientes,
-                                        datosFp.Info_Pedidos_Pendientes
+                                        datosFe.Info_Pedidos_Pendientes || datosFe.Info_Pedidos,
+                                        datosFp.Info_Pedidos_Pendientes || datosFp.Info_Pedidos
                                     );
                                 });
                         });

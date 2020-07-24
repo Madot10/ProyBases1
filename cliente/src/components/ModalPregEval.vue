@@ -71,6 +71,7 @@
                         <b-form-input
                             id="range-2"
                             v-model="valoracion[i]"
+                            value="0"
                             type="range"
                             :min="formula.valor_min"
                             :max="formula.valor_max"
@@ -188,6 +189,7 @@ export default {
             isFinal: false,
             puntaje: 0,
             isAprobado: null,
+            is_empty: false,
         };
     },
     methods: {
@@ -229,13 +231,36 @@ export default {
 
             this.isEvaluating = false;
             this.isFinal = true;
+
+            //Guardar puntaje
+            let idUser = this.$route.params.id;
+            let urlApi = `http://localhost:3000/prod/${idUser}/eval/result/${this.prov.id}`;
+
+            let obj_eval = {
+                resultado: p_punt,
+                tipoeval: "i",
+            };
+
+            fetch(urlApi, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(obj_eval),
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((res) => {
+                    console.log("Guardando resultados ", res);
+                });
         },
         generateForm(crit, esc) {
             let aux_crit = [];
             let aux_form = {};
 
             crit.forEach((c) => {
-                if (c.nombre_crit != "Éxito") {
+                if (c.nombre_crit != "Exito") {
                     aux_crit.push({
                         id: null,
                         nombre: c.nombre_crit,
@@ -253,6 +278,52 @@ export default {
 
             this.formula = aux_form;
             this.criterios = aux_crit;
+            this.isEvaluating = false;
+
+            this.valoracion = this.criterios.map(() => {
+                return 0;
+            });
+        },
+        getFormula() {
+            let idUser = this.$route.params.id;
+
+            let urlBaseApi = `http://localhost:3000/prod/${idUser}`;
+            let urlApi = urlBaseApi;
+            urlApi += "/evaluacion_criterios/inicial";
+
+            let datosCri;
+
+            //Criterios
+            fetch(urlApi)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((res) => {
+                    console.log("Criterios ", res);
+                    datosCri = res;
+
+                    //Escalas
+                    fetch(urlBaseApi + "/escalas")
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((esc) => {
+                            console.log("Escalas", esc);
+                            let aux = datosCri.Info_de_Evaluacion_inicial;
+                            if (aux.length > 0) {
+                                this.generateForm(
+                                    datosCri.Info_de_Evaluacion_inicial,
+                                    esc.Info_de_Evaluacion
+                                );
+                            } else {
+                                //Redirigir
+                                this.$router.push({
+                                    name: "FormulaEval",
+                                });
+                                this.is_empty = true;
+                            }
+                        });
+                });
         },
     },
     mounted() {
@@ -260,7 +331,7 @@ export default {
             if (modalId == "eval-preg-modal") {
                 this.page = 0;
                 this.flag_next = true;
-                this.isEvaluating = false;
+                this.isEvaluating = true;
                 this.isFinal = false;
                 this.puntaje = 0;
                 this.isAprobado = null;
@@ -306,14 +377,7 @@ export default {
                     ],
                 };
 
-                this.valoracion = this.criterios.map(() => {
-                    return 0;
-                });
-
-                this.generateForm(
-                    datosForm.Info_de_Evaluacion_inicial,
-                    datosEscala.Info_de_Evaluacion_inicial
-                );
+                this.getFormula();
             }
         });
     },
