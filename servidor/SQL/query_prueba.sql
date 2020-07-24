@@ -239,5 +239,29 @@ FROM vam_perfumes AS perf
     INNER JOIN vam_p_p AS vpp on perf.id = vpp.id_perfume
     INNER JOIN vam_pefumistas AS perfum on perfum.id = vpp.id_perfumista
     INNER JOIN vam_paises AS pais ON pais.id = perfum.id_pais
-WHERE perf.id = 1;
+WHERE perf.genero = 'f' AND perf.rango_edad = 'ate' AND perf_int.tipo = 'edp'
+
+--REVISAR
+--Caracter de acuerdo a un perfume
+SELECT perf.id AS id_perf, pal.id AS id_pal_clave, pal.palabra
+FROM vam_perfumes AS perf
+    INNER JOIN vam_perf_intensidades AS perf_int ON perf.id = perf_int.id_perfume
+    INNER JOIN vam_fo_principal AS princ ON princ.id_perf = perf.id
+    INNER JOIN vam_f_fn AS fn ON fn.id_flia_olf = princ.id_flia_olf
+    INNER JOIN vam_palabra_clave AS pal ON pal.id = fn.id_palabra_clave
+WHERE pal.tipo_palabra = 'c' AND perf.genero = 'u' AND perf.rango_edad = 'ate' AND perf_int.tipo = 'edp'
+
+--Información de perfume de acuerdo a los filtros de género, edad, intensidad y caracter
+SELECT perf.id, perf.nombre, perf.genero, perf.rango_edad, perf.descrip_componentes, perf.tipo_estructura, perf.descrip_perf, perfum.id AS id_perfumista, perfum.nombre AS nom_perfumista, perfum.apellido, pais.nombre, perf_int.id AS id_perf_int, perf_int.tipo AS tipo_int, perf_int.porc_concentracion, perf_int.descripcion, pres.id AS id_pres, pres.volumen
+FROM vam_perfumes AS perf
+    INNER JOIN vam_perf_intensidades AS perf_int ON perf.id = perf_int.id_perfume
+    INNER JOIN vam_presentaciones AS pres on perf_int.id = pres.id_perf_intensidad and perf_int.id_perfume = pres.id_perf
+    INNER JOIN vam_p_p AS vpp on perf.id = vpp.id_perfume
+    INNER JOIN vam_pefumistas AS perfum on perfum.id = vpp.id_perfumista
+    INNER JOIN vam_paises AS pais ON pais.id = perfum.id_pais
+    INNER JOIN vam_fo_principal AS princ ON princ.id_perf = perf.id
+    INNER JOIN vam_f_fn AS fn ON fn.id_flia_olf = princ.id_flia_olf
+    INNER JOIN vam_palabra_clave AS pal ON pal.id = fn.id_palabra_clave
+WHERE perf.genero = 'u' AND perf.rango_edad = 'ate' AND perf_int.tipo = 'edp' AND pal.id IN (52,55,56,57,58,59)
+
 
