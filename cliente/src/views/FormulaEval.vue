@@ -56,7 +56,7 @@
                                 variant="primary"
                                 block
                                 @click="openModalNuevo()"
-                                v-show="!is_empty"
+                                v-show="!is_empty && !isToday"
                                 >CREAR NUEVA</b-button
                             >
                         </b-col>
@@ -155,6 +155,7 @@ export default {
             esc_aviso: null,
             is_empty: false,
             escala: { valor_min: 0, valor_max: 5 },
+            fecha_form: null,
             formula_ini: {},
             formula_rev: {},
             formula: {},
@@ -225,6 +226,7 @@ export default {
             let aux_form = { esc_min: null, esc_max: null, punt_exito: null, criterios: [] };
 
             datosCri.forEach((c) => {
+                this.fecha_form = c.fecha_inicio;
                 if (c.nombre_crit != "Exito") {
                     aux_form.criterios.push({
                         nombre: c.nombre_crit,
@@ -291,6 +293,20 @@ export default {
                             }
                         });
                 });
+        },
+    },
+    computed: {
+        isToday() {
+            let fe = new Date(this.fecha_form);
+            let today = new Date();
+            if (
+                fe.getDate() == today.getDate() &&
+                fe.getMonth() == today.getMonth() &&
+                fe.getFullYear() == today.getFullYear()
+            ) {
+                return true;
+            }
+            return false;
         },
     },
     created() {
