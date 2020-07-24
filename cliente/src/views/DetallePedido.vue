@@ -8,8 +8,7 @@
                 :mode="mode_forma"
                 @fe="selectedFE"
                 @fp="selectedFP"
-            ></modal-formas-pedido
-            >>
+            ></modal-formas-pedido>
 
             <!-- INFO PROVEEDOR -->
             <b-form-group label="DATOS" label-cols="2" label-class="font-weight-bold">
@@ -200,20 +199,7 @@ export default {
             flag_zero_neg: false,
             flag_fe: false,
             flag_fp: false,
-            mat_prima_disp: [
-                {
-                    value: { cas: 1111, prec_u: 5.5 },
-                    text: "AAAAA",
-                },
-                {
-                    value: { cas: 2222, prec_u: 3.2 },
-                    text: "BBBB",
-                },
-                {
-                    value: { cas: 3333, prec_u: 12.9 },
-                    text: "CCCC",
-                },
-            ],
+            mat_prima_disp: [],
             mode_forma: null,
             fe_selected_ind: null,
             fp_selected_ind: null,
@@ -289,7 +275,7 @@ export default {
                     let intereses =
                         (this.subtotal_monto * 1 + this.calc_fe() * 1) *
                         (1 - this.datosProv.formas_pagos[this.fp_selected_ind].porc_inicial / 100) *
-                        (this.datosProv.formas_pagos[this.fp_selected_ind].interes_mensual / 100);
+                        (this.datosProv.formas_pagos[this.fp_selected_ind].int_mensual / 100);
 
                     final = intereses;
                 }
@@ -311,7 +297,7 @@ export default {
                     if (
                         this.mat_prim_selected[i].cas == this.mat_prim_selected[ind].cas &&
                         i != ind &&
-                        this.mat_prim_selected[i].prec_u == this.mat_prim_selected[ind].prec_u
+                        this.mat_prim_selected[i].id_pres == this.mat_prim_selected[ind].id_pres
                     ) {
                         this.flag_repited = true;
                         break;
@@ -348,7 +334,7 @@ export default {
             this.checkRepNull();
             this.checkCantidad();
             this.checkFormas();
-            console.log(
+            /*console.log(
                 "flag_repited",
                 this.flag_repited,
                 "flag_null",
@@ -359,7 +345,7 @@ export default {
                 this.flag_fe,
                 "flag_fp",
                 this.flag_fp
-            );
+            );*/
             if (
                 !(
                     this.flag_repited ||
@@ -367,9 +353,55 @@ export default {
                     this.flag_zero_neg ||
                     this.flag_fe ||
                     this.flag_fp
-                )
+                ) &&
+                this.mat_prim_selected.length > 0
             ) {
-                console.warn("all ok");
+                //ALL OK
+                //console.warn("all ok");
+                let total = this.totalizacion();
+                let aux_cas = [];
+                let aux_pres = [];
+                let aux_cant = [];
+
+                this.mat_prim_selected.forEach((mp, i) => {
+                    aux_cas.push(mp.cas);
+                    aux_pres.push(mp.id_pres);
+                    aux_cant.push(Number(this.cant_mat_prim[i]));
+                });
+
+                let obj_pedido = {
+                    id_contrato: this.datosProv.cont_id,
+                    id_fe_cond: this.datosProv.formas_envios[this.fe_selected_ind].idfe,
+                    id_fp_cond: this.datosProv.formas_pagos[this.fp_selected_ind].idfp,
+                    total_usd: Number(total),
+                    subtotal_usd: Number(this.subtotal_monto),
+                    cas: aux_cas,
+                    id_pres: aux_pres,
+                    cantidad: aux_cant,
+                };
+
+                console.warn("PEDIDO READY: ", obj_pedido);
+
+                fetch(
+                    `http://localhost:3000/prod/${this.$route.params.id}/pedido/nuevo/${this.$route.params.id_prov}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ ped: obj_pedido }),
+                    }
+                )
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((resp) => {
+                        console.log("Respuesta de servidor: ", resp);
+
+                        /*this.$router.push({
+                            name: "HomeProd",
+                        });*/
+                    });
             }
         },
     },
@@ -392,7 +424,7 @@ export default {
 
         this.mat_prima_disp = this.datosProv.ingredientes.map((ing) => {
             return {
-                value: { cas: ing.cas, prec_u: ing.precio },
+                value: { cas: ing.cas, prec_u: ing.precio, id_pres: ing.id_pres },
                 text: `${ing.nombre} (${ing.volumen}ml)`,
             };
         });
