@@ -75,7 +75,7 @@ CREATE TABLE VAM_PALABRA_CLAVE(
     id SMALLINT DEFAULT nextval('sec_VAM_PALABRA_CLAVE') PRIMARY KEY,
     palabra VARCHAR(50) NOT NULL ,
     tipo_palabra CHAR(1)  NOT NULL,
-    CONSTRAINT check_tipo_palabra CHECK( tipo_palabra in ('a','c','n','p')),
+    CONSTRAINT check_tipo_palabra CHECK( tipo_palabra in ('c','n','p')),
     CONSTRAINT u_palabra_clave UNIQUE(palabra, tipo_palabra)
 );
 
