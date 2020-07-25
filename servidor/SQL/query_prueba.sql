@@ -305,6 +305,59 @@ WHERE perf.id IN
         INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'c'
         WHERE perf.genero = 'f' AND perf.rango_edad = 'ate' AND intp.tipo = 'edp' AND (palabra.palabra = 'Floral' OR palabra.palabra = 'Luminosa') AND flia.nombre = 'Cítrico');
 
+--6 Opciones de aroma segun flia, caracter, intensidad, edad y genero
+SELECT DISTINCT perf.id, palabra.palabra
+    FROM vam_perfumes AS perf
+        INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+        INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+        INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'n'
+WHERE perf.id IN
+    (SELECT perf.id FROM vam_perfumes AS perf
+        INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id
+        INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+        INNER JOIN vam_flia_olfat AS flia ON fliap.id_perf = flia.id
+        INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+        INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'c'
+        WHERE perf.genero = 'f' AND perf.rango_edad = 'ate' AND intp.tipo = 'edp' AND (palabra.palabra = 'Floral' OR palabra.palabra = 'Natural') AND (flia.nombre = 'Maderas' OR flia.nombre = 'Chipre'));
+
+--7 Opciones de pref de uso segun aroma, flia, caracter, intensidad, edad y genero
+SELECT DISTINCT perf.id, intp.tipo
+    FROM vam_perfumes AS perf
+        INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id
+        INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+        INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+        INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'n'
+WHERE (palabra.palabra = 'Almizcle' OR palabra.palabra = 'Madera')  --combinaciones de aromas
+  AND perf.id IN (SELECT DISTINCT perf.id FROM vam_perfumes AS perf
+        INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id
+        INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+        INNER JOIN vam_flia_olfat AS flia ON fliap.id_perf = flia.id
+        INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+        INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'c'
+        WHERE perf.genero = 'f' AND perf.rango_edad = 'ate' AND intp.tipo = 'edp' AND (palabra.palabra = 'Floral' OR palabra.palabra = 'Natural') AND (flia.nombre = 'Maderas' OR flia.nombre = 'Chipre'));
+
+--8 Opciones de personalidad segun pref de uso, aroma, flia, caracter, intensidad, edad y genero
+SELECT DISTINCT perf.id, palabra.palabra
+    FROM vam_perfumes AS perf
+        INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+        INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+        INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'p'
+WHERE
+      perf.id IN (SELECT DISTINCT perf.id
+        FROM vam_perfumes AS perf
+            INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id
+            INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+            INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+            INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'n'
+    WHERE (palabra.palabra = 'Almizcle' OR palabra.palabra = 'Madera') AND intp.tipo = 'edp'
+      AND perf.id IN (SELECT DISTINCT perf.id FROM vam_perfumes AS perf
+            INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id
+            INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+            INNER JOIN vam_flia_olfat AS flia ON fliap.id_perf = flia.id
+            INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+            INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'c'
+            WHERE perf.genero = 'f' AND perf.rango_edad = 'ate' AND intp.tipo = 'edp' AND (palabra.palabra = 'Floral' OR palabra.palabra = 'Natural') AND (flia.nombre = 'Maderas' OR flia.nombre = 'Chipre')));
+
 --Para debug ver que palabras hay de un perfume
 SELECT perf.id, perf.nombre, flia.nombre, palabra.palabra
     FROM vam_perfumes AS perf
