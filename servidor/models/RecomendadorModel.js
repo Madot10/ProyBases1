@@ -3,20 +3,19 @@ const { database } = require("../config/db.config");
 
 class RecomendadorModel {
 
-    //Para unir en un string todos los valores de un array se utiliza elements.join()
-
     getCaracter(genero,edad,intensidad) {
+
+        var myquery = `SELECT perf.id AS id_perf, palabra.id AS id_car, palabra.palabra
+        FROM vam_perfumes AS perf
+            INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id_perfume
+            INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+            INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+            INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'c'
+        WHERE perf.genero = $1 AND perf.rango_edad = $2 AND (intp.tipo = ` + intensidad + `)`
+
         return new Promise((resolve, reject) => {
             database
-                .query(
-                `SELECT perf.id AS id_perf, pal.id AS id_pal_clave, pal.palabra
-                FROM vam_perfumes AS perf
-                    INNER JOIN vam_perf_intensidades AS perf_int ON perf.id = perf_int.id_perfume
-                    INNER JOIN vam_fo_principal AS princ ON princ.id_perf = perf.id
-                    INNER JOIN vam_f_fn AS fn ON fn.id_flia_olf = princ.id_flia_olf
-                    INNER JOIN vam_palabra_clave AS pal ON pal.id = fn.id_palabra_clave
-                WHERE pal.tipo_palabra = 'c' AND perf.genero = $1 AND perf.rango_edad = $2 AND perf_int.tipo = $3`,
-                [genero,edad,intensidad])
+                .query(myquery, [genero,edad])
                 .then(function (response) {
                     const perfs = response.rows;
                     resolve(perfs);
@@ -25,12 +24,20 @@ class RecomendadorModel {
         });
     }
 
-    getFliaOlf(genero,edad,intensidad,filtros) {
+    getFliaOlf(genero,edad,intensidad,caracter) {
+
+        var myquery = `SELECT DISTINCT perf.id AS id_perf, flia.id AS id_flia, flia.nombre
+        FROM vam_perfumes AS perf
+            INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id_perfume
+            INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+            INNER JOIN vam_flia_olfat AS flia ON fliap.id_flia_olf = flia.id
+            INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+            INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'c'
+        WHERE  perf.genero = $1 AND perf.rango_edad = $2 AND (intp.tipo = ` + intensidad + `) AND (palabra.id = ` + caracter + `)`
+        
         return new Promise((resolve, reject) => {
             database
-                .query(
-                ``,
-                [genero,edad,intensidad])
+                .query(myquery, [genero,edad])
                 .then(function (response) {
                     const perfs = response.rows;
                     resolve(perfs);
@@ -39,12 +46,25 @@ class RecomendadorModel {
         });
     }
 
-    getAroma(genero,edad,intensidad,filtros) {
+    getAroma(genero,edad,intensidad,caracter,flia_olf) {
+
+        var myquery = `SELECT DISTINCT perf.id AS id_perf, palabra.id AS id_aroma, palabra.palabra
+        FROM vam_perfumes AS perf
+            INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+            INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+            INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'n'
+        WHERE perf.id IN
+        (SELECT perf.id FROM vam_perfumes AS perf
+            INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id_perfume
+            INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+            INNER JOIN vam_flia_olfat AS flia ON fliap.id_flia_olf = flia.id
+            INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+            INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'c'
+            WHERE perf.genero = $1 AND perf.rango_edad = $2 AND (intp.tipo = ` + intensidad + `) AND (palabra.id = ` + caracter + `) AND (flia.id = ` + flia_olf + `))`
+
         return new Promise((resolve, reject) => {
             database
-                .query(
-                ``,
-                [genero,edad,intensidad])
+                .query(myquery, [genero,edad])
                 .then(function (response) {
                     const perfs = response.rows;
                     resolve(perfs);
@@ -53,12 +73,26 @@ class RecomendadorModel {
         });
     }
 
-    getPreferencia(genero,edad,intensidad,filtros) {
+    getPreferencia(genero,edad,intensidad,caracter,flia_olf,aroma) {
+
+        var myquery = `SELECT DISTINCT perf.id AS id_perf, intp.id AS id_intens, intp.tipo
+        FROM vam_perfumes AS perf
+            INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id
+            INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+            INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+            INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'n'
+        WHERE (palabra.id = ` + aroma + `)
+        AND perf.id IN (SELECT DISTINCT perf.id FROM vam_perfumes AS perf
+            INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id_perfume
+            INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+            INNER JOIN vam_flia_olfat AS flia ON fliap.id_flia_olf = flia.id
+            INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+            INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'c'
+            WHERE perf.genero = $1 AND perf.rango_edad = $2 AND (intp.tipo = ` + intensidad + `) AND (palabra.id = ` + caracter + `) AND (flia.id = ` + flia_olf + `))`
+
         return new Promise((resolve, reject) => {
             database
-                .query(
-                ``,
-                [genero,edad,intensidad])
+                .query(myquery, [genero,edad])
                 .then(function (response) {
                     const perfs = response.rows;
                     resolve(perfs);
@@ -67,12 +101,30 @@ class RecomendadorModel {
         });
     }
 
-    getPersonalidad(genero,edad,intensidad,filtros,preferencia) {
+    getPersonalidad(genero,edad,intensidad,caracter,flia_olf,aroma,preferencia) {
+        var myquery = `SELECT DISTINCT perf.id AS id_perf, palabra.id AS id_aroma, palabra.palabra
+        FROM vam_perfumes AS perf
+            INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+            INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+            INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'p'
+        WHERE perf.id IN (SELECT DISTINCT perf.id
+            FROM vam_perfumes AS perf
+                INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id
+                INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+                INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+                INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'n'
+        WHERE (palabra.id = ` + aroma + `) AND (intp.tipo = ` + preferencia + `)
+          AND perf.id IN (SELECT DISTINCT perf.id FROM vam_perfumes AS perf
+                INNER JOIN vam_perf_intensidades AS intp ON perf.id = intp.id
+                INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+                INNER JOIN vam_flia_olfat AS flia ON fliap.id_flia_olf = flia.id
+                INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+                INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'c'
+                WHERE perf.genero = $1 AND perf.rango_edad = $2 AND (intp.tipo = ` + intensidad + `) AND (palabra.id = ` + caracter + `) AND (flia.id = ` + flia_olf + `)))`
+
         return new Promise((resolve, reject) => {
             database
-                .query(
-                ``,
-                [genero,edad,intensidad,preferencia])
+                .query(myquery, [genero,edad])
                 .then(function (response) {
                     const perfs = response.rows;
                     resolve(perfs);
@@ -81,7 +133,7 @@ class RecomendadorModel {
         });
     }
 
-    getPerfFiltroCaracter(genero,edad,intensidad,filtros) {
+    getPerfumes(genero) {
         return new Promise((resolve, reject) => {
             database
                 .query(
@@ -92,67 +144,8 @@ class RecomendadorModel {
                     INNER JOIN vam_p_p AS vpp on perf.id = vpp.id_perfume
                     INNER JOIN vam_pefumistas AS perfum on perfum.id = vpp.id_perfumista
                     INNER JOIN vam_paises AS pais ON pais.id = perfum.id_pais
-                    INNER JOIN vam_fo_principal AS princ ON princ.id_perf = perf.id
-                    INNER JOIN vam_f_fn AS fn ON fn.id_flia_olf = princ.id_flia_olf
-                    INNER JOIN vam_palabra_clave AS pal ON pal.id = fn.id_palabra_clave
-                WHERE perf.genero = 'u' AND perf.rango_edad = 'ate' AND perf_int.tipo = 'edp' AND pal.id IN (` + filtros.caracter.join() + `)`, 
-                [genero,edad,intensidad])
-                .then(function (response) {
-                    const perfs = response.rows;
-                    resolve(perfs);
-                })
-                .catch((e) => console.error(e.stack));
-        });
-    }
-
-    getPerfFiltroFliaOlf(genero,edad,intensidad,filtros) {
-        return new Promise((resolve, reject) => {
-            database
-                .query(
-                ``,
-                [genero,edad,intensidad])
-                .then(function (response) {
-                    const perfs = response.rows;
-                    resolve(perfs);
-                })
-                .catch((e) => console.error(e.stack));
-        });
-    }
-
-    getPerfFiltroAroma(genero,edad,intensidad,filtros) {
-        return new Promise((resolve, reject) => {
-            database
-                .query(
-                ``,
-                [genero,edad,intensidad])
-                .then(function (response) {
-                    const perfs = response.rows;
-                    resolve(perfs);
-                })
-                .catch((e) => console.error(e.stack));
-        });
-    }
-
-    getPerfFiltroPreferencia(genero,edad,intensidad,filtros,preferencia) {
-        return new Promise((resolve, reject) => {
-            database
-                .query(
-                ``,
-                [genero,edad,intensidad])
-                .then(function (response) {
-                    const perfs = response.rows;
-                    resolve(perfs);
-                })
-                .catch((e) => console.error(e.stack));
-        });
-    }
-
-    getPerfFiltroPersonalidad(genero,edad,intensidad,filtros,preferencia) {
-        return new Promise((resolve, reject) => {
-            database
-                .query(
-                ``,
-                [genero,edad,intensidad,preferencia])
+                WHERE perf.genero = $1`, 
+                [genero])
                 .then(function (response) {
                     const perfs = response.rows;
                     resolve(perfs);

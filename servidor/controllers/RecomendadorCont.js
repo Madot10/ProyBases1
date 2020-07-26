@@ -8,7 +8,15 @@ class RecomendadorCont {
     //Información para filtros
 
     getCaracter(req, res) {
-        const { genero, edad, intensidad } = req.body; 
+        const { genero, edad } = req.body; 
+        //filtros
+        /*
+        var filtros = {
+			intensidad: [`'edp'`,`'p'`]
+        }
+        */
+        const intensidad = filtros.intensidad.join(` OR intp.tipo = `)
+        
         rec.getCaracter(genero,edad,intensidad)
             .then(function (carac) {
                 res.status(200).json({ Caracteres: carac });
@@ -17,14 +25,19 @@ class RecomendadorCont {
     }
 
     getFliaOlf(req, res) {
-        const { genero, edad, intensidad, filtros } = req.body; 
+        const { genero, edad } = req.body; 
+        
         //filtros
         /*
-		var filtros = {
-			caracter: [1,2],
-		}
-		*/
-        rec.getFliaOlf(genero,edad,intensidad,filtros)
+        var filtros = {
+            intensidad: [`'edp'`],
+            caracter: [55,57,44]
+        }
+        */
+        const intensidad = filtros.intensidad.join(` OR intp.tipo = `)
+        const caracter = filtros.caracter.join(` OR palabra.id = `)
+        
+        rec.getFliaOlf(genero,edad,intensidad,caracter)
             .then(function (flia) {
                 res.status(200).json({ Familias_Olfativas: flia });
             })
@@ -32,15 +45,21 @@ class RecomendadorCont {
     }
 
     getAroma(req, res) {
-        const { genero, edad, intensidad, filtros } = req.body; 
+        const { genero, edad } = req.body; 
+        
         //filtros
         /*
-		var filtros = {
-			caracter: [7],
-			flia_olf: [8,9],
-		}
-		*/
-        rec.getAroma(genero,edad,intensidad,filtros)
+        var filtros = {
+            intensidad: [`'edp'`],
+            caracter: [55,57,44],
+            flia_olf: [3,9]
+        }
+        */
+        const intensidad = filtros.intensidad.join(` OR intp.tipo = `)
+        const caracter = filtros.caracter.join(` OR palabra.id = `)
+        const flia_olf = filtros.flia_olf.join(` OR flia.id = `)
+
+        rec.getAroma(genero,edad,intensidad,caracter,flia_olf)
             .then(function (aroma) {
                 res.status(200).json({ Aromas: aroma });
             })
@@ -48,16 +67,23 @@ class RecomendadorCont {
     }
 
     getPreferencia(req, res) {
-        const { genero, edad, intensidad, filtros } = req.body; 
+        const { genero, edad } = req.body; 
+
         //filtros
         /*
-		var filtros = {
-			caracter: [7],
-			flia_olf: [8,9],
-            aroma: [12,179],
-		}
-		*/
-        rec.getPreferencia(genero,edad,intensidad,filtros)
+        var filtros = {
+            intensidad: [`'edp'`],
+            caracter: [55,57,44],
+            flia_olf: [3,9],
+            aroma: [5,6,18]
+        }
+        */
+        const intensidad = filtros.intensidad.join(` OR intp.tipo = `)
+        const caracter = filtros.caracter.join(` OR palabra.id = `)
+        const flia_olf = filtros.flia_olf.join(` OR flia.id = `)
+        const aroma = filtros.aroma.join(` OR palabra.id = `)
+        
+        rec.getPreferencia(genero,edad,intensidad,caracter,flia_olf,aroma)
             .then(function (pref) {
                 res.status(200).json({ Preferencias: pref });
             })
@@ -65,16 +91,25 @@ class RecomendadorCont {
     }
 
     getPersonalidad(req, res) {
-        const { genero, edad, intensidad, filtros, preferencia } = req.body; 
+        const { genero, edad } = req.body; 
+        
         //filtros
         /*
-		var filtros = {
-			caracter: [7],
-			flia_olf: [8,9],
-			aroma: [12,179]
-		}
-		*/
-        rec.getPreferencia(genero,edad,intensidad,filtros,preferencia)
+        var filtros = {
+            intensidad: [`'edp'`],
+            caracter: [55,57,44],
+            flia_olf: [3,9],
+            aroma: [5,6,18],
+            preferencia: [`'edp'`],
+        }
+        */
+        const intensidad = filtros.intensidad.join(` OR intp.tipo = `)
+        const caracter = filtros.caracter.join(` OR palabra.id = `)
+        const flia_olf = filtros.flia_olf.join(` OR flia.id = `)
+        const aroma = filtros.aroma.join(` OR palabra.id = `)
+        const preferencia = filtros.preferencia.join(` OR intp.tipo = `)
+
+        rec.getPersonalidad(genero,edad,intensidad,caracter,flia_olf,aroma,preferencia)
             .then(function (pers) {
                 res.status(200).json({ Personalidades: pers });
             })
@@ -83,84 +118,12 @@ class RecomendadorCont {
 
     //Filtros de Perfumes
 
-    getPerfFiltroCaracter(req, res) {
-        const { genero, edad, intensidad, filtros } = req.body;
-        //filtros
-        /*
-		var filtros = {
-			caracter: [1,2],
-		}
-		*/ 
-        rec.getPerfFiltroCaracter(genero,edad,intensidad,filtros)
+    getPerfumes(req, res) {
+        const { genero } = req.body;
+        
+        rec.getPerfumes(genero)
             .then(function (perfs) {
                 res.status(200).json({ Perfumes: perfs });
-            })
-            .catch((e) => console.error(e.stack));
-    }
-
-    getPerfFiltroFliaOlf(req, res) {
-        const { genero, edad, intensidad, filtros } = req.body; 
-        //filtros
-        /*
-		var filtros = {
-            caracter: [1,2],
-            flia_olf: [8,9]
-		}
-		*/
-        rec.getPerfFiltroFliaOlf(genero,edad,intensidad,filtros)
-            .then(function (flia) {
-                res.status(200).json({ Familias_Olfativas: flia });
-            })
-            .catch((e) => console.error(e.stack));
-    }
-
-    getPerfFiltroAroma(req, res) {
-        const { genero, edad, intensidad, filtros } = req.body; 
-        //filtros
-        /*
-		var filtros = {
-			caracter: [7],
-            flia_olf: [8,9],
-            aroma: [12,179]
-		}
-		*/
-        rec.getPerfFiltroAroma(genero,edad,intensidad,filtros)
-            .then(function (aroma) {
-                res.status(200).json({ Aromas: aroma });
-            })
-            .catch((e) => console.error(e.stack));
-    }
-
-    getPerfFiltroPreferencia(req, res) {
-        const { genero, edad, intensidad, filtros, preferencia } = req.body; 
-        //filtros
-        /*
-		var filtros = {
-			caracter: [7],
-			flia_olf: [8,9],
-            aroma: [12,179],
-		}
-		*/
-        rec.getPerfFiltroPreferencia(genero,edad,intensidad,filtros)
-            .then(function (pref) {
-                res.status(200).json({ Preferencias: pref });
-            })
-            .catch((e) => console.error(e.stack));
-    }
-
-    getPerfFiltroPersonalidad(req, res) {
-        const { genero, edad, intensidad, filtros, preferencia } = req.body; 
-        //filtros
-        /*
-		var filtros = {
-			caracter: [7],
-			flia_olf: [8,9],
-			aroma: [12,179]
-		}
-		*/
-        rec.getPerfFiltroPreferencia(genero,edad,intensidad,filtros,preferencia)
-            .then(function (pers) {
-                res.status(200).json({ Personalidades: pers });
             })
             .catch((e) => console.error(e.stack));
     }

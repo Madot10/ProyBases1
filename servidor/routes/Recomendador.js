@@ -18,16 +18,7 @@ router.get('/preferencia', rec.getPreferencia);
 router.get('/personalidad', rec.getPersonalidad);
 
 //Filtros
-//Filtro Genero
-router.get('/perfumes/caracter', rec.getPerfFiltroCaracter);
-//Filtro Genero
-router.get('/perfumes/fliaolf', rec.getPerfFiltroCaracter);
-//Filtro Genero
-router.get('/perfumes/aroma', rec.getPerfFiltroCaracter);
-//Filtro Genero
-router.get('/perfumes/preferencia', rec.getPerfFiltroCaracter);
-//Filtro Genero
-router.get('/perfumes/personalidad', rec.getPerfFiltroCaracter);
-
+//Se pasa la información de todos los perfumes de acuerdo al filtro de género
+router.get('/perfumes', rec.getPerfumes);
 
 module.exports = router;
