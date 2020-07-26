@@ -32,16 +32,19 @@
             >
                 <h4>{{ p.pregunta }}</h4>
                 <br />
+                <!-- una opcion -->
                 <div class="opciones" v-if="!p.multi">
                     <b-button
-                        variant="info"
+                        :variant="p.respuesta[0] == op.value ? 'info' : 'outline-info'"
                         v-for="(op, j) in p.opciones"
                         :key="j"
-                        @click="opcionSelected"
+                        @click="opcionSelected(op.value)"
                     >
                         {{ op.text }}
                     </b-button>
                 </div>
+
+                <!-- Multi opcion -->
                 <div class="multi" v-else>
                     <b-form-checkbox-group v-model="p.respuesta">
                         <b-form-checkbox
@@ -52,12 +55,21 @@
                             >{{ op.text }}</b-form-checkbox
                         >
                     </b-form-checkbox-group>
-                    <br />
-                    <div class="text-right">
-                        <b-button variant="outline-info" size="sm"
-                            >Siguiente <b-icon icon="caret-right"></b-icon
-                        ></b-button>
-                    </div>
+                </div>
+                <br />
+
+                <!--Acciones ant o nex preg -->
+                <div class="op-dist">
+                    <b-button
+                        variant="outline-info"
+                        size="sm"
+                        @click="backAction"
+                        v-show="pagina != 0"
+                        ><b-icon icon="caret-left"></b-icon>Volver
+                    </b-button>
+                    <b-button variant="outline-info" size="sm" v-show="p.multi"
+                        >Siguiente <b-icon icon="caret-right"></b-icon
+                    ></b-button>
                 </div>
             </div>
 
@@ -94,7 +106,7 @@ export default {
             preguntas: [
                 {
                     pregunta: "Cuéntanos, ¿Para quién es el perfume?",
-                    respuesta: [],
+                    respuesta: [null],
                     multi: false,
                     opciones: [
                         { text: "Un hombre", value: 1 },
@@ -104,7 +116,7 @@ export default {
                 },
                 {
                     pregunta: "¿Para quién es el perfume?",
-                    respuesta: [],
+                    respuesta: [null],
                     multi: true,
                     opciones: [
                         { text: "Niño", value: 1 },
@@ -118,7 +130,8 @@ export default {
         };
     },
     methods: {
-        opcionSelected() {
+        opcionSelected(idAns) {
+            this.preguntas[this.pagina].respuesta[0] = idAns;
             this.ask_continuar = true;
         },
         opcionContinuarSelected(opt) {
@@ -128,6 +141,9 @@ export default {
             } else {
                 //Mostrar resultados
             }
+        },
+        backAction() {
+            this.pagina--;
         },
     },
 };
@@ -151,5 +167,10 @@ export default {
     color: #fff;
     border-color: #613bb1;
     background-color: #613bb1;
+}
+
+.op-dist {
+    display: flex;
+    justify-content: space-between;
 }
 </style>
