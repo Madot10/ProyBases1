@@ -209,14 +209,22 @@ export default {
             this.isEvaluating = true;
 
             let sum = 0;
+            let sumFixeado = 0;
+
             for (let i = 0; i < this.criterios.length; i++) {
+                sumFixeado +=
+                    (this.criterios[i].peso / 100) *
+                    (this.valoracion[i] - Number(this.formula.valor_min));
                 sum += (this.criterios[i].peso / 100) * this.valoracion[i];
             }
             this.puntaje = Math.ceil(sum);
-            let p_punt = (Math.ceil(sum) * 100) / this.formula.valor_max;
+            let p_punt =
+                (Math.ceil(sumFixeado) * 100) /
+                (this.formula.valor_max - Number(this.formula.valor_min));
 
             console.warn(
                 "Resultados",
+                sumFixeado,
                 p_punt,
                 this.puntaje,
                 this.formula.punt_exito,
