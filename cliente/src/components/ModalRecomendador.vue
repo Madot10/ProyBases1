@@ -57,6 +57,7 @@
                 <div class="multi" v-else>
                     <b-form-checkbox-group v-model="p.respuesta">
                         <b-form-checkbox
+                            class="multi-opt"
                             v-for="(op, k) in p.opciones"
                             :key="k"
                             :value="op.value"
@@ -65,6 +66,9 @@
                         >
                     </b-form-checkbox-group>
                 </div>
+                <p class="text-danger" v-show="flag_null">
+                    * Debe seleccionar una opción para poder continuar
+                </p>
                 <br />
 
                 <!--Acciones ant o nex preg -->
@@ -73,7 +77,7 @@
                         variant="outline-info"
                         size="sm"
                         v-show="p.multi && !mode_loading"
-                        @click="pagina++"
+                        @click="opcionSiguienteMulti"
                         >Siguiente <b-icon icon="caret-right"></b-icon
                     ></b-button>
                 </div>
@@ -81,13 +85,22 @@
 
             <!-- DESEA CONTINUAR? -->
             <div class="desea-continuar" v-show="ask_continuar && !mode_loading">
-                <h3>¿Desea continuar personalizando?</h3>
+                <h3 v-show="pagina != 7 && !mode_empty">¿Desea continuar personalizando?</h3>
+                <h3 v-show="pagina == 7 || mode_empty">
+                    ¿Preparado para ver sus perfumes ideales?
+                </h3>
+                <p v-show="mode_empty">
+                    Actualmente no poseemos más perfumes que se adapten a las opciones
+                </p>
                 <br />
                 <div class="todo">
                     <b-button variant="outline-info" @click="opcionContinuarSelected(false)"
                         >Ver perfumes</b-button
                     >
-                    <b-button variant="info" @click="opcionContinuarSelected(true)"
+                    <b-button
+                        variant="info"
+                        @click="opcionContinuarSelected(true)"
+                        v-show="pagina != 7"
                         >Continuar <b-icon icon="caret-right-fill"></b-icon
                     ></b-button>
                 </div>
@@ -109,6 +122,7 @@ export default {
             pagina: 0,
             mode_recon: false,
             mode_loading: false,
+            mode_empty: false,
             ask_continuar: false,
             preguntas: [
                 {
@@ -165,6 +179,7 @@ export default {
                 },
             ],
             perfumes: [],
+            flag_null: false,
         };
     },
     methods: {
@@ -175,24 +190,109 @@ export default {
             this.getOpcionesFromServer();
             //this.ask_continuar = true;
         },
+        checkNonEmpty() {
+            this.flag_null = false;
+
+            if (this.preguntas[this.pagina].respuesta.length < 2) {
+                this.flag_null = true;
+                return false;
+            }
+
+            return true;
+        },
+        opcionSiguienteMulti() {
+            if (this.checkNonEmpty()) {
+                this.mode_loading = true;
+
+                this.getOpcionesFromServer();
+            }
+        },
         opcionContinuarSelected(opt) {
             if (opt) {
-                //this.ask_continuar = false;
-                //this.pagina++;
-                this.mode_loading = true;
-                this.filtrarPerfumes();
+                this.ask_continuar = false;
+                this.pagina++;
+                //this.mode_loading = true;
             } else {
                 //Mostrar resultados
             }
         },
-        backAction() {
-            this.pagina--;
+        perfumesVacio() {
+            //this.perfumes tienen el filtro anterior
+            this.mode_loading = false;
+            this.mode_empty = true;
         },
         gestionarRespuesta(res) {
             switch (this.pagina) {
                 case 0:
                     //Genero
-                    res = {
+
+                    this.perfumes = res.Perfumes;
+
+                    this.filtrarPerfumes();
+                    break;
+                case 1:
+                    //Edad
+                    this.filtrarPerfumes();
+                    break;
+
+                case 2:
+                    //Caracteres
+                    if (res.Caracteres.length > 0) {
+                        this.filtrarPerfumes(res.Caracteres);
+                    } else {
+                        this.perfumesVacio();
+                    }
+
+                    break;
+
+                case 3:
+                    //Flia
+                    if (res.Familias_Olfativas.length > 0) {
+                        this.filtrarPerfumes(res.Familias_Olfativas);
+                    } else {
+                        this.perfumesVacio();
+                    }
+                    break;
+
+                case 4:
+                    if (res.Aromas.length > 0) {
+                        this.filtrarPerfumes(res.Aromas);
+                    } else {
+                        this.perfumesVacio();
+                    }
+                    break;
+
+                case 5:
+                    if (res.Preferencias.length > 0) {
+                        this.filtrarPerfumes(res.Preferencias);
+                    } else {
+                        this.perfumesVacio();
+                    }
+                    break;
+
+                case 6:
+                    if (res.Personalidades.length > 0) {
+                        this.filtrarPerfumes(res.Personalidades);
+                    } else {
+                        this.perfumesVacio();
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            this.mode_loading = false;
+            this.ask_continuar = true;
+        },
+        getOpcionesFromServer() {
+            let urlBaseApi = "http://localhost:3000/rec/";
+            let urlApi = urlBaseApi;
+
+            switch (this.pagina) {
+                case 0:
+                    //Genero
+                    urlApi += "perfumes";
+                    let res = {
                         Perfumes: [
                             {
                                 id: 2,
@@ -448,31 +548,306 @@ export default {
                         ],
                     };
 
-                    this.perfumes = res.Perfumes;
+                    this.gestionarRespuesta(res);
 
-                    this.mode_loading = false;
-                    this.ask_continuar = true;
+                    break;
+
+                case 2:
+                    //Construir objecto a enviar
+                    //Get opciones de caracter
+                    let caract_res = {
+                        Caracteres: [
+                            {
+                                id_perf: 2,
+                                id_car: 44,
+                                palabra: "Floral",
+                            },
+                            {
+                                id_perf: 2,
+                                id_car: 45,
+                                palabra: "Natural",
+                            },
+                            {
+                                id_perf: 2,
+                                id_car: 46,
+                                palabra: "Luminosa",
+                            },
+                            {
+                                id_perf: 3,
+                                id_car: 44,
+                                palabra: "Floral",
+                            },
+                            {
+                                id_perf: 3,
+                                id_car: 45,
+                                palabra: "Natural",
+                            },
+                            {
+                                id_perf: 3,
+                                id_car: 46,
+                                palabra: "Luminosa",
+                            },
+                            {
+                                id_perf: 12,
+                                id_car: 44,
+                                palabra: "Floral",
+                            },
+                        ],
+                    };
+                    this.gestionarRespuesta(caract_res);
+                    break;
+
+                case 3:
+                    let flia_res = {
+                        Familias_Olfativas: [
+                            {
+                                id_perf: 2,
+                                id_flia: 3,
+                                nombre: "Flores",
+                            },
+                            {
+                                id_perf: 2,
+                                id_flia: 4,
+                                nombre: "Frutas",
+                            },
+                            {
+                                id_perf: 3,
+                                id_flia: 3,
+                                nombre: "Flores",
+                            },
+                            {
+                                id_perf: 3,
+                                id_flia: 4,
+                                nombre: "Frutas",
+                            },
+                            {
+                                id_perf: 12,
+                                id_flia: 3,
+                                nombre: "Flores",
+                            },
+                        ],
+                    };
+
+                    this.gestionarRespuesta(flia_res);
+                    break;
+
+                case 4:
+                    let aroma_res = {
+                        Aromas: [
+                            {
+                                id_perf: 2,
+                                id_aroma: 1,
+                                palabra: "Madera",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 3,
+                                palabra: "Floral",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 4,
+                                palabra: "Almizcle",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 5,
+                                palabra: "Ambar",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 6,
+                                palabra: "Vainilla",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 7,
+                                palabra: "Frutas Maduras",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 8,
+                                palabra: "Musgo",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 9,
+                                palabra: "Musks ámbar",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 1,
+                                palabra: "Madera",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 3,
+                                palabra: "Floral",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 4,
+                                palabra: "Almizcle",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 5,
+                                palabra: "Ambar",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 6,
+                                palabra: "Vainilla",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 7,
+                                palabra: "Frutas Maduras",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 8,
+                                palabra: "Musgo",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 9,
+                                palabra: "Musks ámbar",
+                            },
+                            {
+                                id_perf: 12,
+                                id_aroma: 1,
+                                palabra: "Madera",
+                            },
+                            {
+                                id_perf: 12,
+                                id_aroma: 3,
+                                palabra: "Floral",
+                            },
+                            {
+                                id_perf: 12,
+                                id_aroma: 4,
+                                palabra: "Almizcle",
+                            },
+                            {
+                                id_perf: 12,
+                                id_aroma: 5,
+                                palabra: "Ambar",
+                            },
+                            {
+                                id_perf: 12,
+                                id_aroma: 6,
+                                palabra: "Vainilla",
+                            },
+                            {
+                                id_perf: 12,
+                                id_aroma: 9,
+                                palabra: "Musks ámbar",
+                            },
+                        ],
+                    };
+
+                    this.gestionarRespuesta(aroma_res);
+                    break;
+
+                case 5:
+                    let pref_res = {
+                        Preferencias: [
+                            {
+                                id_perf: 2,
+                                id_intens: 2,
+                                tipo: "edp",
+                            },
+                            {
+                                id_perf: 3,
+                                id_intens: 3,
+                                tipo: "edp",
+                            },
+                            {
+                                id_perf: 12,
+                                id_intens: 12,
+                                tipo: "edp",
+                            },
+                        ],
+                    };
+
+                    this.gestionarRespuesta(pref_res);
+                    break;
+
+                case 6:
+                    let per_res = {
+                        Personalidades: [
+                            {
+                                id_perf: 2,
+                                id_aroma: 27,
+                                palabra: "Juventud",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 28,
+                                palabra: "Frutas",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 29,
+                                palabra: "Especias",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 30,
+                                palabra: "Alegría",
+                            },
+                            {
+                                id_perf: 2,
+                                id_aroma: 31,
+                                palabra: "Ganas de vivir",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 27,
+                                palabra: "Juventud",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 28,
+                                palabra: "Frutas",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 29,
+                                palabra: "Especias",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 30,
+                                palabra: "Alegría",
+                            },
+                            {
+                                id_perf: 3,
+                                id_aroma: 31,
+                                palabra: "Ganas de vivir",
+                            },
+                            {
+                                id_perf: 12,
+                                id_aroma: 28,
+                                palabra: "Frutas",
+                            },
+                            {
+                                id_perf: 12,
+                                id_aroma: 29,
+                                palabra: "Especias",
+                            },
+                        ],
+                    };
+
+                    this.gestionarRespuesta(per_res);
                     break;
 
                 default:
+                    this.gestionarRespuesta();
+
                     break;
             }
-        },
-        getOpcionesFromServer() {
-            let urlBaseApi = "http://localhost:3000/rec/";
-            let urlApi = urlBaseApi;
-
-            switch (this.pagina) {
-                case 0:
-                    //Genero
-                    urlApi += "perfumes";
-                    break;
-
-                default:
-                    break;
-            }
-
-            this.gestionarRespuesta();
 
             /*
             fetch(urlApi).then((response) => {
@@ -502,27 +877,134 @@ export default {
                     break;
             }
         },
-        filtrarPerfumes() {
+        getObjIntensidad(int, is_pref) {
+            if (!is_pref) {
+                switch (int) {
+                    case "edc":
+                    case "eds":
+                        return [
+                            {
+                                text: "Ligero",
+                                value: "lf",
+                            },
+                            {
+                                text: "Fresco",
+                                value: "lf",
+                            },
+                        ];
+                        break;
+
+                    case "edt":
+                        return [
+                            {
+                                text: "Intermedio",
+                                value: "int",
+                            },
+                        ];
+                        break;
+
+                    case "edp":
+                    case "p":
+                        return [
+                            {
+                                text: "Intenso",
+                                value: "hea",
+                            },
+                        ];
+                        break;
+
+                    default:
+                        break;
+                }
+            } else {
+                switch (int) {
+                    case "eds":
+                        return [
+                            {
+                                text: "Diario",
+                                value: "d",
+                            },
+                        ];
+                        break;
+
+                    case "edp":
+                    case "p":
+                        return [
+                            {
+                                text: "Trabajo",
+                                value: "t",
+                            },
+                        ];
+                        break;
+
+                    case "edc":
+                    case "edt":
+                        return [
+                            {
+                                text: "Ocaciones especiales",
+                                value: "oe",
+                            },
+                        ];
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        },
+
+        filtrarPerfumes(filtro) {
+            let aux_perf = [];
             switch (this.pagina) {
                 case 0:
-                    //Dame perf segun el genero select
-                    let aux_perf = this.perfumes.map((perf) => {
+                    //Dame perf segun el genero select y next opciones (edad)
+
+                    this.perfumes.forEach((perf) => {
                         if (perf.genero == this.preguntas[this.pagina].respuesta[0].value) {
                             //Perfume va
                             this.addOpcionesPosible(perf, this.pagina + 1);
-                            return perf;
+                            aux_perf.push(perf);
                         }
                     });
 
                     break;
 
+                case 1:
+                    //Dame Perf segun edad y next opciones (intensidad)
+                    this.perfumes.forEach((perf) => {
+                        if (perf.rango_edad == this.preguntas[this.pagina].respuesta[0].value) {
+                            //Perfume va
+                            this.addOpcionesPosible(perf, this.pagina + 1);
+                            aux_perf.push(perf);
+                        }
+                    });
+                    break;
+                case 2: //Dame perf segun intensidad y next opciones (caracter)
+                case 3: //Dame perfume segun caracteres y next opciones flia olf
+                case 4: //Dame perf segun flia y next opciones  aroma
+                case 5: //Dame perf segun aroma y netx opcion pref
+                case 6: //Dame perf segun preferencia y netx opcion personalidad
+                    this.perfumes.forEach((perf) => {
+                        for (let j = 0; j < filtro.length; j++) {
+                            if (perf.id == filtro[j].id_perf) {
+                                //Perfume va
+                                aux_perf.push(perf);
+                                this.addOpcionesPosible(filtro[j], this.pagina + 1);
+                            }
+                        }
+                    });
+                    break;
+
+                    break;
                 default:
                     break;
             }
 
+            this.perfumes = aux_perf;
+
             this.mode_loading = false;
-            this.ask_continuar = false;
-            this.pagina++;
+            // this.ask_continuar = false;
+            //this.pagina++;
         },
         canAdd(ipreg, value) {
             for (let i = 0; i < this.preguntas[ipreg].opciones.length; i++) {
@@ -547,7 +1029,41 @@ export default {
                     }
 
                     break;
+                case 2:
+                    //Add Opciones de intensidades disponibles
+                    let inten = this.getObjIntensidad(perf.tipo_int, false);
+                    if (this.canAdd(ipreg, inten[0].value)) {
+                        inten.forEach((op) => {
+                            this.preguntas[ipreg].opciones.push(op);
+                        });
+                    }
+                    break;
 
+                case 3: //Add Opciones de caracter
+                case 4: //Add opciones de flia
+                case 5: //add opciones aroma
+                case 7: //Add opciones personalidad
+                    if (
+                        this.canAdd(
+                            ipreg,
+                            perf.id_car || perf.id_flia || perf.id_aroma || perf.id_intens
+                        )
+                    ) {
+                        this.preguntas[ipreg].opciones.push({
+                            text: perf.palabra || perf.nombre || perf.tipo,
+                            value: perf.id_car || perf.id_flia || perf.id_aroma || perf.id_intens,
+                        });
+                    }
+                    break;
+
+                case 6: //Add opciones pref uso
+                    let prefuso = this.getObjIntensidad(perf.tipo, true);
+                    if (this.canAdd(ipreg, prefuso[0].value)) {
+                        prefuso.forEach((op) => {
+                            this.preguntas[ipreg].opciones.push(op);
+                        });
+                    }
+                    break;
                 default:
                     break;
             }
@@ -577,7 +1093,10 @@ export default {
 }
 
 .op-dist {
-    display: flex;
-    justify-content: space-between;
+    text-align: right;
+}
+
+.multi-opt {
+    margin-top: 5px;
 }
 </style>
