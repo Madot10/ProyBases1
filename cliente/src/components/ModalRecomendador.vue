@@ -116,9 +116,9 @@
 
 <script>
 export default {
-    props: ["show"],
     data() {
         return {
+            show: true,
             pagina: 0,
             mode_recon: false,
             mode_loading: false,
@@ -214,6 +214,8 @@ export default {
                 //this.mode_loading = true;
             } else {
                 //Mostrar resultados
+                this.show = false;
+                this.$emit("readyPerf", this.perfumes);
             }
         },
         perfumesVacio() {
