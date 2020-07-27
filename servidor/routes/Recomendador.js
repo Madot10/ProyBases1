@@ -20,5 +20,7 @@ router.get('/personalidad', rec.getPersonalidad);
 //Filtros
 //Se pasa la información de todos los perfumes de acuerdo al filtro de género
 router.get('/perfumes', rec.getPerfumes);
+//Se pasa la información de las notas de los perfumes de acuerdo al filtro de género
+router.get('/perfumes/notas', rec.getNotasPerfumes);
 
 module.exports = router;

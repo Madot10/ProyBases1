@@ -126,6 +126,16 @@ class RecomendadorCont {
             })
             .catch((e) => console.error(e.stack));
     }
+
+    getNotasPerfumes(req, res) {
+        const { genero } = req.body;
+
+        rec.getNotasPerfumes(genero)
+            .then(function (perfs) {
+                res.status(200).json({ Perfumes: perfs });
+            })
+            .catch((e) => console.error(e.stack));
+    }
 }
 
 module.exports = { RecomendadorCont };
