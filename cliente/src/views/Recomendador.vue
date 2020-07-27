@@ -49,12 +49,85 @@ export default {
     },
     methods: {
         mostrarPerfumes(perfs) {
-            this.perfumes = perfs;
+            this.generarPerfumes(perfs);
             console.log("Mostrando perf ", perfs);
         },
         openModalDetalle(id) {
             this.perfume = this.perfumes[id];
             this.$bvModal.show("perf-det-modal");
+        },
+        generarPerfumes(perfs) {
+            let perf_aux = [];
+            perfs.forEach((per) => {
+                if (perf_aux[per.id] == null) {
+                    //Agregar perfume
+                    perf_aux[per.id] = {
+                        id: per.id,
+                        nombre: per.nombre,
+                        genero: per.genero,
+                        rango_edad: per.rango_edad,
+                        descrip_componentes: per.descrip_componentes,
+                        tipo_estructura: per.tipo_estructura,
+                        descrip_perf: per.descrip_perf,
+                        id_perf_int: per.id_perf_int,
+                        tipo_int: per.tipo_int,
+                        porc_concentracion: per.porc_concentracion,
+                        perfumistas: [],
+                        presentaciones: [],
+                    };
+                }
+
+                //Verificar perfumista
+                if (perf_aux[per.id].perfumistas[per.id_perfumista] == null) {
+                    //Agregar perfumista
+                    perf_aux[per.id].perfumistas[per.id_perfumista] = {
+                        id: per.id,
+                        id_perfumista: per.id_perfumista,
+                        nom_perfumista: per.nom_perfumista,
+                        apellido: per.apellido,
+                        pais: per.nombre,
+                    };
+                }
+
+                //Verificar presentacion
+                if (perf_aux[per.id].presentaciones[per.id_pres] == null) {
+                    //Agregar presetnacion
+                    perf_aux[per.id].presentaciones[per.id_pres] = {
+                        id: per.id,
+                        id_pres: per.id_pres,
+                        volumen: Number(per.volumen),
+                    };
+                }
+            });
+
+            console.log("pre", perf_aux);
+
+            let final_perf = [];
+
+            perf_aux.forEach((p) => {
+                let final_perfm = [];
+                let final_pre = [];
+
+                if (p) {
+                    final_perf.push(p);
+
+                    p.perfumistas.forEach((perfm) => {
+                        if (perfm && p.id == perfm.id) {
+                            final_perfm.push(perfm);
+                        }
+                    });
+                    final_perf[final_perf.length - 1].perfumistas = final_perfm;
+
+                    p.presentaciones.forEach((pres) => {
+                        if (pres && p.id == pres.id) {
+                            final_pre.push(pres);
+                        }
+                    });
+                    final_perf[final_perf.length - 1].presentaciones = final_pre;
+                }
+            });
+
+            this.perfumes = final_perf;
         },
     },
 };
