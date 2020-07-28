@@ -46,8 +46,10 @@ class PedidoProdModel {
             console.log("Paso por aqui 3");
             database
                 .query(
-                    `INSERT INTO vam_pedidos(f_emision,estado,id_prov,id_prod,total_usd,subtotal_usd) VALUES (current_date,'p',$1,$2,$3,$4) RETURNING id`,
-                    [id_prov, id_prod, pedido.total_usd, pedido.subtotal_usd]
+
+                    `INSERT INTO vam_pedidos(f_emision,estado,id_prov,id_prod,subtotal_usd,total_usd) VALUES (current_date,'p',$1,$2,$3,$4) RETURNING id`,
+                    [id_prov, id_prod,pedido.subtotal_usd,pedido.total_usd]
+
                 )
                 .then(function (response) {
                     const id_pedido = response.rows[0].id;

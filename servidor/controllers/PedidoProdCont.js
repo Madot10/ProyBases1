@@ -16,6 +16,7 @@ class PedidoProdCont {
 			id_contrato: 4,
 			id_fe_cond: 8,
 			id_fp_cond: 9,
+			subtotal_usd: 2799.99,
 			total_usd: 2999.99,
 			subtotal_usd: 999,
 			cas: [142927],
@@ -120,6 +121,7 @@ class PedidoProdCont {
             })
             .catch((e) => console.error(e.stack));
     }
+
 }
 
 module.exports = { PedidoProdCont };

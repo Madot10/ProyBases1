@@ -7,8 +7,9 @@ function createFormula(id_prod, tipo_formula, formula) {
         for (var i = 0; formula.pesos[i] != null; i++) {
             database
                 .query(
-                    `INSERT INTO vam_eval_criterios(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula) VALUES (current_date,$1,$2,$3,$4)`,
-                    [id_prod, formula.id_var_crit[i], formula.pesos[i], tipo_formula]
+                    `INSERT INTO vam_eval_criterios(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula) VALUES (now(),$1,$2,$3,$4)`,
+                    [id_prod,formula.id_var_crit[i],formula.pesos[i],tipo_formula]
+
                 )
                 .then(function () {
                     resolve(true);
@@ -22,21 +23,24 @@ function createFormula(id_prod, tipo_formula, formula) {
 }
 
 class EvalProdModel {
-    //31
-    guardarResultadoEval(id_prod, id_prov, resultado, tipoeval) {
-        return new Promise((resolve, reject) => {
-            database
-                .query(
-                    `INSERT INTO vam_result_eval(fecha,id_prod,id_prov,resultado,tipo_eval) VALUES (current_date,$1,$2,$3,$4)`,
-                    [id_prod, id_prov, resultado, tipoeval]
-                )
-                .then(function () {
-                    resolve(true);
-                })
-                .catch((e) => console.error(e.stack));
-        });
-    }
 
+  //31
+  guardarResultadoEval(id_prod, id_prov, resultado, tipoeval) {
+    return new Promise((resolve, reject) => {
+       
+      database
+        .query(
+            `INSERT INTO vam_result_eval(fecha,id_prod,id_prov,resultado,tipo_eval) VALUES (now(),$1,$2,$3,$4)`,
+            [id_prod,id_prov,resultado,tipoeval]
+        )
+        .then(function () {
+          resolve(true);
+        })
+        .catch((e) => console.error(e.stack));
+    });
+  }
+  
+  
     //30.3
     getEscalas(id_prod) {
         return new Promise((resolve, reject) => {
@@ -55,19 +59,21 @@ class EvalProdModel {
         });
     }
 
-    createEscala(id_prod, valor_min, valor_max) {
-        return new Promise((resolve, reject) => {
-            database
-                .query(
-                    `INSERT INTO vam_escalas(fecha_inicio,id_prod,valor_min,valor_max) VALUES (current_date,$1,$2,$3)`,
-                    [id_prod, valor_min, valor_max]
-                )
-                .then(function () {
-                    resolve(true);
-                })
-                .catch((e) => console.error(e.stack));
-        });
-    }
+
+  createEscala(id_prod, valor_min, valor_max) {
+    return new Promise((resolve, reject) => {
+       
+      database
+        .query(
+            `INSERT INTO vam_escalas(fecha_inicio,id_prod,valor_min,valor_max) VALUES (now(),$1,$2,$3)`,
+            [id_prod,valor_min,valor_max]
+        )
+        .then(function () {
+          resolve(true);
+        })
+        .catch((e) => console.error(e.stack));
+    });
+  }
 
     createVariable(nombre_crit, descripcion) {
         return new Promise((resolve, reject) => {
@@ -83,45 +89,44 @@ class EvalProdModel {
         });
     }
 
-    updateEscala(id_prod) {
-        return new Promise((resolve, reject) => {
-            database
-                .query(
-                    `UPDATE vam_escalas SET fecha_fin = current_date WHERE id_prod = $1 AND fecha_fin IS NULL`,
-                    [id_prod]
-                )
-                .then(function () {
-                    resolve(true);
-                })
-                .catch((e) => console.error(e.stack));
-        });
-    }
 
-    //29
-    //Se vencen las fórmulas vigentes actualmente para luego crear las otras
-    createEvalCriterios(id_prod, tipo_formula, formula) {
-        console.log(formula);
-        return new Promise((resolve, reject) => {
-            database
-                .query(
-                    `UPDATE vam_eval_criterios SET fecha_fin = current_date WHERE id_prod = $1 AND tipo_formula = $2 AND fecha_fin IS NULL`,
-                    [id_prod, tipo_formula]
-                )
-                .then(() => {
-                    createFormula(id_prod, tipo_formula, formula)
+  updateEscala(id_prod) {
+    return new Promise((resolve, reject) => {
+       
+      database
+        .query(
+            `UPDATE vam_escalas SET fecha_fin = now() WHERE id_prod = $1 AND fecha_fin IS NULL`,
+            [id_prod]
+        )
+        .then(function () {
+          resolve(true);
+        })
+        .catch((e) => console.error(e.stack));
+    });
+  }
+
+  //29
+  //Se vencen las fórmulas vigentes actualmente para luego crear las otras
+  createEvalCriterios(id_prod, tipo_formula, formula) {
+    return new Promise((resolve, reject) => {
+       
+      database
+        .query(
+            `UPDATE vam_eval_criterios SET fecha_fin = now() WHERE id_prod = $1 AND tipo_formula = $2 AND fecha_fin IS NULL`,
+            [id_prod,tipo_formula]
+        )
+        .then(() => {
+             createFormula(id_prod, tipo_formula, formula)
                         .then(() => {
                             resolve(true);
                         })
                         .catch(() => {
                             reject(false);
                         });
-                })
-                .catch((e) => {
-                    reject();
-                    console.error(e.stack);
-                });
-        });
-    }
+        })
+        .catch((e) => console.error(e.stack));
+    });
+  }
 
     //28
     getVarInicial() {

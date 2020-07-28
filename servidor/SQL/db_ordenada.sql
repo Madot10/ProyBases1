@@ -193,11 +193,11 @@ CREATE TABLE VAM_PRODUCTORES(
 );
 
 CREATE TABLE VAM_ESCALAS(
-    fecha_inicio DATE,
+    fecha_inicio TIMESTAMP,
     id_prod SMALLINT,
     valor_min NUMERIC(3) NOT NULL,
     valor_max NUMERIC(3) NOT NULL,
-    fecha_fin DATE,
+    fecha_fin TIMESTAMP,
     CONSTRAINT fk_id_prov_escalas FOREIGN KEY (id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT pk_escalas PRIMARY KEY (fecha_inicio, id_prod)
 );
@@ -274,7 +274,7 @@ CREATE TABLE VAM_PR_FE(
 );
 
 CREATE TABLE VAM_RESULT_EVAL(
-    fecha DATE,
+    fecha TIMESTAMP,
     id_prod SMALLINT,
     id_prov SMALLINT,
     resultado NUMERIC(3) NOT NULL,
@@ -492,12 +492,12 @@ CREATE TABLE VAM_RENOVACIONES(
 );
 
 CREATE TABLE VAM_EVAL_CRITERIOS(
-    fecha_inicio DATE,
+    fecha_inicio TIMESTAMP,
     id_prod SMALLINT,
     id_var_crit SMALLINT,
     peso NUMERIC(3) NOT NULL,
     tipo_formula CHAR(1) NOT NULL,
-    fecha_fin DATE,
+    fecha_fin TIMESTAMP,
     CONSTRAINT check_tipo CHECK(tipo_formula in ('i','r')),
     CONSTRAINT fk_prod_criterios FOREIGN KEY (id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT fk_var_criterio FOREIGN KEY (id_var_crit) REFERENCES VAM_VAR_CRITERIOS(id) ON DELETE CASCADE,
