@@ -50,6 +50,16 @@
                         <h5>Componentes</h5>
                         <p>{{ perfume.descrip_componentes }}</p>
                     </div>
+
+                    <!-- ESENCIAS -->
+                    <div>
+                        <h5>Esencias</h5>
+                        <ul>
+                            <li v-for="(esencia, j) in esen" :key="j">
+                                {{ esencia }}
+                            </li>
+                        </ul>
+                    </div>
                 </b-col>
             </b-row>
         </b-container>
@@ -64,6 +74,11 @@
 <script>
 export default {
     props: ["perfume"],
+    data() {
+        return {
+            esen: [],
+        };
+    },
     methods: {
         getTextGenero(codG) {
             switch (codG) {
@@ -116,6 +131,33 @@ export default {
         getUrlimage(idp) {
             return `/perfumes/perfume-${idp}.jpg`;
         },
+        getEsencias() {
+            let aux_esc = [];
+            console.log("LLAMANDO A ", this.perfume.id);
+            fetch(`http://localhost:3000/rec/perfumes/esencias/${this.perfume.id}`)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((es) => {
+                    es.Perfumes.forEach((e) => {
+                        let name = e.nombre[0].toUpperCase() + e.nombre.slice(1);
+                        if (!aux_esc.includes(name)) {
+                            aux_esc.push(name);
+                        }
+                    });
+
+                    this.esen = aux_esc;
+                });
+        },
+    },
+    mounted() {
+        this.$root.$on("bv::modal::show", (bvEvent, modalId) => {
+            if (modalId == "perf-det-modal") {
+                setTimeout(() => {
+                    this.getEsencias();
+                }, 50);
+            }
+        });
     },
 };
 </script>
