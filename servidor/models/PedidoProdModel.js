@@ -6,7 +6,7 @@ function createInsertCondFeFp(id_pedido, id_prov, id_prod, pedido) {
     return new Promise((resolve, reject) => {
         database
             .query(
-                `INSERT INTO vam_cond_pedido(id_pedido,id_cond,id_contrato,id_cont_prov,id_cont_prod) VALUES ($1,$5,$2,$3,$4),($1,$6,$2,$3,$4)`,
+                `INSERT INTO vam_cond_pedido(id_pedido,id_cond,id_contrato,id_cont_prov,id_cont_prod) VALUES ($1,(SELECT condc.id FROM vam_fe_fp_c AS condc WHERE condc.id_prod_cont = $4 AND condc.id_prov_cont = $3 AND condc.id_form_envio = $5),$2,$3,$4),($1,(SELECT condc.id FROM vam_fe_fp_c AS condc WHERE condc.id_prod_cont = $4 AND condc.id_prov_cont = $3 AND condc.id_form_pago = $6),$2,$3,$4)`,
                 [
                     id_pedido,
                     pedido.id_contrato,
@@ -41,17 +41,26 @@ function createInsertDetPedido(id_pedido, id_prov, id_prod, pedido) {
 class PedidoProdModel {
     //28
     createPedido(id_prod, id_prov, pedido) {
+        console.log("Paso por aqui 2");
         return new Promise((resolve, reject) => {
+            console.log("Paso por aqui 3");
             database
                 .query(
+
                     `INSERT INTO vam_pedidos(f_emision,estado,id_prov,id_prod,subtotal_usd,total_usd) VALUES (current_date,'p',$1,$2,$3,$4) RETURNING id`,
                     [id_prov, id_prod,pedido.subtotal_usd,pedido.total_usd]
+
                 )
                 .then(function (response) {
                     const id_pedido = response.rows[0].id;
-                    createInsertDetPedido(id_pedido, id_prov, id_prod, pedido);
+                    createInsertDetPedido(id_pedido, id_prov, id_prod, pedido).then(() => {
+                        resolve();
+                    });
                 })
-                .catch((e) => console.error(e.stack));
+                .catch((e) => {
+                    reject(e);
+                    console.error(e.stack);
+                });
         });
     }
 
@@ -60,7 +69,7 @@ class PedidoProdModel {
         return new Promise((resolve, reject) => {
             database
                 .query(
-                    `SELECT prov.id, prov.nombre AS nom_prov, prov.email, prov.telefono, prov.pag_web, pais.nombre AS nom_pais, ing.cas, ing.nombre AS nom_ing, ing.tipo, pres.volumen, pres.precio
+                    `SELECT prov.id, mpc.id_contrato AS cont_id, prov.nombre AS nom_prov, prov.email, prov.telefono, prov.pag_web, pais.nombre AS nom_pais, ing.cas, pres.id AS presid, ing.nombre AS nom_ing, ing.tipo, pres.volumen, pres.precio
                     FROM vam_mp_c AS mpc
                         INNER JOIN vam_proveedores AS prov ON mpc.id_cont_prov = prov.id
                         LEFT JOIN vam_paises AS pais ON pais.id = prov.id_pais

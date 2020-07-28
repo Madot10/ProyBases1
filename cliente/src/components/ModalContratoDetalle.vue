@@ -57,7 +57,7 @@
                         >
                             <b-form-input
                                 plaintext
-                                value="contrato.exclusividad ? 'Si' : 'No'"
+                                :value="contrato.exclusividad ? 'Si' : 'No'"
                             ></b-form-input>
                         </b-form-group>
 

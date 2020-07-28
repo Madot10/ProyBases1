@@ -71,7 +71,7 @@
                             <template v-slot:cell(nro_cuotas)="row">
                                 {{ row.item.tipo == "cred" ? row.value : "-" }}
                             </template>
-                            <template v-slot:cell(interes_mensual)="row">
+                            <template v-slot:cell(int_mensual)="row">
                                 {{ row.item.tipo == "cred" ? row.value : "-" }}
                             </template>
 
@@ -138,7 +138,7 @@ export default {
                     sortable: false,
                 },
                 {
-                    key: "interes_mensual",
+                    key: "int_mensual",
                     label: "Interés mensual (%)",
                     sortable: false,
                 },

@@ -10,7 +10,7 @@
             </b-toast>
 
             <!--MODAL EVAL RENOV-->
-            <modal-renov-eval @vaRenov="openRenovModal"></modal-renov-eval>
+            <modal-renov-eval @vaRenov="openRenovModal" :contrato="contrato"></modal-renov-eval>
 
             <!-- MODAL DETALLE CONTRATO -->
             <modal-contrato-detalle :contrato="contrato"></modal-contrato-detalle>
@@ -188,7 +188,9 @@ export default {
             this.index_selected_contrato = index;
             this.contrato = this.contratos[index];
 
-            this.$bvModal.show("eval-renov-modal");
+            setTimeout(() => {
+                this.$bvModal.show("eval-renov-modal");
+            }, 10);
         },
         openRenovModal() {
             this.$bvModal.show("ask-renov-modal");
@@ -304,6 +306,7 @@ export default {
                         id: c.id,
                         id_prov: c.provid,
                         prov_nombre: c.provnombre,
+                        prod_nombre: c.prodnombre,
                         fecha_emision: c.fecha_emision,
                         clausula: c.clausula,
                         exclusividad: c.exclusividad,
@@ -324,6 +327,7 @@ export default {
                         id_pais: c.id_pais,
                         tipo: c.tipo,
                         cargo: c.cargo,
+                        pais: c.nombre,
                     });
                 } else if (c.id_form_pago != null) {
                     //fp

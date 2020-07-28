@@ -30,6 +30,9 @@
             <p class="text-danger" v-show="flag_esc">
                 *Debe ingresar escalas superiores a 0 e inferiores a 999
             </p>
+            <p class="text-danger" v-show="flag_minmax">
+                *Escala mínima no puede ser mayor que la máxima
+            </p>
             <!-- Escala mínima-->
             <b-form-group
                 label-cols-sm="5"
@@ -180,12 +183,10 @@ export default {
     props: ["mode", "variables", "esc_aviso", "escala"],
     data() {
         return {
-            new_esc: false,
+            new_esc: true,
             aviso_aux: true,
-            esc: { valor_min: null, valor_max: null },
-
+            esc: { valor_min: 0, valor_max: 0 },
             punt_exito: 0,
-
             criterios_disp: [],
             criterios_selected: [{ id: null, peso: null }],
             flag_repited: false,
@@ -195,6 +196,7 @@ export default {
             flag_exito: false,
             flag_esc_dec: false,
             flag_100: false,
+            flag_minmax: false,
         };
     },
     methods: {
@@ -280,8 +282,14 @@ export default {
         },
         checkDec() {
             this.flag_esc_dec = false;
-            if (this.aviso_aux) {
+            if (this.aviso_aux && this.esc_aviso) {
                 this.flag_esc_dec = true;
+            }
+        },
+        checkMinMax() {
+            this.flag_minmax = false;
+            if (this.esc.valor_min > this.esc.valor_max) {
+                this.flag_minmax = true;
             }
         },
         crearFormula(fnOk) {
@@ -291,6 +299,7 @@ export default {
             this.checkEsc();
             this.checkExito();
             this.checkDec();
+            this.checkMinMax();
 
             if (
                 !(
@@ -300,10 +309,91 @@ export default {
                     this.flag_esc ||
                     this.flag_exito ||
                     this.flag_esc_dec ||
-                    this.flag_100
+                    this.flag_100 ||
+                    this.flag_minmax
                 )
             ) {
-                console.warn("all ok");
+                //console.warn("all ok");
+                let idUser = this.$route.params.id;
+                let urlBaseApi = `http://localhost:3000/prod/${idUser}`;
+
+                let obj_formula = {
+                    formula: {
+                        id_var_crit: [],
+                        pesos: [],
+                    },
+                    tipo_formula: this.mode == "ini" ? "i" : "r",
+                };
+
+                //Criterios
+                this.criterios_selected.forEach((c) => {
+                    obj_formula.formula.id_var_crit.push(c.id);
+                    obj_formula.formula.pesos.push(Number(c.peso));
+                });
+
+                //Exito
+                obj_formula.formula.id_var_crit.push(5);
+                obj_formula.formula.pesos.push(Number(this.punt_exito));
+
+                console.log("Form to send", obj_formula);
+                let sta = true;
+
+                //Criterios
+                fetch(urlBaseApi + "/evaluacion_criterios", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(obj_formula),
+                })
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((res) => {
+                        console.log("Servidor responde: ", res);
+                        if (res == false) {
+                            sta = false;
+                        }
+                    })
+                    .catch((e) => {
+                        sta = false;
+                    })
+                    .finally(() => {
+                        this.$emit("state", sta);
+                    });
+
+                //Escala vecemos
+                if (this.new_esc) {
+                    fetch(urlBaseApi + "/escala/vencer", {
+                        method: "PUT",
+                    })
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((res) => {
+                            //console.log("Servidor responde esc: ", res);
+
+                            fetch(urlBaseApi + "/escala/crear", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+
+                                body: JSON.stringify({
+                                    valor_min: this.esc.valor_min,
+                                    valor_max: this.esc.valor_max,
+                                }),
+                            })
+                                .then((response) => {
+                                    return response.json();
+                                })
+                                .then((res) => {
+                                    console.log("Servidor responde esc: ", res);
+                                });
+                        });
+                }
+
+                fnOk();
             }
         },
     },
@@ -331,6 +421,15 @@ export default {
                     };
                 });
         },
+    },
+    mounted() {
+        this.$root.$on("bv::modal::show", (bvEvent, modalId) => {
+            if (modalId == "c-form-modal") {
+                this.criterios_selected = [{ id: null, peso: null }];
+                this.new_esc = true;
+                this.aviso_aux = true;
+            }
+        });
     },
 };
 </script>

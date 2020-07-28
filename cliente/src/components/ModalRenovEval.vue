@@ -36,6 +36,7 @@
 
 <script>
 export default {
+    props: ["contrato"],
     data() {
         return {
             criterios: [],
@@ -61,9 +62,12 @@ export default {
             console.log("Evaluando...");
 
             this.isEvaluating = true;
+            let ratio = 0;
 
-            let ratio = (this.pedidos.aprobados * 100) / this.pedidos.realizados;
-            this.puntaje = Math.ceil((ratio * this.formula.valor_max) / 100);
+            if (this.pedidos.realizados > 0) {
+                ratio = (this.pedidos.aprobados * 100) / this.pedidos.realizados;
+                this.puntaje = Math.ceil((ratio * this.formula.valor_max) / 100);
+            }
 
             console.warn(
                 "Resultados",
@@ -81,8 +85,32 @@ export default {
 
             this.isEvaluating = false;
             this.isFinal = true;
+
+            //Guardar puntaje
+            let idUser = this.$route.params.id;
+            let urlApi = `http://localhost:3000/prod/${idUser}/eval/result/${this.contrato.id_prov}`;
+
+            let obj_eval = {
+                resultado: ratio,
+                tipoeval: "r",
+            };
+
+            fetch(urlApi, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(obj_eval),
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((res) => {
+                    console.log("Guardando resultados ", res);
+                });
         },
-        generateForm(datosF, datosPAll, datosPApro, datosEsc) {
+        generateForm(datosF, datosEsc, datosPAll, datosPApro) {
+            console.log("hola", 4);
             this.formula.punt_exito = datosF[0].peso;
             this.formula.valor_min = datosEsc[0].valor_min;
             this.formula.valor_max = datosEsc[0].valor_max;
@@ -91,6 +119,77 @@ export default {
             this.pedidos.realizados = Number(datosPAll[0].count);
 
             this.evaluar();
+        },
+        getFormulaRenov() {
+            let idUser = this.$route.params.id;
+            let provid = this.contrato.id_prov;
+            let cont_id = this.contrato.id;
+
+            let urlBaseApi = `http://localhost:3000/prod/${idUser}/`;
+            let urlApi = urlBaseApi + "evaluacion_criterios/renovacion";
+
+            let datosCri;
+            let dataAll;
+            console.log("hola", idUser, provid, cont_id);
+
+            //Criterios
+            fetch(urlApi)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((res) => {
+                    console.log("Criterios ", res);
+                    datosCri = res;
+
+                    //Escalas
+                    fetch(urlBaseApi + "escalas")
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((esc) => {
+                            console.log("Escalas", esc);
+                            let aux = datosCri.Info_de_Evaluacion_renov;
+
+                            if (aux.length > 0) {
+                                //Get cuentas
+
+                                fetch(
+                                    urlBaseApi +
+                                        `evaluacion_criterios/renovacion/all/${provid}/${cont_id}`
+                                )
+                                    .then((response) => {
+                                        return response.json();
+                                    })
+                                    .then((allp) => {
+                                        console.log("Pedidos all", allp);
+                                        dataAll = allp;
+
+                                        fetch(
+                                            urlBaseApi +
+                                                `evaluacion_criterios/renovacion/${provid}/${cont_id}`
+                                        )
+                                            .then((response) => {
+                                                return response.json();
+                                            })
+                                            .then((aproP) => {
+                                                console.log("Pedidos aprob", aproP);
+
+                                                this.generateForm(
+                                                    datosCri.Info_de_Evaluacion_renov,
+                                                    esc.Info_de_Evaluacion,
+                                                    dataAll.Cantidad,
+                                                    aproP.Cantidad
+                                                );
+                                            });
+                                    });
+                            } else {
+                                //Redirigir
+                                this.$router.push({
+                                    name: "FormulaEval",
+                                });
+                            }
+                        });
+                });
         },
     },
     mounted() {
@@ -112,39 +211,15 @@ export default {
                     },
                 ];
 
-                this.formula.valor_min = 0;
-                this.formula.valor_max = 10;
-                this.formula.punt_exito = 80;
+                //this.formula.valor_min = 0;
+                // this.formula.valor_max = 10;
+                //this.formula.punt_exito = 80;
 
-                let dataF = {
-                    Info_de_Evaluacion_inicial: [
-                        {
-                            fecha_inicio: "2018-12-10T04:00:00.000Z",
-                            nombre_crit: "Éxito",
-                            descripcion: "Puntaje objetivo de éxito",
-                            peso: "70",
-                        },
-                    ],
-                };
-
-                let dataEsc = {
-                    Info_de_Evaluacion_inicial: [
-                        {
-                            fecha_inicio: "2019-12-14T04:00:00.000Z",
-                            valor_min: "0",
-                            valor_max: "50",
-                        },
-                    ],
-                };
+                //numeros de pedidos
                 let dataAll = { Cantidad: [{ count: "20" }] };
                 let dataAprob = { Cantidad: [{ count: "5" }] };
 
-                this.generateForm(
-                    dataF.Info_de_Evaluacion_inicial,
-                    dataAll.Cantidad,
-                    dataAprob.Cantidad,
-                    dataEsc.Info_de_Evaluacion_inicial
-                );
+                this.getFormulaRenov();
             }
         });
     },

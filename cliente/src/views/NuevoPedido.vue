@@ -18,6 +18,7 @@
             <b-container>
                 <b-row>
                     <b-col>
+                        <h3 v-show="proveedores.length == 0">No posee proveedores disponibles</h3>
                         <b-card-group columns>
                             <div v-for="(prov, i) in proveedores" :key="i">
                                 <b-card v-if="prov">
@@ -53,55 +54,7 @@ export default {
             isLoading: true,
             index_selected_prov: 0,
             proveedor: {},
-            proveedores: [
-                {
-                    id: 1,
-                    nombre: "Empresita 1",
-                    email: "test@gdsf.com",
-                    telefono: 4545456898,
-                    pag_web: "www.google.com",
-                    pais: "Puerto Rico",
-                    ingredientes: [
-                        { cas: "1234", nombre: "Cacao", tipo: "natural", volumen: "10", precio: 5 },
-                        {
-                            cas: "1234",
-                            nombre: "Cacao",
-                            tipo: "natural",
-                            volumen: "15",
-                            precio: 50,
-                        },
-                    ],
-                    formas_envios: [
-                        { idfe: 2, tipo: "m", cargo: "10", pais: "Venezuela" },
-                        { idfe: 2, tipo: "a", cargo: "5", pais: "Corea" },
-                    ],
-                    formas_pagos: [
-                        {
-                            idfp: 3,
-                            tipo: "cont",
-                            porc_inicial: null,
-                            nro_cuotas: null,
-                            int_mensual: null,
-                        },
-                        {
-                            idfp: 3,
-                            tipo: "cred",
-                            porc_inicial: "15",
-                            nro_cuotas: "2",
-                            interes_mensual: "6",
-                        },
-                    ],
-                },
-                {
-                    id: 2,
-                    nombre: "Empresita 2",
-                    email: "test@dsfdsfsdfsdf.com",
-                    telefono: 2124423258,
-                    pag_web: "www.gsdsadsaoogle.com",
-                    pais: "Estados Unidos de America",
-                },
-                { nombre: "Empresita 3", pais: "Israel", email: "sdfdsf@sdgfds.sd" },
-            ],
+            proveedores: [],
         };
     },
     methods: {
@@ -118,6 +71,7 @@ export default {
             this.$router.push({
                 name: "PedidosDetalle",
                 params: {
+                    id: this.$route.params.id,
                     id_prov: this.proveedor.id,
                     datosProv: this.proveedor,
                 },
@@ -129,11 +83,14 @@ export default {
             provs.forEach((p) => {
                 if (aux_prov[p.id] == null) {
                     aux_prov[p.id] = {
-                        nombre: p.nombre,
+                        id: p.id,
+                        cont_id: p.cont_id,
+                        nombre: p.nom_prov,
                         email: p.email,
+
                         telefono: p.telefono,
                         pag_web: p.pag_web,
-                        pais: null,
+                        pais: p.nom_pais,
                         ingredientes: [],
                         formas_envios: [],
                         formas_pagos: [],
@@ -142,8 +99,9 @@ export default {
 
                 aux_prov[p.id].ingredientes.push({
                     cas: Number(p.cas),
-                    nombre: p.nombre,
+                    nombre: p.nom_ing,
                     tipo: p.tipo,
+                    id_pres: p.presid,
                     volumen: Number(p.volumen),
                     precio: Number(p.precio),
                 });
@@ -171,67 +129,49 @@ export default {
             this.proveedores = aux_prov;
         },
         getProveedores() {
-            let datosProvs = {
-                Lista_de_proveedores: [
-                    {
-                        id: 3,
-                        nombre: "Acetato de Benzilo",
-                        email: "contact@tennantsfinechemicals.co.uk",
-                        telefono: "1538399100",
-                        pag_web: "www.tennantsfinechemicals.co.uk",
-                        cas: "140114",
-                        tipo: "q",
-                        volumen: "100",
-                        precio: "3.00",
-                    },
-                    {
-                        id: 3,
-                        nombre: "Acetato de Benzilo",
-                        email: "contact@tennantsfinechemicals.co.uk",
-                        telefono: "1538399100",
-                        pag_web: "www.tennantsfinechemicals.co.uk",
-                        cas: "140114",
-                        tipo: "q",
-                        volumen: "10000",
-                        precio: "2500.00",
-                    },
-                    {
-                        id: 3,
-                        nombre: "Aldehído Cinámico Amilo",
-                        email: "contact@tennantsfinechemicals.co.uk",
-                        telefono: "1538399100",
-                        pag_web: "www.tennantsfinechemicals.co.uk",
-                        cas: "78605966",
-                        tipo: "q",
-                        volumen: "100",
-                        precio: "55.00",
-                    },
-                ],
-            };
-            let datosFe = {
-                Lista_de_fe_proveedores: [
-                    { id_prov: 3, id_fe: 8, nombre: "Sudáfrica", tipo: "a", cargo: "13" },
-                ],
-            };
-            let datosFP = {
-                Lista_de_fp_proveedores: [
-                    {
-                        id_proveedor: 3,
-                        id_fp: 5,
-                        tipo: "cont",
-                        porc_inicial: null,
-                        nro_cuotas: null,
-                        interes_mensual: null,
-                        nro_dia_entre_pago: null,
-                    },
-                ],
-            };
+            let idUser = this.$route.params.id;
+            let urlBaseApi = "http://localhost:3000/prod/";
 
-            this.generateProv(
-                datosProvs.Lista_de_proveedores,
-                datosFe.Lista_de_fe_proveedores,
-                datosFP.Lista_de_fp_proveedores
-            );
+            let ApiProvs = urlBaseApi + `${idUser}/pedido/nuevo`;
+            let ApiProvsFE = urlBaseApi + `${idUser}/pedido/nuevo/fe`;
+            let ApiProvsFP = urlBaseApi + `${idUser}/pedido/nuevo/fp`;
+
+            let datosProvs;
+            let datosFe;
+            let datosFP;
+
+            fetch(ApiProvs)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((provs) => {
+                    console.log("PROVS ", provs);
+                    datosProvs = provs;
+
+                    fetch(ApiProvsFE)
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((fes) => {
+                            console.log("fes ", fes);
+                            datosFe = fes;
+
+                            fetch(ApiProvsFP)
+                                .then((response) => {
+                                    return response.json();
+                                })
+                                .then((fps) => {
+                                    console.log("fps ", fps);
+                                    datosFP = fps;
+
+                                    this.generateProv(
+                                        datosProvs.Lista_de_proveedores,
+                                        datosFe.Lista_de_fe_proveedores,
+                                        datosFP.Lista_de_fp_proveedores
+                                    );
+                                });
+                        });
+                });
         },
     },
 

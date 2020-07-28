@@ -126,8 +126,8 @@ export default {
                     sortable: false,
                 },
                 {
-                    key: "prov_nombre",
                     label: "Empresa",
+                    key: this.getUserType() == "prod" ? "prov_nombre" : "prod_nombre",
                     sortable: true,
                 },
                 {
@@ -142,58 +142,7 @@ export default {
                 },
             ],
             pedido: {},
-            pedidos: [
-                {
-                    id: 1,
-                    fecha_emision: "12/07/2020",
-                    total_usd: 569.2,
-                    subtotal_usd: 100.5,
-                    estado: "a",
-                    fecha_confirmacion: "17/07/2020",
-                    nro_factura: 694765,
-                    motivo_cancel: null,
-                    forma_envio: {
-                        tipo: "Maritimo",
-                        recargo: "10",
-                        pais: "Venezuela",
-                    },
-                    forma_pago: {
-                        tipo: "Contado",
-                        porc_inicial: "15",
-                        nro_cuotas: "2",
-                        int_mensual: "6",
-                    },
-
-                    detalle: [
-                        { cas: 9999, nombre: "Aceite", volumen: "50", precio: 12, cantidad: 5 },
-                        { cas: 9999, nombre: "Aceite", volumen: "50", precio: 2, cantidad: 1 },
-                        { cas: 9999, nombre: "Aceite", volumen: "50", precio: 11, cantidad: 7 },
-                    ],
-                },
-                {
-                    id: 2,
-                    fecha_emision: "12/01/2019",
-                    total_usd: 100.2,
-                    subtotal_usd: 55.5,
-                    estado: "a",
-                    fecha_confirmacion: "17/01/2020",
-                    nro_factura: 9999,
-                    motivo_cancel: null,
-                    forma_envio: { tipo: "Maritimo", recargo: "10", pais: "Venezuela" },
-                    forma_pago: {
-                        tipo: "Contado",
-                        porc_inicial: "15",
-                        nro_cuotas: "2",
-                        int_mensual: "6",
-                    },
-
-                    detalle: [
-                        { cas: 9999, nombre: "Aceite", volumen: "50", precio: 12, cantidad: 5 },
-                        { cas: 9999, nombre: "Aceite", volumen: "50", precio: 12, cantidad: 5 },
-                        { cas: 9999, nombre: "Aceite", volumen: "50", precio: 12, cantidad: 5 },
-                    ],
-                },
-            ],
+            pedidos: [],
             index_selected_pedido: 0,
             only_view: true,
         };
@@ -246,8 +195,32 @@ export default {
 
             this.$bvModal.show("pe-modal");
         },
-        aprobarSelected() {
-            console.log("Aprobuebeseeee");
+        aprobarSelected(nro_fact) {
+            console.log("Aprobuebeseeee", nro_fact);
+
+            let idUser = this.$route.params.id;
+            let urlApi = `http://localhost:3000/prov/${idUser}/pedido/aprobar/${this.pedido.id}`;
+
+            let obj_apro = {
+                nro_factura: Number(nro_fact),
+            };
+
+            fetch(urlApi, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(obj_apro),
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((res) => {
+                    console.log("Servidor dice Aprobado: ", res);
+
+                    //Quitar de la lista
+                    this.pedidos.splice(this.index_selected_pedido, 1);
+                });
         },
         openCancelar(index) {
             this.index_selected_pedido = index;
@@ -255,95 +228,147 @@ export default {
 
             this.$bvModal.show("cancelar-modal");
         },
-        cancelarConfirm(text) {
-            console.log("Cancelando ", this.pedido);
+        cancelarConfirm(res) {
+            let idUser = this.$route.params.id;
+            console.log("Cancelando ", this.pedido, res);
+
+            let urlApi = `http://localhost:3000/prov/${idUser}/pedido/cancelar/${this.pedido.id}`;
+            let obj_can = {
+                motivo_cancel: res.text,
+            };
+
+            fetch(urlApi, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(obj_can),
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((resp) => {
+                    //Quitar de la lista
+                    this.pedidos.splice(this.index_selected_pedido, 1);
+                });
         },
         generatePedidos(pes, fes, fps) {
             let aux_pe = [];
 
+            console.log(pes, fes, fps);
+
             pes.forEach((p) => {
-                if (aux_pe[p.pedid] == null) {
-                    aux_pe[p.pedid] = {
-                        id: p.pedid,
+                if (aux_pe[p.id || p.pedid] == null) {
+                    aux_pe[p.id || p.pedid] = {
+                        id: p.id || p.pedid,
+                        prov_nom: p.prov_nom,
+                        prod_nombre: p.nom_prod,
                         fecha_emision: p.f_emision,
                         total_usd: Number(p.total_usd),
                         subtotal_usd: Number(p.subtotal_usd),
                         estado: p.estado.trim(),
                         nro_factura: null,
-                        forma_envio: null,
-                        forma_pago: null,
+                        forma_envio: {},
+                        forma_pago: {},
                         detalle: [],
                     };
                 }
 
-                aux_pe[p.pedid].detalle.push({
+                //ing
+                aux_pe[p.id || p.pedid].detalle.push({
                     cas: Number(p.cas),
                     nombre: p.nombre,
                     volumen: Number(p.volumen),
-                    precio: null,
-                    cantidad: null,
+                    precio: Number(p.precio),
+                    cantidad: Number(p.cantidad),
                 });
             });
+            console.log("AUX", aux_pe);
 
+            //fe
             fes.forEach((fe) => {
                 aux_pe[fe.id_pedido].forma_envio = {
                     tipo: fe.tipo,
-                    recargo: null,
+                    cargo: Number(fe.cargo),
                     pais: fe.nombre_pais,
                 };
             });
-
+            //fp
             fps.forEach((fp) => {
                 aux_pe[fp.id_pedido].forma_pago = {
                     tipo: fp.tipo,
                     porc_inicial: fp.porc_inicial,
                     nro_cuotas: fp.nro_cuotas,
-                    int_mensual: fp.interes_mensual,
+                    int_mensual: Number(fp.interes_mensual),
                 };
             });
 
             this.pedidos = aux_pe;
         },
         getPedidos() {
-            let datosPe = {
-                Info_Pedidos_Pendientes: [
-                    {
-                        pedid: 2,
-                        estado: "p   ",
-                        f_emision: "2020-03-19T04:00:00.000Z",
-                        id_prod: 2,
-                        subtotal_usd: "2240.00",
-                        total_usd: "2240.00",
-                        cas: "586629",
-                        nombre: "Terpinolene-40",
-                        volumen: "5000",
-                    },
-                ],
-            };
-            let datosFe = {
-                Info_Pedidos_Pendientes: [
-                    { id_pedido: 2, id: 4, tipo: "m", nombre_pais: "Tailandia" },
-                ],
-            };
-            let datosFp = {
-                Info_Pedidos_Pendientes: [
-                    {
-                        id_pedido: 2,
-                        id: 3,
-                        tipo: "cont",
-                        porc_inicial: null,
-                        nro_cuotas: null,
-                        interes_mensual: null,
-                        nro_dia_entre_pago: null,
-                    },
-                ],
-            };
+            let idUser = this.$route.params.id;
+            let urlBaseApi = "http://localhost:3000";
 
-            this.generatePedidos(
-                datosPe.Info_Pedidos_Pendientes,
-                datosFe.Info_Pedidos_Pendientes,
-                datosFp.Info_Pedidos_Pendientes
-            );
+            let ApiContrato = urlBaseApi;
+            let ApiFEContrato = urlBaseApi;
+            let ApiFPContrato = urlBaseApi;
+
+            if (this.getUserType() == "prov") {
+                //Prov
+                if (this.mode_pen) {
+                    //Pendientes
+                    ApiContrato += `/prov/${idUser}/pedidos/pendientes`;
+                    ApiFEContrato += `/prov/${idUser}/pedidos/pendientes/fe`;
+                    ApiFPContrato += `/prov/${idUser}/pedidos/pendientes/fp`;
+                } else {
+                    //todos
+                    ApiContrato += `/prov/${idUser}/pedidos/`;
+                    ApiFEContrato += `/prov/${idUser}/pedidos/fe`;
+                    ApiFPContrato += `/prov/${idUser}/pedidos/fp`;
+                }
+            } else {
+                //Prod
+                ApiContrato += `/prod/${idUser}/pedidos/`;
+                ApiFEContrato += `/prod/${idUser}/pedidos/fe`;
+                ApiFPContrato += `/prod/${idUser}/pedidos/fp`;
+            }
+
+            let datosPe;
+            let datosFe;
+            let datosFp;
+
+            fetch(ApiContrato)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((pe) => {
+                    datosPe = pe;
+                    console.log("PEDIDOS ", pe);
+
+                    //FE
+                    fetch(ApiFEContrato)
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((fes) => {
+                            datosFe = fes;
+                            console.log("FES ", fes);
+                            //FP
+                            fetch(ApiFPContrato)
+                                .then((response) => {
+                                    return response.json();
+                                })
+                                .then((fps) => {
+                                    datosFp = fps;
+                                    console.log("FPS ", fps);
+                                    this.generatePedidos(
+                                        datosPe.Info_Pedidos_Pendientes || datosPe.Info_Pedidos,
+                                        datosFe.Info_Pedidos_Pendientes || datosFe.Info_Pedidos,
+                                        datosFp.Info_Pedidos_Pendientes || datosFp.Info_Pedidos
+                                    );
+                                });
+                        });
+                });
         },
     },
     watch: {

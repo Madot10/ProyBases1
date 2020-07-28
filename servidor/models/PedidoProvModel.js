@@ -73,7 +73,10 @@ function createPagosPedido(id_prov, id_ped) {
                     resolve();
                 });
             })
-            .catch((e) => console.error(e.stack));
+            .catch((e) => {
+                reject(e);
+                console.error(e.stack);
+            });
     });
 }
 
@@ -100,6 +103,45 @@ class PedidoProvModel {
         });
     }
 
+    getPedidosFe(id_prov) {
+        return new Promise((resolve, reject) => {
+            database
+                .query(
+                    `SELECT condpe.id_pedido, fe.id, fe.tipo, fe.cargo, pais.nombre AS nombre_pais
+                    FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+                    INNER JOIN vam_pedidos AS p ON p.id_prod = condcon.id_prod_cont AND p.id_prov = condcon.id_prov_cont
+                        INNER JOIN vam_forma_envios AS fe ON condcon.id_form_envio = fe.id
+                        INNER JOIN vam_paises AS pais ON pais.id = condcon.id_form_envio_pais
+                    WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cont_prov = $1 AND condpe.id_cond = condcon.id AND  p.estado != 'p';`,
+                    [id_prov]
+                )
+                .then(function (response) {
+                    const provs = response.rows;
+                    resolve(provs);
+                })
+                .catch((e) => console.error(e.stack));
+        });
+    }
+
+    getPedidosFp(id_prov) {
+        return new Promise((resolve, reject) => {
+            database
+                .query(
+                    `SELECT condpe.id_pedido, fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
+                    FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+                    INNER JOIN vam_pedidos AS p ON p.id_prod = condcon.id_prod_cont AND p.id_prov = condcon.id_prov_cont
+                        LEFT JOIN vam_forma_pagos AS fp ON condcon.id_form_pago = fp.id
+                    WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = $1 AND condpe.id_cond = condcon.id AND  p.estado != 'p';`,
+                    [id_prov]
+                )
+                .then(function (response) {
+                    const provs = response.rows;
+                    resolve(provs);
+                })
+                .catch((e) => console.error(e.stack));
+        });
+    }
+
     //21
     getPedidosPendientes(id_prov) {
         return new Promise((resolve, reject) => {
@@ -111,7 +153,7 @@ class PedidoProvModel {
                         INNER JOIN vam_det_pedido AS det ON det.id_pedido = p.id
                         INNER JOIN vam_ing_presentaciones AS pres ON pres.id = det.id_ing_presentacion
                         INNER JOIN vam_ingrediente_esencias AS ing ON ing.cas = pres.cas_ingrediente
-                    WHERE p.estado = 'p' AND p.id = det.id_pedido AND p.id_prov = $1 AND det.id_prov_ing = p.id_prov AND p.id_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
+                    WHERE p.estado = 'p' AND p.id = det.id_pedido AND p.id_prov = $1 AND det.id_prov_ing = p.id_prov AND p.id_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = p.id_prod AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                     [id_prov]
                 )
                 .then(function (response) {
@@ -132,7 +174,7 @@ class PedidoProvModel {
                     INNER JOIN vam_forma_envios AS fe ON condcon.id_form_envio = fe.id
                     INNER JOIN vam_paises AS pais ON pais.id = condcon.id_form_envio_pais
                 WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cont_prov = $1 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prov = $1 AND ped.estado = 'p')
-                  AND condpe.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
+                  AND condpe.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = condpe.id_cont_prod AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                     [id_prov]
                 )
                 .then(function (response) {
@@ -152,7 +194,7 @@ class PedidoProvModel {
                 FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
                     LEFT JOIN vam_forma_pagos AS fp ON condcon.id_form_pago = fp.id
                 WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = $1 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prov = $1 AND ped.estado = 'p')
-                  AND condpe.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
+                  AND condpe.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = condpe.id_cont_prod AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                     [id_prov]
                 )
                 .then(function (response) {
