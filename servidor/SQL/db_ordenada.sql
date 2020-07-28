@@ -330,10 +330,10 @@ CREATE SEQUENCE sec_VAM_HISTORICO_IFRA
 
 CREATE TABLE VAM_HISTORICO_IFRA(
     id SMALLINT DEFAULT nextval('sec_VAM_HISTORICO_IFRA'),
-    fecha_inicio TIMESTAMP,
+    fecha_inicio DATE,
     id_proveedor SMALLINT,
     id_productor SMALLINT,
-    fecha_fin TIMESTAMP,
+    fecha_fin DATE,
     CONSTRAINT fk_prov_ifra FOREIGN KEY (id_proveedor) REFERENCES VAM_PROVEEDORES(id) ON DELETE CASCADE,
     CONSTRAINT fk_prod_ifra FOREIGN KEY (id_productor) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT pk_hist_ifra PRIMARY KEY (id, fecha_inicio)
@@ -347,13 +347,13 @@ CREATE SEQUENCE sec_VAM_PEDIDOS
 
 CREATE TABLE VAM_PEDIDOS(
    id SMALLINT DEFAULT nextval('sec_VAM_PEDIDOS') PRIMARY KEY,
-   f_emision TIMESTAMP NOT NULL,
+   f_emision DATE NOT NULL,
    estado CHAR(4) NOT NULL,
    id_prov SMALLINT NOT NULL,
    id_prod SMALLINT NOT NULL,
    subtotal_usd NUMERIC(9,2) NOT NULL,
    total_usd NUMERIC(9,2) NOT NULL,
-   f_confirmacion TIMESTAMP,
+   f_confirmacion DATE,
    motivo_cancel VARCHAR(400),
    nro_factura NUMERIC(7),
    CONSTRAINT check_estado CHECK(estado in ('a','p','anpv','anpd')),
@@ -370,7 +370,7 @@ CREATE SEQUENCE sec_VAM_PAGOS
 CREATE TABLE VAM_PAGOS(
    id SMALLINT DEFAULT nextval('sec_VAM_PAGOS'),
    id_pedido SMALLINT,
-   fecha TIMESTAMP NOT NULL,
+   fecha DATE NOT NULL,
    monto NUMERIC(9,2) NOT NULL,
    CONSTRAINT fk_id_pedido FOREIGN KEY(id_pedido) REFERENCES VAM_PEDIDOS(id) ON DELETE CASCADE,
    CONSTRAINT pk_pago PRIMARY KEY(id,id_pedido)
@@ -419,10 +419,10 @@ CREATE TABLE VAM_CONTRATOS(
    id SMALLINT DEFAULT nextval('sec_VAM_CONTRATOS'),
    id_prov SMALLINT,
    id_prod SMALLINT,
-   fecha_emision TIMESTAMP NOT NULL,
+   fecha_emision DATE NOT NULL,
    exclusividad BOOLEAN NOT NULL DEFAULT FALSE,
    clausula VARCHAR(1000),
-   fecha_cancelacion TIMESTAMP,
+   fecha_cancelacion DATE,
    motivo_cancel VARCHAR(400),
    quien_cancela VARCHAR(4),
    CONSTRAINT check_quien_cancela CHECK (quien_cancela in ('prov', 'prod')),
@@ -486,7 +486,7 @@ CREATE TABLE VAM_RENOVACIONES(
    id_contrato SMALLINT,
    id_cont_prov SMALLINT,
    id_cont_prod SMALLINT,
-   fecha TIMESTAMP NOT NULL,
+   fecha DATE NOT NULL,
    CONSTRAINT fk_renov_cont FOREIGN KEY(id_contrato, id_cont_prov, id_cont_prod) REFERENCES VAM_CONTRATOS(id, id_prov, id_prod) ON DELETE CASCADE,
    CONSTRAINT pk_renov PRIMARY KEY(id, id_contrato, id_cont_prov, id_cont_prod)
 );

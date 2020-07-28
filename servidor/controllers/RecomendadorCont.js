@@ -127,10 +127,10 @@ class RecomendadorCont {
             .catch((e) => console.error(e.stack));
     }
 
-    getNotasPerfumes(req, res) {
-        const { genero } = req.body;
+    getEsenciasPerfumes(req, res) {
+        const id_perf = req.params.id_perf;
 
-        rec.getNotasPerfumes(genero)
+        rec.getEsenciasPerfumes(id_perf)
             .then(function (perfs) {
                 res.status(200).json({ Perfumes: perfs });
             })

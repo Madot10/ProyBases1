@@ -7,7 +7,7 @@ function createFormula(id_prod, tipo_formula, formula) {
         for (var i = 0; formula.pesos[i] != null; i++) {
             database
                 .query(
-                    `INSERT INTO vam_eval_criterios(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula) VALUES (current_date,$1,$2,$3,$4)`,
+                    `INSERT INTO vam_eval_criterios(fecha_inicio,id_prod,id_var_crit,peso,tipo_formula) VALUES (now(),$1,$2,$3,$4)`,
                     [id_prod,formula.id_var_crit[i],formula.pesos[i],tipo_formula]
                 )
                 .then(function () {
@@ -26,7 +26,7 @@ class EvalProdModel{
        
       database
         .query(
-            `INSERT INTO vam_result_eval(fecha,id_prod,id_prov,resultado,tipo_eval) VALUES (current_date,$1,$2,$3,$4)`,
+            `INSERT INTO vam_result_eval(fecha,id_prod,id_prov,resultado,tipo_eval) VALUES (now(),$1,$2,$3,$4)`,
             [id_prod,id_prov,resultado,tipoeval]
         )
         .then(function () {
@@ -59,7 +59,7 @@ class EvalProdModel{
        
       database
         .query(
-            `INSERT INTO vam_escalas(fecha_inicio,id_prod,valor_min,valor_max) VALUES (current_date,$1,$2,$3)`,
+            `INSERT INTO vam_escalas(fecha_inicio,id_prod,valor_min,valor_max) VALUES (now(),$1,$2,$3)`,
             [id_prod,valor_min,valor_max]
         )
         .then(function () {
@@ -89,7 +89,7 @@ class EvalProdModel{
        
       database
         .query(
-            `UPDATE vam_escalas SET fecha_fin = current_date WHERE id_prod = $1 AND fecha_fin IS NULL`,
+            `UPDATE vam_escalas SET fecha_fin = now() WHERE id_prod = $1 AND fecha_fin IS NULL`,
             [id_prod]
         )
         .then(function () {
@@ -106,7 +106,7 @@ class EvalProdModel{
        
       database
         .query(
-            `UPDATE vam_eval_criterios SET fecha_fin = current_date WHERE id_prod = $1 AND tipo_formula = $2 AND fecha_fin IS NULL`,
+            `UPDATE vam_eval_criterios SET fecha_fin = now() WHERE id_prod = $1 AND tipo_formula = $2 AND fecha_fin IS NULL`,
             [id_prod,tipo_formula]
         )
         .then(() => {

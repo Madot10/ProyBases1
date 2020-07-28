@@ -211,7 +211,6 @@ FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
 WHERE condpe.id_pedido = 9 AND condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = 2 AND condpe.id_cond = condcon.id;
 
 
-
 30.1--Información de evaluación de criterios (inicial)
 SELECT eval.fecha_inicio, var.nombre_crit, var.descripcion, eval.peso
 FROM vam_eval_criterios AS eval
@@ -230,6 +229,7 @@ FROM vam_escalas
 WHERE id_prod = 4 AND fecha_fin IS NULL;
 
 
+
 --Queries de recomendador
 --Datos principales del perfume
 SELECT perf.id, perf.nombre AS nom_perf, prod.nombre AS nom_prod, perf.genero, perf.rango_edad, perf.descrip_componentes, perf.tipo_estructura, perf.descrip_perf, perfum.id AS id_perfumista, perfum.nombre AS nom_perfumista, perfum.apellido, pais.nombre AS pais_origen, perf_int.id AS id_perf_int, perf_int.tipo AS tipo_int, perf_int.porc_concentracion, perf_int.descripcion, pres.id AS id_pres, pres.volumen
@@ -243,24 +243,24 @@ FROM vam_perfumes AS perf
     INNER JOIN vam_productores prod ON pf.id_productor = prod.id
 WHERE perf.genero = 'f'
 
-
---REVISAR
---Perfumes (notas y familia olfativa)
-SELECT perf.id, flia.id AS id_flia, flia.nombre AS nom_flia, notas.id AS id_nota, notas.tipo_nota, esencia.tsca_cas, esencia.nombre
+--Esencias y familia olfativa de acuerdo a un perfume
+SELECT perf.id AS id_perf, flia.id AS id_flia, flia.nombre AS nom_flia, 'm' AS tipo_nota, esencia.tsca_cas, esencia.nombre
 FROM vam_perfumes AS perf
     INNER JOIN vam_fo_principal AS princ ON perf.id = princ.id_perf
     INNER JOIN vam_flia_olfat AS flia ON flia.id = princ.id_flia_olf
-    --Caso de perfume por fases
-    INNER JOIN vam_notas_perfumes AS notas ON perf.id = notas.id_perf
-    --Caso de perfume monolítico
     INNER JOIN vam_monolitico AS monol ON perf.id = monol.id_perf
+    INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = monol.id_esencia_perf
+WHERE perf.id = 4 AND perf.tipo_estructura = 'm'
+UNION
+SELECT perf.id AS id_perf, flia.id AS id_flia, flia.nombre AS nom_flia, notas.tipo_nota, esencia.tsca_cas, esencia.nombre
+FROM vam_perfumes AS perf
+    INNER JOIN vam_fo_principal AS princ ON perf.id = princ.id_perf
+    INNER JOIN vam_flia_olfat AS flia ON flia.id = princ.id_flia_olf
+    INNER JOIN vam_notas_perfumes AS notas ON perf.id = notas.id_perf
+    INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = notas.id_esencia_perf
+WHERE perf.id = 4 AND perf.tipo_estructura = 'f' ORDER BY tipo_nota
 
-    INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = notas.id_esencia_perf OR esencia.tsca_cas = monol.id_esencia_perf
-WHERE perf.genero = 'f'
 
-
-
---PRUEBAS
 --2 Opciones Edades segun genero
 SELECT perf.id, perf.rango_edad FROM vam_perfumes AS perf WHERE genero = 'f';
 
@@ -277,7 +277,6 @@ SELECT perf.id, palabra.palabra
         WHERE  perf.genero = 'f' AND perf.rango_edad = 'ate' AND intp.tipo = 'edp';
 
 --5 Opciones flia segun caracter, intensidad, edad y genero
-
 --Familia Olfativa
 SELECT DISTINCT perf.id AS id_perf, flia.id AS id_flia, flia.nombre
 FROM vam_perfumes AS perf

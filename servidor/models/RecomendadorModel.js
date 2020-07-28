@@ -187,12 +187,26 @@ class RecomendadorModel {
         });
     }
 
-    getNotasPerfumes(genero) {
+    getEsenciasPerfumes(id_perf) {
         return new Promise((resolve, reject) => {
             database
                 .query(
-                    ``,
-                    [genero]
+                    `SELECT perf.id AS id_perf, flia.id AS id_flia, flia.nombre AS nom_flia, 'm' AS tipo_nota, esencia.tsca_cas, esencia.nombre
+                    FROM vam_perfumes AS perf
+                        INNER JOIN vam_fo_principal AS princ ON perf.id = princ.id_perf
+                        INNER JOIN vam_flia_olfat AS flia ON flia.id = princ.id_flia_olf
+                        INNER JOIN vam_monolitico AS monol ON perf.id = monol.id_perf
+                        INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = monol.id_esencia_perf
+                    WHERE perf.id = $1 AND perf.tipo_estructura = 'm'
+                    UNION
+                    SELECT perf.id AS id_perf, flia.id AS id_flia, flia.nombre AS nom_flia, notas.tipo_nota, esencia.tsca_cas, esencia.nombre
+                    FROM vam_perfumes AS perf
+                        INNER JOIN vam_fo_principal AS princ ON perf.id = princ.id_perf
+                        INNER JOIN vam_flia_olfat AS flia ON flia.id = princ.id_flia_olf
+                        INNER JOIN vam_notas_perfumes AS notas ON perf.id = notas.id_perf
+                        INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = notas.id_esencia_perf
+                    WHERE perf.id = $1 AND perf.tipo_estructura = 'f' ORDER BY tipo_nota`,
+                    [id_perf]
                 )
                 .then(function (response) {
                     const perfs = response.rows;

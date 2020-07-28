@@ -103,7 +103,7 @@ router.post("/:id_prod/escala/crear", eval.createEscala);
 router.put("/:id_prod/escala/vencer", eval.updateEscala);
 
 //Crear evaluación de criterios y vencer otras
-router.post("/evaluacion_criterios", eval.createEvalCriterios);
+router.post("/:id_prod/evaluacion_criterios", eval.createEvalCriterios);
 
 //Variables de evaluación inicial
 router.get("/evaluacion/inicial/variables", eval.getVarInicial);

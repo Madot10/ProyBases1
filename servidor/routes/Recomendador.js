@@ -7,20 +7,20 @@ var rec = new RecomendadorCont;
 
 //Información para los filtros
 //Carécteres
-router.get('/caracter', rec.getCaracter);
+router.get("/caracter", rec.getCaracter);
 //Familias Olvfativas
-router.get('/fliaolf', rec.getFliaOlf);
+router.get("/fliaolf", rec.getFliaOlf);
 //Aromas
-router.get('/aroma', rec.getAroma);
+router.get("/aroma", rec.getAroma);
 //Preferencias
-router.get('/preferencia', rec.getPreferencia);
+router.get("/preferencia", rec.getPreferencia);
 //Personalidades
-router.get('/personalidad', rec.getPersonalidad);
+router.get("/personalidad", rec.getPersonalidad);
 
 //Filtros
-//Se pasa la información de todos los perfumes de acuerdo al filtro de género
-router.get('/perfumes', rec.getPerfumes);
-//Se pasa la información de las notas de los perfumes de acuerdo al filtro de género
-router.get('/perfumes/notas', rec.getNotasPerfumes);
+//Se pasa la información de todos los perfumes de acuerdo al filtro de GËNERO
+router.get("/perfumes", rec.getPerfumes);
+//Esencias y familia olfativa de acuerdo al ID de un perfume
+router.get("/perfumes/esencias/:id_perf", rec.getEsenciasPerfumes);
 
 module.exports = router;
