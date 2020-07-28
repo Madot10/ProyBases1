@@ -120,6 +120,8 @@ class RecomendadorCont {
     getPerfumes(req, res) {
         const { genero } = req.body;
 
+        console.log("Aqui", req.body, genero);
+
         rec.getPerfumes(genero)
             .then(function (perfs) {
                 res.status(200).json({ Perfumes: perfs });

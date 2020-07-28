@@ -136,43 +136,45 @@ export default {
                     ],
                 },
                 {
-                    pregunta: "Edad:",
+                    pregunta:
+                        "Sabemos que la edad es sinónimo de experiencia ¿Crees identificarte cuál es tu rango de experiencia?",
                     respuesta: [null],
                     multi: false,
                     opciones: [],
                 },
                 {
-                    pregunta: "Intensidad:",
+                    pregunta: "¿Con cuál clase de esencia te podemos ayudar?",
                     respuesta: [null],
                     multi: false,
                     opciones: [],
                 },
                 {
-                    pregunta: "Caracter:",
+                    pregunta:
+                        "Creemos que el carácter marca a todo el que nos conozca ¿De qué forma marcas a quien te conoce?",
                     respuesta: [null],
                     multi: true,
                     opciones: [],
                 },
                 {
-                    pregunta: "Familia olfativa:",
+                    pregunta: "¿Qué clasificación te gustaría que fuera el perfume?",
                     respuesta: [null],
                     multi: true,
                     opciones: [],
                 },
                 {
-                    pregunta: "Aroma:",
+                    pregunta: "¿Cuál es el aroma que te gustaría que perdurara más?",
                     respuesta: [null],
                     multi: true,
                     opciones: [],
                 },
                 {
-                    pregunta: "Preferencia de uso:",
+                    pregunta: "¿Cuál es la ocasión ideal para el perfume que buscas?",
                     respuesta: [null],
                     multi: false,
                     opciones: [],
                 },
                 {
-                    pregunta: "Personalidad:",
+                    pregunta: "¿Qué quisieras que el perfume resaltara de ti?",
                     respuesta: [null],
                     multi: true,
                     opciones: [],
@@ -180,9 +182,30 @@ export default {
             ],
             perfumes: [],
             flag_null: false,
+            objToSend: {
+                genero: null,
+                edad: null,
+                filtros: {
+                    intensidad: [],
+                    caracter: [],
+                    flia_olf: [],
+                    aroma: [],
+                    preferencia: [],
+                },
+            },
         };
     },
     methods: {
+        construirObj() {
+            switch (this.pagina) {
+                case 0:
+                    this.objToSend.genero = this.preguntas[this.pagina].respuesta[0].value;
+                    break;
+
+                default:
+                    break;
+            }
+        },
         opcionSelected(obj) {
             this.preguntas[this.pagina].respuesta[0] = obj;
             this.mode_loading = true;
@@ -287,6 +310,8 @@ export default {
             this.ask_continuar = true;
         },
         getOpcionesFromServer() {
+            this.construirObj();
+
             let urlBaseApi = "http://localhost:3000/rec/";
             let urlApi = urlBaseApi;
 
@@ -550,7 +575,7 @@ export default {
                         ],
                     };
 
-                    this.gestionarRespuesta(res);
+                    //this.gestionarRespuesta(res);
 
                     break;
 
@@ -850,14 +875,23 @@ export default {
 
                     break;
             }
+            let aux_obj = Object.assign({}, this.objToSend);
+            console.warn("OBJ TO SEND", aux_obj);
 
-            /*
-            fetch(urlApi).then((response) => {
+            fetch(urlApi, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: aux_obj,
+            })
+                .then((response) => {
                     return response.json();
                 })
-                .then(res =>{
-
-                })*/
+                .then((res) => {
+                    console.warn("RESPUESTA", res);
+                    this.gestionarRespuesta(res);
+                });
         },
         getTextEdad(valueEdad) {
             switch (valueEdad) {
