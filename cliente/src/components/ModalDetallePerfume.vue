@@ -46,20 +46,59 @@
                     </div>
 
                     <!-- Componentes -->
-                    <div>
+                    <div v-if="perfume.descrip_componentes">
                         <h5>Componentes</h5>
-                        <p>{{ perfume.descrip_componentes }}</p>
+                        <p>
+                            {{
+                                perfume.descrip_componentes[0].toUpperCase() +
+                                    perfume.descrip_componentes.slice(1)
+                            }}
+                        </p>
                     </div>
 
                     <!-- ESENCIAS -->
                     <div>
                         <h5>Esencias</h5>
-                        <ul>
+                        <ul v-if="perfume.tipo_estructura == 'm'">
                             <li v-for="(esencia, j) in esen" :key="j">
                                 {{ esencia }}
                             </li>
                         </ul>
+                        <ul v-else>
+                            <li>
+                                <b>Notas de salida</b>
+                                <ul>
+                                    <li v-for="(esencia, j) in e_s" :key="j">
+                                        {{ esencia }}
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <b>Notas de corazón</b>
+                                <ul>
+                                    <li v-for="(esencia, j) in e_c" :key="j">
+                                        {{ esencia }}
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <b>Notas de fondo</b>
+                                <ul>
+                                    <li v-for="(esencia, j) in e_f" :key="j">
+                                        {{ esencia }}
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
+
+                    <!-- Ver en tienda -->
+                    <b-button
+                        block
+                        variant="outline-info"
+                        href="https://fr.loccitane.com/tous-les-parfums-femme,74,1,86798,0.htm"
+                        >ENCUÉNTRALO <b-icon icon="cart4"></b-icon
+                    ></b-button>
                 </b-col>
             </b-row>
         </b-container>
@@ -77,6 +116,9 @@ export default {
     data() {
         return {
             esen: [],
+            e_c: [],
+            e_f: [],
+            e_s: [],
         };
     },
     methods: {
@@ -139,10 +181,33 @@ export default {
                     return response.json();
                 })
                 .then((es) => {
+                    console.log(es);
                     es.Perfumes.forEach((e) => {
                         let name = e.nombre[0].toUpperCase() + e.nombre.slice(1);
-                        if (!aux_esc.includes(name)) {
-                            aux_esc.push(name);
+                        if (this.perfume.tipo_estructura == "m") {
+                            if (!aux_esc.includes(name)) {
+                                aux_esc.push(name);
+                            }
+                        } else {
+                            switch (e.tipo_nota) {
+                                case "c":
+                                    if (!this.e_c.includes(name)) {
+                                        this.e_c.push(name);
+                                    }
+                                    break;
+
+                                case "s":
+                                    if (!this.e_s.includes(name)) {
+                                        this.e_s.push(name);
+                                    }
+                                    break;
+
+                                case "f":
+                                    if (!this.e_f.includes(name)) {
+                                        this.e_f.push(name);
+                                    }
+                                    break;
+                            }
                         }
                     });
 

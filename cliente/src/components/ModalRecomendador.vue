@@ -39,6 +39,7 @@
                 :key="i"
                 v-show="i == pagina && mode_recon && !ask_continuar && !mode_loading"
             >
+                <h6>{{ p.headline }}</h6>
                 <h4>{{ p.pregunta }}</h4>
                 <br />
                 <!-- una opcion -->
@@ -127,6 +128,7 @@ export default {
             preguntas: [
                 {
                     //0
+                    headline: "",
                     pregunta: "Cuéntanos, ¿Para quién es el perfume?",
                     respuesta: [null],
                     multi: false,
@@ -138,14 +140,15 @@ export default {
                 },
                 {
                     //1
-                    pregunta:
-                        "Sabemos que la edad es sinónimo de experiencia ¿Crees identificarte cuál es tu rango de experiencia?",
+                    headline: "Sabemos que la edad es sinónimo de experiencia",
+                    pregunta: "¿Crees identificar cuál es tu rango de experiencia?",
                     respuesta: [null],
                     multi: false,
                     opciones: [],
                 },
                 {
                     //2
+                    headline: "",
                     pregunta: "¿Con cuál clase de esencia te podemos ayudar?",
                     respuesta: [null],
                     multi: false,
@@ -153,31 +156,35 @@ export default {
                 },
                 {
                     //3
-                    pregunta:
-                        "Creemos que el carácter marca a todo el que nos conozca ¿De qué forma marcas a quien te conoce?",
+                    headline: "Creemos que el carácter marca a todo el que nos conozca",
+                    pregunta: "¿De qué forma marcas a quien te conoce?",
                     respuesta: [null],
                     multi: true,
                     opciones: [],
                 },
                 {
+                    headline: "",
                     pregunta: "¿Qué clasificación te gustaría que fuera el perfume?",
                     respuesta: [null],
                     multi: true,
                     opciones: [],
                 },
                 {
+                    headline: "",
                     pregunta: "¿Cuál es el aroma que te gustaría que perdurara más?",
                     respuesta: [null],
                     multi: true,
                     opciones: [],
                 },
                 {
+                    headline: "",
                     pregunta: "¿Cuál es la ocasión ideal para el perfume que buscas?",
                     respuesta: [null],
                     multi: false,
                     opciones: [],
                 },
                 {
+                    headline: "",
                     pregunta: "¿Qué quisieras que el perfume resaltara de ti?",
                     respuesta: [null],
                     multi: true,
