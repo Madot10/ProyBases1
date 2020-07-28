@@ -14,6 +14,7 @@ class RecomendadorCont {
 			intensidad: [`'edp'`,`'p'`]
         }
         */
+
         const intensidad = filtros.intensidad.join(` OR intp.tipo = `);
 
         rec.getCaracter(genero, edad, intensidad)
@@ -33,6 +34,7 @@ class RecomendadorCont {
             caracter: [55,57,44]
         }
         */
+
         const intensidad = filtros.intensidad.join(` OR intp.tipo = `);
         const caracter = filtros.caracter.join(` OR palabra.id = `);
 
@@ -119,8 +121,6 @@ class RecomendadorCont {
 
     getPerfumes(req, res) {
         const { genero } = req.body;
-
-        console.log("Aqui", req.body, genero);
 
         rec.getPerfumes(genero)
             .then(function (perfs) {

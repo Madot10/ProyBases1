@@ -7,15 +7,15 @@ var rec = new RecomendadorCont();
 
 //Información para los filtros
 //Carécteres
-router.get("/caracter", rec.getCaracter);
+router.post("/caracter", rec.getCaracter);
 //Familias Olvfativas
-router.get("/fliaolf", rec.getFliaOlf);
+router.post("/fliaolf", rec.getFliaOlf);
 //Aromas
-router.get("/aroma", rec.getAroma);
+router.post("/aroma", rec.getAroma);
 //Preferencias
-router.get("/preferencia", rec.getPreferencia);
+router.post("/preferencia", rec.getPreferencia);
 //Personalidades
-router.get("/personalidad", rec.getPersonalidad);
+router.post("/personalidad", rec.getPersonalidad);
 
 //Filtros
 //Se pasa la información de todos los perfumes de acuerdo al filtro de GËNERO

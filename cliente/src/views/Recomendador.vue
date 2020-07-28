@@ -63,7 +63,7 @@ export default {
                     //Agregar perfume
                     perf_aux[per.id] = {
                         id: per.id,
-                        nombre: per.nombre,
+                        nombre: per.nom_perf,
                         genero: per.genero,
                         rango_edad: per.rango_edad,
                         descrip_componentes: per.descrip_componentes,
@@ -85,7 +85,7 @@ export default {
                         id_perfumista: per.id_perfumista,
                         nom_perfumista: per.nom_perfumista,
                         apellido: per.apellido,
-                        pais: per.nombre,
+                        pais: per.pais_origen,
                     };
                 }
 
