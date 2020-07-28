@@ -5,7 +5,7 @@
             <b-row>
                 <!--IMAGEN -->
                 <b-col cols="4">
-                    <b-img></b-img>
+                    <b-img :src="getUrlimage(perfume.id)" fluid-grow rounded></b-img>
                 </b-col>
 
                 <!--CONTENIDO -->
@@ -112,6 +112,9 @@ export default {
                 default:
                     break;
             }
+        },
+        getUrlimage(idp) {
+            return `/perfumes/perfume-${idp}.jpg`;
         },
     },
 };
