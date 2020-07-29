@@ -369,12 +369,15 @@ export default {
                     aux_cant.push(Number(this.cant_mat_prim[i]));
                 });
 
+                let new_sub = Number(this.subtotal_monto) + Number(this.calc_fe());
+                console.warn("SUB ", new_sub, this.subtotal_monto, this.calc_fe());
+
                 let obj_pedido = {
                     id_contrato: this.datosProv.cont_id,
                     id_fe_cond: this.datosProv.formas_envios[this.fe_selected_ind].idfe,
                     id_fp_cond: this.datosProv.formas_pagos[this.fp_selected_ind].idfp,
                     total_usd: Number(total),
-                    subtotal_usd: Number(this.subtotal_monto),
+                    subtotal_usd: Number(new_sub),
                     cas: aux_cas,
                     id_pres: aux_pres,
                     cantidad: aux_cant,

@@ -34,7 +34,9 @@ function createInsertDetPedido(id_pedido, id_prov, id_prod, pedido) {
                 )
                 .catch((e) => console.error(e.stack));
         }
-        createInsertCondFeFp(id_pedido, id_prov, id_prod, pedido);
+        createInsertCondFeFp(id_pedido, id_prov, id_prod, pedido).then(() => {
+            resolve();
+        });
     });
 }
 
