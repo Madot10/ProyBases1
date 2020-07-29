@@ -134,7 +134,7 @@ class PedidoProdModel {
                         INNER JOIN vam_ing_presentaciones AS pres ON pres.id = det.id_ing_presentacion
                         INNER JOIN vam_ingrediente_esencias AS ing ON ing.cas = pres.cas_ingrediente
                         INNER JOIN vam_proveedores prov on ing.id_proveedor = prov.id
-                    WHERE p.estado != 'p' AND det.id_pedido = p.id AND p.id_prod = $1`,
+                    WHERE det.id_pedido = p.id AND p.id_prod = $1`,
                     [id_prod]
                 )
                 .then(function (response) {
@@ -154,7 +154,7 @@ class PedidoProdModel {
                     FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
                         INNER JOIN vam_forma_envios AS fe ON condcon.id_form_envio = fe.id
                         INNER JOIN vam_paises AS pais ON pais.id = condcon.id_form_envio_pais
-                    WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cont_prod = $1 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prod = $1 AND ped.estado != 'p')`,
+                    WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cont_prod = $1 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prod = $1)`,
                     [id_prod]
                 )
                 .then(function (response) {
@@ -173,7 +173,7 @@ class PedidoProdModel {
                     `SELECT condpe.id_pedido, fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
                     FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
                         LEFT JOIN vam_forma_pagos AS fp ON condcon.id_form_pago = fp.id
-                    WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prod = $1 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prod = $1 AND ped.estado != 'p')`,
+                    WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prod = $1 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prod = $1)`,
                     [id_prod]
                 )
                 .then(function (response) {

@@ -75,7 +75,7 @@
                     ></b-icon>
                 </template>
                 <template v-slot:cell(acciones2)="row">
-                    <!-- {{ row.index }} -->
+                    <!-- {{ row.item.estado }} -->
                     <b-button
                         v-show="mode_pen"
                         variant="outline-primary"
@@ -84,7 +84,7 @@
                     >
                     <span v-show="mode_pen"> - </span>
                     <b-button
-                        v-show="mode_pen"
+                        v-show="mode_pen || row.item.estado == 'p'"
                         variant="outline-danger"
                         @click="openCancelar(row.index)"
                         >CANCELAR</b-button
@@ -135,7 +135,7 @@ export default {
                 },
                 {
                     label: "Empresa",
-                    key: this.getUserType() == "prod" ? "prov_nombre" : "prod_nombre",
+                    key: this.getUserType() == "prod" ? "prov_nom" : "prod_nombre",
                     sortable: true,
                 },
                 {
@@ -240,7 +240,9 @@ export default {
             let idUser = this.$route.params.id;
             console.log("Cancelando ", this.pedido, res);
 
-            let urlApi = `http://localhost:3000/prov/${idUser}/pedido/cancelar/${this.pedido.id}`;
+            let urlApi = `http://localhost:3000/${this.getUserType()}/${idUser}/pedido/cancelar/${
+                this.pedido.id
+            }`;
             let obj_can = {
                 motivo_cancel: res.text,
             };

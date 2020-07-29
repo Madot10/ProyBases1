@@ -398,9 +398,9 @@ export default {
                     .then((resp) => {
                         console.log("Respuesta de servidor: ", resp);
 
-                        /*this.$router.push({
+                        this.$router.push({
                             name: "HomeProd",
-                        });*/
+                        });
                     });
             }
         },
