@@ -184,8 +184,8 @@ export default {
                     opciones: [],
                 },
                 {
-                    headline: "",
-                    pregunta: "¿Qué quisieras que el perfume resaltara de ti?",
+                    headline: "Entendemos que la personalidad hace que el mundo nos recuerde",
+                    pregunta: "¿Qué crees que el perfume puede aromatizar del recuerdo que dejas?",
                     respuesta: [null],
                     multi: true,
                     opciones: [],

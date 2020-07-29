@@ -458,9 +458,9 @@ CREATE TABLE VAM_FE_FP_C(
     id_form_envio SMALLINT,
     id_prov_fe SMALLINT,
     id_form_envio_pais SMALLINT,
-    CONSTRAINT fk_contrato FOREIGN KEY (id_contrato, id_prov_cont, id_prod_cont) REFERENCES VAM_CONTRATOS(id, id_prov, id_prod) /*ON DELETE CASCADE*/,
-    CONSTRAINT fk_fp_cont FOREIGN KEY (id_form_pago, id_prov_fp) REFERENCES VAM_FORMA_PAGOS(id, id_proveedor) /*ON DELETE CASCADE*/,
-    CONSTRAINT fk_fe_cont FOREIGN KEY (id_form_envio, id_prov_fe, id_form_envio_pais) REFERENCES VAM_FORMA_ENVIOS(id, id_prov, id_pais) /*ON DELETE CASCADE*/,
+    CONSTRAINT fk_contrato FOREIGN KEY (id_contrato, id_prov_cont, id_prod_cont) REFERENCES VAM_CONTRATOS(id, id_prov, id_prod) ON DELETE CASCADE,
+    CONSTRAINT fk_fp_cont FOREIGN KEY (id_form_pago, id_prov_fp) REFERENCES VAM_FORMA_PAGOS(id, id_proveedor) ON DELETE CASCADE,
+    CONSTRAINT fk_fe_cont FOREIGN KEY (id_form_envio, id_prov_fe, id_form_envio_pais) REFERENCES VAM_FORMA_ENVIOS(id, id_prov, id_pais) ON DELETE CASCADE,
     CONSTRAINT pk_fe_fp_cont PRIMARY KEY (id, id_contrato, id_prov_cont, id_prod_cont)
 );
 
