@@ -3,69 +3,9 @@
         <!-- CONTENIDO MODAL -->
 
         <!-- PREG ESCALA -->
-        <div>
-            <b-alert :show="esc_aviso && aviso_aux" class="text-center"
-                >¿Desea seguir utilizando la escala activa?
-
-                <b-row class="mt-2">
-                    <b-col>
-                        <b-button block variant="secondary" @click="wantCreateEscala(false)"
-                            >Mantener</b-button
-                        >
-                    </b-col>
-                    <b-col>
-                        <b-button block variant="success" @click="wantCreateEscala(true)"
-                            >Nueva</b-button
-                        >
-                    </b-col>
-                </b-row>
-            </b-alert>
-        </div>
-        <p class="text-danger" v-show="flag_esc_dec">
-            *Debe decidir que hacer con la escala
-        </p>
 
         <!-- ESCALA Y EXITO -->
         <b-form-group label="RANGO DE CLASIFICACIÓN" label-cols="4" label-class="font-weight-bold">
-            <p class="text-danger" v-show="flag_esc">
-                *Debe ingresar escalas superiores a 0 e inferiores a 999
-            </p>
-            <p class="text-danger" v-show="flag_minmax">
-                *Escala mínima no puede ser mayor que la máxima
-            </p>
-            <!-- Escala mínima-->
-            <b-form-group
-                label-cols-sm="5"
-                label="Escala mínima:"
-                label-align-sm="left"
-                class="p-0 m-0"
-            >
-                <b-form-input
-                    :plaintext="!new_esc"
-                    v-model="esc.valor_min"
-                    size="sm"
-                    type="number"
-                    min="0"
-                    max="999"
-                ></b-form-input>
-            </b-form-group>
-
-            <!-- Escala máxima -->
-            <b-form-group
-                label-cols-sm="5"
-                label="Escala máxima:"
-                label-align-sm="left"
-                class="p-0 m-0"
-            >
-                <b-form-input
-                    :plaintext="!new_esc"
-                    v-model="esc.valor_max"
-                    size="sm"
-                    type="number"
-                    min="0"
-                    max="999"
-                ></b-form-input>
-            </b-form-group>
             <p class="text-danger" v-show="flag_exito">
                 *Debe ingresar un puntaje mayor a 0 e inferior a 100
             </p>
@@ -180,37 +120,20 @@
 
 <script>
 export default {
-    props: ["mode", "variables", "esc_aviso", "escala"],
+    props: ["mode", "variables"],
     data() {
         return {
-            new_esc: true,
-            aviso_aux: true,
-            esc: { valor_min: 0, valor_max: 0 },
             punt_exito: 0,
             criterios_disp: [],
             criterios_selected: [{ id: null, peso: null }],
             flag_repited: false,
             flag_null: false,
             flag_zero_neg: false,
-            flag_esc: false,
             flag_exito: false,
-            flag_esc_dec: false,
             flag_100: false,
-            flag_minmax: false,
         };
     },
     methods: {
-        wantCreateEscala(dec) {
-            if (dec) {
-                //crear nueva
-                this.new_esc = true;
-                this.aviso_aux = false;
-            } else {
-                //mantener
-                this.new_esc = false;
-                this.aviso_aux = false;
-            }
-        },
         agregarItem() {
             this.criterios_selected.push({ id: null, peso: null });
         },
@@ -263,54 +186,25 @@ export default {
                 }
             }
         },
-        checkEsc() {
-            this.flag_esc = false;
-            if (
-                this.esc.valor_min < 0 ||
-                this.esc.valor_min > 999 ||
-                this.esc.valor_max < 0 ||
-                this.esc.valor_max > 999
-            ) {
-                this.flag_esc = true;
-            }
-        },
         checkExito() {
             this.flag_exito = false;
             if (this.punt_exito <= 0 || this.punt_exito > 100) {
                 this.flag_exito = true;
             }
         },
-        checkDec() {
-            this.flag_esc_dec = false;
-            if (this.aviso_aux && this.esc_aviso) {
-                this.flag_esc_dec = true;
-            }
-        },
-        checkMinMax() {
-            this.flag_minmax = false;
-            if (this.esc.valor_min > this.esc.valor_max) {
-                this.flag_minmax = true;
-            }
-        },
         crearFormula(fnOk) {
             //Verificar
             this.checkRepNull();
             this.checkCantidad();
-            this.checkEsc();
             this.checkExito();
-            this.checkDec();
-            this.checkMinMax();
 
             if (
                 !(
                     this.flag_repited ||
                     this.flag_null ||
                     this.flag_zero_neg ||
-                    this.flag_esc ||
                     this.flag_exito ||
-                    this.flag_esc_dec ||
-                    this.flag_100 ||
-                    this.flag_minmax
+                    this.flag_100
                 )
             ) {
                 //console.warn("all ok");
@@ -362,37 +256,6 @@ export default {
                         this.$emit("state", sta);
                     });
 
-                //Escala vecemos
-                if (this.new_esc) {
-                    fetch(urlBaseApi + "/escala/vencer", {
-                        method: "PUT",
-                    })
-                        .then((response) => {
-                            return response.json();
-                        })
-                        .then((res) => {
-                            //console.log("Servidor responde esc: ", res);
-
-                            fetch(urlBaseApi + "/escala/crear", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-
-                                body: JSON.stringify({
-                                    valor_min: this.esc.valor_min,
-                                    valor_max: this.esc.valor_max,
-                                }),
-                            })
-                                .then((response) => {
-                                    return response.json();
-                                })
-                                .then((res) => {
-                                    console.log("Servidor responde esc: ", res);
-                                });
-                        });
-                }
-
                 fnOk();
             }
         },
@@ -403,9 +266,6 @@ export default {
         },
     },
     watch: {
-        escala(newV) {
-            this.esc = newV;
-        },
         variables(newV) {
             this.criterios_disp = newV
                 .filter((c) => {
@@ -426,8 +286,6 @@ export default {
         this.$root.$on("bv::modal::show", (bvEvent, modalId) => {
             if (modalId == "c-form-modal") {
                 this.criterios_selected = [{ id: null, peso: null }];
-                this.new_esc = true;
-                this.aviso_aux = true;
             }
         });
     },

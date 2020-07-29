@@ -150,7 +150,7 @@ export default {
                             console.log("Escalas", esc);
                             let aux = datosCri.Info_de_Evaluacion_renov;
 
-                            if (aux.length > 0) {
+                            if (aux.length > 0 && esc.Info_de_Evaluacion.length > 0) {
                                 //Get cuentas
 
                                 fetch(

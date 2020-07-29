@@ -13,10 +13,11 @@
             <modal-crear-formula
                 :mode="mode"
                 :variables="vars"
-                :esc_aviso="esc_aviso"
-                :escala="escala"
                 v-on:state="respuestaCreate"
             ></modal-crear-formula>
+
+            <!--Modal crear escala-->
+            <modal-crear-escala></modal-crear-escala>
 
             <!-- HEADER BANNER -->
             <div>
@@ -41,8 +42,58 @@
             </div>
 
             <br />
+            <!-- CONTENIDO ESCALA -->
+            <div class="sombra mt-2 p-3">
+                <div>
+                    <b-row>
+                        <b-col>
+                            <h4>Escala</h4>
+                        </b-col>
+                        <b-col>
+                            <b-button variant="primary" block @click="openModalEscalaNueva"
+                                >CREAR NUEVA ESCALA</b-button
+                            >
+                        </b-col>
+                    </b-row>
+                </div>
+                <br />
+                <b-alert show variant="info" class="text-center" v-show="esc_vacio"
+                    >¡No posee escala activa!
+                    <b-button
+                        block
+                        class="mt-2"
+                        variant="outline-secondary"
+                        @click="openModalEscalaNueva"
+                        >CREAR NUEVA ESCALA</b-button
+                    >
+                </b-alert>
 
-            <!-- CONTENIDO -->
+                <div v-show="!esc_vacio">
+                    <b-form-group label="" label-cols="4" label-class="font-weight-bold">
+                        <!-- Escala mínima-->
+                        <b-form-group
+                            label-cols-sm="5"
+                            label="Escala mínima:"
+                            label-align-sm="left"
+                            class="p-0 m-0"
+                        >
+                            <b-form-input plaintext v-model="formula.esc_min"></b-form-input>
+                        </b-form-group>
+
+                        <!-- Escala máxima -->
+                        <b-form-group
+                            label-cols-sm="5"
+                            label="Escala máxima:"
+                            label-align-sm="left"
+                            class="p-0 m-0"
+                        >
+                            <b-form-input plaintext v-model="formula.esc_max"></b-form-input>
+                        </b-form-group>
+                    </b-form-group>
+                </div>
+            </div>
+
+            <!-- CONTENIDO FORMULA -->
             <div class="sombra mt-2 p-3">
                 <div>
                     <b-row>
@@ -56,8 +107,8 @@
                                 variant="primary"
                                 block
                                 @click="openModalNuevo()"
-                                v-show="!is_empty && !isToday"
-                                >CREAR NUEVA</b-button
+                                v-show="!is_empty"
+                                >CREAR NUEVA FÓRMULA</b-button
                             >
                         </b-col>
                     </b-row>
@@ -79,26 +130,6 @@
                         label-cols="4"
                         label-class="font-weight-bold"
                     >
-                        <!-- Escala mínima-->
-                        <b-form-group
-                            label-cols-sm="5"
-                            label="Escala mínima:"
-                            label-align-sm="left"
-                            class="p-0 m-0"
-                        >
-                            <b-form-input plaintext v-model="formula.esc_min"></b-form-input>
-                        </b-form-group>
-
-                        <!-- Escala máxima -->
-                        <b-form-group
-                            label-cols-sm="5"
-                            label="Escala máxima:"
-                            label-align-sm="left"
-                            class="p-0 m-0"
-                        >
-                            <b-form-input plaintext v-model="formula.esc_max"></b-form-input>
-                        </b-form-group>
-
                         <!-- Puntaje de aprobación -->
                         <b-form-group
                             label-cols-sm="5"
@@ -141,18 +172,20 @@
 <script>
 import CardMain from "../components/CardMain.vue";
 import ModalCrearFormula from "../components/ModalCrearFormula.vue";
+import ModalCrearEscala from "../components/ModalCrearEscala.vue";
 
 export default {
     components: {
         CardMain,
         ModalCrearFormula,
+        ModalCrearEscala,
     },
     data() {
         return {
             aviso: { mensaje: "", titulo: "", tipo: "success" },
             mode: "ini",
             vars: [],
-            esc_aviso: null,
+            esc_vacio: false,
             is_empty: false,
             escala: { valor_min: 0, valor_max: 5 },
             fecha_form: null,
@@ -182,14 +215,10 @@ export default {
             }
             this.$router.go();
         },
-        openModalNuevo(esc) {
-            console.log("Esc", esc);
-            if (esc == null) {
-                esc = true;
-            } else {
-                esc = false;
-            }
-
+        openModalEscalaNueva() {
+            this.$bvModal.show("escala-form-modal");
+        },
+        openModalNuevo() {
             //console.log(this.mode, this.mode == "ini", esc);
             if (this.mode == "ini") {
                 fetch("http://localhost:3000/prod/evaluacion/inicial/variables")
@@ -200,7 +229,7 @@ export default {
                         //console.log("Variables: ", res);
                         this.vars = res.Info_de_Evaluacion_inicial;
 
-                        this.esc_aviso = esc;
+                        //this.esc_aviso = esc;
                         this.$bvModal.show("c-form-modal");
                     });
             } else {
@@ -218,7 +247,7 @@ export default {
                     },
                 ];
 
-                this.esc_aviso = esc;
+                //this.esc_aviso = esc;
                 this.$bvModal.show("c-form-modal");
             }
         },
@@ -238,8 +267,12 @@ export default {
                 }
             });
 
-            aux_form.esc_min = datosEsc[0].valor_min;
-            aux_form.esc_max = datosEsc[0].valor_max;
+            if (datosEsc.length > 0) {
+                aux_form.esc_min = datosEsc[0].valor_min;
+                aux_form.esc_max = datosEsc[0].valor_max;
+            } else {
+                this.esc_vacio = true;
+            }
 
             if (this.mode == "ini") {
                 this.formula_ini = aux_form;
@@ -293,20 +326,6 @@ export default {
                             }
                         });
                 });
-        },
-    },
-    computed: {
-        isToday() {
-            let fe = new Date(this.fecha_form);
-            let today = new Date();
-            if (
-                fe.getDate() == today.getDate() &&
-                fe.getMonth() == today.getMonth() &&
-                fe.getFullYear() == today.getFullYear()
-            ) {
-                return true;
-            }
-            return false;
         },
     },
     created() {

@@ -318,7 +318,7 @@ export default {
                         .then((esc) => {
                             console.log("Escalas", esc);
                             let aux = datosCri.Info_de_Evaluacion_inicial;
-                            if (aux.length > 0) {
+                            if (aux.length > 0 && esc.Info_de_Evaluacion.length > 0) {
                                 this.generateForm(
                                     datosCri.Info_de_Evaluacion_inicial,
                                     esc.Info_de_Evaluacion
@@ -343,47 +343,6 @@ export default {
                 this.isFinal = false;
                 this.puntaje = 0;
                 this.isAprobado = null;
-
-                let datosForm = {
-                    Info_de_Evaluacion_inicial: [
-                        {
-                            fecha_inicio: "2018-12-10T04:00:00.000Z",
-                            nombre_crit: "Ubicación",
-                            descripcion: "Ubicación geográfica del proveedor",
-                            peso: "35",
-                        },
-                        {
-                            fecha_inicio: "2018-12-10T04:00:00.000Z",
-                            nombre_crit: "Formas de envíos",
-                            descripcion:
-                                "Costos y alternativas de envíos de los pedidos según ubicación geográfica de los clientes",
-                            peso: "35",
-                        },
-                        {
-                            fecha_inicio: "2018-12-10T04:00:00.000Z",
-                            nombre_crit: "Formas de pago",
-                            descripcion:
-                                "Alternativas y condiciones de pago que ofrece el proveedor",
-                            peso: "30",
-                        },
-                        {
-                            fecha_inicio: "2018-12-10T04:00:00.000Z",
-                            nombre_crit: "Éxito",
-                            descripcion: "Puntaje objetivo de éxito",
-                            peso: "70",
-                        },
-                    ],
-                };
-
-                let datosEscala = {
-                    Info_de_Evaluacion_inicial: [
-                        {
-                            fecha_inicio: "2019-12-14T04:00:00.000Z",
-                            valor_min: "0",
-                            valor_max: "50",
-                        },
-                    ],
-                };
 
                 this.getFormula();
             }
