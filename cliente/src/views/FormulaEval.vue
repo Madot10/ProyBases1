@@ -253,7 +253,6 @@ export default {
         },
         generateFormula(datosCri, datosEsc) {
             let aux_form = { esc_min: null, esc_max: null, punt_exito: null, criterios: [] };
-
             datosCri.forEach((c) => {
                 this.fecha_form = c.fecha_inicio;
                 if (c.nombre_crit != "Exito") {
@@ -296,6 +295,8 @@ export default {
 
             let datosCri;
             this.is_empty = false;
+            this.esc_vacio = false;
+
             //Criterios
             fetch(urlApi)
                 .then((response) => {
@@ -323,6 +324,9 @@ export default {
                                 );
                             } else {
                                 this.is_empty = true;
+                                if (esc.Info_de_Evaluacion.length < 1) {
+                                    this.esc_vacio = true;
+                                }
                             }
                         });
                 });
