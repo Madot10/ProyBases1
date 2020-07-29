@@ -125,14 +125,24 @@ export default {
                 this.$bvModal.show("prop-con-modal");
             }
         },
+        getIdPaisFe(idfe) {
+            for (let i = 0; i < this.datosProv.formas_envios.length; i++) {
+                console.log(this.datosProv.formas_envios[i].id_form_envio, idfe);
+                if (this.datosProv.formas_envios[i].id_form_envio == idfe) {
+                    return this.datosProv.formas_envios[i].id_pais;
+                }
+            }
+            return -1;
+        },
         contratoReady(obj_data) {
             console.log("READY COND: ", obj_data, this.$route);
 
             let arr_pais = [];
             obj_data.form_env.forEach((fe) => {
-                let i = this.datosProv.formas_envios.indexOf(fe.id_form_env);
-                if (i > -1) {
-                    arr_pais.push(this.datosProv.formas_envios[i].id_pais);
+                let i = this.getIdPaisFe(fe);
+                console.log("HOLA ESTOY ", i);
+                if (i != -1) {
+                    arr_pais.push(i);
                 }
             });
 
@@ -158,9 +168,9 @@ export default {
                 }
             );
 
-            this.$router.push({
+            /*this.$router.push({
                 name: "HomeProd",
-            });
+            });*/
         },
     },
     computed: {},
