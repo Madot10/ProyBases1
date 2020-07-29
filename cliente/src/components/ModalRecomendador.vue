@@ -525,7 +525,7 @@ export default {
                     case "edt":
                         return [
                             {
-                                text: "Ocaciones especiales",
+                                text: "Ocasiones especiales",
                                 value: "oe",
                             },
                         ];
