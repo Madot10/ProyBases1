@@ -51,7 +51,15 @@
 
                 <!-- Cell estado -->
                 <template v-slot:cell(estado)="row">
-                    {{ row.value == "a" ? "Aprobado" : "Pendiente" }}
+                    {{
+                        row.value == "a"
+                            ? "Aprobado"
+                            : row.value == "p"
+                            ? "Pendiente"
+                            : row.value == "anpv"
+                            ? "Anulado por el proveedor"
+                            : "Anulado por el productor"
+                    }}
                 </template>
 
                 <!-- BOTON Acciones -->
