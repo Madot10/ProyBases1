@@ -2,6 +2,7 @@
 const { database } = require("../config/db.config");
 
 class HomeModel {
+
     getAllProd() {
         return new Promise((resolve, reject) => {
             database
@@ -67,6 +68,7 @@ class HomeModel {
                 .catch((e) => console.error(e.stack));
         });
     }
+    
 }
 
 module.exports = { HomeModel };

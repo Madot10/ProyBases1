@@ -20,7 +20,7 @@ CREATE SEQUENCE sec_VAM_PERFUMES
 
 CREATE TABLE VAM_PERFUMES(
    id SMALLINT DEFAULT nextval('sec_VAM_PERFUMES') PRIMARY KEY,
-   nombre VARCHAR(20) NOT NULL,
+   nombre VARCHAR(50) NOT NULL,
    genero CHAR(1) NOT NULL,
    rango_edad CHAR(3) NOT NULL,
    descrip_componentes VARCHAR(400) NOT NULL,
@@ -73,7 +73,10 @@ CREATE SEQUENCE sec_VAM_PALABRA_CLAVE
 
 CREATE TABLE VAM_PALABRA_CLAVE(
     id SMALLINT DEFAULT nextval('sec_VAM_PALABRA_CLAVE') PRIMARY KEY,
-    palabra VARCHAR(40) NOT NULL
+    palabra VARCHAR(50) NOT NULL ,
+    tipo_palabra CHAR(1)  NOT NULL,
+    CONSTRAINT check_tipo_palabra CHECK( tipo_palabra in ('c','n','p')),
+    CONSTRAINT u_palabra_clave UNIQUE(palabra, tipo_palabra)
 );
 
 DROP SEQUENCE IF EXISTS sec_VAM_ASOC_NACIONALES;
@@ -190,11 +193,11 @@ CREATE TABLE VAM_PRODUCTORES(
 );
 
 CREATE TABLE VAM_ESCALAS(
-    fecha_inicio DATE,
+    fecha_inicio TIMESTAMP,
     id_prod SMALLINT,
     valor_min NUMERIC(3) NOT NULL,
     valor_max NUMERIC(3) NOT NULL,
-    fecha_fin DATE,
+    fecha_fin TIMESTAMP,
     CONSTRAINT fk_id_prov_escalas FOREIGN KEY (id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT pk_escalas PRIMARY KEY (fecha_inicio, id_prod)
 );
@@ -271,7 +274,7 @@ CREATE TABLE VAM_PR_FE(
 );
 
 CREATE TABLE VAM_RESULT_EVAL(
-    fecha DATE,
+    fecha TIMESTAMP,
     id_prod SMALLINT,
     id_prov SMALLINT,
     resultado NUMERIC(3) NOT NULL,
@@ -279,7 +282,7 @@ CREATE TABLE VAM_RESULT_EVAL(
     CONSTRAINT check_tipo_eval CHECK (tipo_eval in ('i','r')),
     CONSTRAINT fk_prod_eval FOREIGN KEY (id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT fk_prov_eval FOREIGN KEY (id_prov) REFERENCES VAM_PROVEEDORES(id) ON DELETE CASCADE,
-    CONSTRAINT pk_result_eval PRIMARY KEY (fecha, id_prod, id_prov)
+    CONSTRAINT pk_result_eval PRIMARY KEY (fecha, id_prod, id_prov, tipo_eval)
 );
 
 DROP SEQUENCE IF EXISTS sec_VAM_FORMA_ENVIOS;
@@ -455,9 +458,9 @@ CREATE TABLE VAM_FE_FP_C(
     id_form_envio SMALLINT,
     id_prov_fe SMALLINT,
     id_form_envio_pais SMALLINT,
-    CONSTRAINT fk_contrato FOREIGN KEY (id_contrato, id_prov_cont, id_prod_cont) REFERENCES VAM_CONTRATOS(id, id_prov, id_prod) /*ON DELETE CASCADE*/,
-    CONSTRAINT fk_fp_cont FOREIGN KEY (id_form_pago, id_prov_fp) REFERENCES VAM_FORMA_PAGOS(id, id_proveedor) /*ON DELETE CASCADE*/,
-    CONSTRAINT fk_fe_cont FOREIGN KEY (id_form_envio, id_prov_fe, id_form_envio_pais) REFERENCES VAM_FORMA_ENVIOS(id, id_prov, id_pais) /*ON DELETE CASCADE*/,
+    CONSTRAINT fk_contrato FOREIGN KEY (id_contrato, id_prov_cont, id_prod_cont) REFERENCES VAM_CONTRATOS(id, id_prov, id_prod) ON DELETE CASCADE,
+    CONSTRAINT fk_fp_cont FOREIGN KEY (id_form_pago, id_prov_fp) REFERENCES VAM_FORMA_PAGOS(id, id_proveedor) ON DELETE CASCADE,
+    CONSTRAINT fk_fe_cont FOREIGN KEY (id_form_envio, id_prov_fe, id_form_envio_pais) REFERENCES VAM_FORMA_ENVIOS(id, id_prov, id_pais) ON DELETE CASCADE,
     CONSTRAINT pk_fe_fp_cont PRIMARY KEY (id, id_contrato, id_prov_cont, id_prod_cont)
 );
 
@@ -489,16 +492,16 @@ CREATE TABLE VAM_RENOVACIONES(
 );
 
 CREATE TABLE VAM_EVAL_CRITERIOS(
-    fecha_inicio DATE,
+    fecha_inicio TIMESTAMP,
     id_prod SMALLINT,
     id_var_crit SMALLINT,
-    peso NUMERIC(2) NOT NULL,
+    peso NUMERIC(3) NOT NULL,
     tipo_formula CHAR(1) NOT NULL,
-    fecha_fin DATE,
+    fecha_fin TIMESTAMP,
     CONSTRAINT check_tipo CHECK(tipo_formula in ('i','r')),
     CONSTRAINT fk_prod_criterios FOREIGN KEY (id_prod) REFERENCES VAM_PRODUCTORES(id) ON DELETE CASCADE,
     CONSTRAINT fk_var_criterio FOREIGN KEY (id_var_crit) REFERENCES VAM_VAR_CRITERIOS(id) ON DELETE CASCADE,
-    CONSTRAINT pk_eval_criterio PRIMARY KEY (fecha_inicio, id_prod, id_var_crit)
+    CONSTRAINT pk_eval_criterio PRIMARY KEY (fecha_inicio, id_prod, id_var_crit,tipo_formula)
 );
 
 CREATE TABLE VAM_ING_ORIGEN(

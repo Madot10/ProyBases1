@@ -37,8 +37,8 @@ export default {
                     title: "Pedidos",
                     icon: "card-list",
                     items: [
-                        { item: "Ver todos", link: "/" },
-                        { item: "Agregar nuevo", link: "/" },
+                        { item: "Ver todos", link: { name: "PedidosProd" } },
+                        { item: "Agregar nuevo", link: { name: "PedidosNuevo" } },
                     ],
                 },
                 {
@@ -55,7 +55,7 @@ export default {
                     icon: "truck",
                     items: [
                         { item: "Ver todos", link: { name: "ListaProveedores" } },
-                        { item: "Fórmulas de evaluar", link: "/" },
+                        { item: "Fórmulas de evaluar", link: { name: "FormulaEval" } },
                     ],
                 },
             ],
@@ -64,8 +64,8 @@ export default {
                     title: "Pedidos",
                     icon: "card-list",
                     items: [
-                        { item: "Ver todos", link: { name: "ContratosProv" } },
-                        { item: "Ver pendientes", link: "/" },
+                        { item: "Ver todos", link: { name: "PedidosProv" } },
+                        { item: "Ver pendientes", link: { name: "PedidosPendientes" } },
                     ],
                 },
                 {
@@ -101,7 +101,8 @@ export default {
 .sb-main {
     background-color: white;
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
 }
 
 .ul-header,

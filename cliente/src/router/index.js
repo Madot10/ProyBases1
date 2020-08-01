@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
@@ -9,7 +8,7 @@ const routes = [
         //Recomendador?
         path: "/",
         name: "Home",
-        redirect: { name: "admin" },
+        component: () => import("../views/Recomendador.vue"),
     },
     {
         path: "/admin",
@@ -30,6 +29,16 @@ const routes = [
                 name: "ContratosProv",
                 path: "contratos",
                 component: () => import("../views/Contratos.vue"),
+            },
+            {
+                name: "PedidosProv",
+                path: "pedidos",
+                component: () => import("../views/Pedidos.vue"),
+            },
+            {
+                name: "PedidosPendientes",
+                path: "pedidos/pendientes",
+                component: () => import("../views/Pedidos.vue"),
             },
         ],
     },
@@ -69,6 +78,27 @@ const routes = [
                 path: "contratos/nuevo/:id_prov",
                 component: () => import("../views/DetalleContrato.vue"),
                 props: true,
+            },
+            {
+                name: "PedidosProd",
+                path: "pedidos",
+                component: () => import("../views/Pedidos.vue"),
+            },
+            {
+                name: "PedidosNuevo",
+                path: "pedidos/nuevo",
+                component: () => import("../views/NuevoPedido.vue"),
+            },
+            {
+                name: "PedidosDetalle",
+                path: "pedidos/nuevo/:id_prov",
+                component: () => import("../views/DetallePedido.vue"),
+                props: true,
+            },
+            {
+                name: "FormulaEval",
+                path: "formulas",
+                component: () => import("../views/FormulaEval.vue"),
             },
         ],
     },

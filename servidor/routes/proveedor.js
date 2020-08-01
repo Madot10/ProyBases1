@@ -15,14 +15,27 @@ router.get("/:id_prov/contratos", contrato.getContratos);
 router.get("/:id_prov/contratos/ing", contrato.getIngCont);
 
 //Pedidos
+//Lista de pedidos aprobados
+router.get("/:id_prov/pedidos", pedido.getPedidos);
+
+//Lista de FE  pedidos aprobados
+router.get("/:id_prov/pedidos/fe", pedido.getPedidosFe);
+
+//Lista de FP  pedidos aprobados
+router.get("/:id_prov/pedidos/fp", pedido.getPedidosFp);
+
 //Pedidos pendientes por confirmar por el proveedor
-router.get("/:id_prov/pedidos/pendientes", pedido.getPedidosPendientes)
+router.get("/:id_prov/pedidos/pendientes", pedido.getPedidosPendientes);
+
+//Fe de pedidos pendientes por confirmar
+router.get("/:id_prov/pedidos/pendientes/fe", pedido.getPedidosPendientesfe);
+
+//Fp de pedidos pendientes por confirmar
+router.get("/:id_prov/pedidos/pendientes/fp", pedido.getPedidosPendientesfp);
 
 //Para aprobar pedido, se requieren de un post y de un put
 //Aprobar pedido
-router.put("/:id_prov/pedido/aprobar/:id_ped", pedido.updateAprobarPedido);
-//Generar Pagos
-router.post("/:id_prov/pedido/aprobar/:id_ped", pedido.createPagosPedido);
+router.post("/:id_prov/pedido/aprobar/:id_ped", pedido.updateAprobarPedido);
 
 //Cancelar pedido siendo proveedor
 router.put("/:id_prov/pedido/cancelar/:id_ped", pedido.updateCancelarPedido);
