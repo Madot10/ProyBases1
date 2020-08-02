@@ -349,3 +349,29 @@ SELECT perf.id, perf.nombre, flia.nombre, palabra.palabra
         INNER JOIN vam_flia_olfat AS flia ON fliap.id_perf = flia.id
         INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
         INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'a'
+
+
+--Queries para reportes
+
+--Resultados por Productor
+SELECT prov.nombre, to_char(eval.fecha,'DD-MM-YYYY'), eval.tipo_eval, eval.resultado
+FROM vam_result_eval AS eval
+    INNER JOIN vam_productores AS prod ON prod.id = eval.id_prod
+    INNER JOIN vam_proveedores AS prov ON prov.id = eval.id_prov
+WHERE prod.nombre like 'Firmenich'
+ORDER BY eval.tipo_eval
+
+--Escalas del productor
+SELECT to_char(esc.fecha_inicio,'DD-MM-YYYY'), esc.valor_min, esc.valor_max
+FROM vam_escalas AS esc
+    INNER JOIN vam_productores AS prod ON prod.id = esc.id_prod
+WHERE prod.nombre like 'Firmenich'
+ORDER BY esc.fecha_inicio
+
+--Criterios del Productor
+SELECT crit.fecha_inicio, var.nombre_crit, crit.peso, crit.tipo_formula
+FROM vam_eval_criterios AS crit
+    INNER JOIN vam_productores AS prod ON prod.id = crit.id_prod
+    INNER JOIN vam_var_criterios var on crit.id_var_crit = var.id
+WHERE prod.nombre like 'Firmenich'
+
