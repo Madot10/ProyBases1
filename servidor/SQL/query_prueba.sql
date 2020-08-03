@@ -375,3 +375,93 @@ FROM vam_eval_criterios AS crit
     INNER JOIN vam_var_criterios var on crit.id_var_crit = var.id
 WHERE prod.nombre like 'Firmenich'
 
+--FICHA DE PERFUME
+-- DATOS PERFUME
+SELECT perf.id,
+       perf.nombre,
+       CASE perf.genero
+           WHEN 'm' THEN 'Masculino'
+           WHEN 'f' THEN 'Femenino'
+           WHEN 'u' THEN 'Unisex' END
+           AS genero,
+        CASE perf.rango_edad
+           WHEN 'ate' THEN 'Atemporal'
+           WHEN 'adu' THEN 'Adulto'
+           WHEN 'inf' THEN 'Infantil'
+           WHEN 'juv' THEN 'Juvenil'END
+           AS rango_edad,
+       initcap(descrip_componentes),
+        CASE perf.tipo_estructura
+           WHEN 'm' THEN 'Monolítico'
+           WHEN 'f' THEN 'Por fases' END
+           AS genero,
+       perf.descrip_perf
+FROM vam_perfumes AS perf
+-- WHERE perf.nombre LIKE = ?
+
+
+-- PRESENTACIONES PERFUMES
+SELECT ppre.volumen, pint.porc_concentracion || '%' AS porc_concentracion,
+      CASE pint.tipo
+           WHEN 'p' THEN 'Perfume'
+           WHEN 'edp' THEN 'Eau de Perfume'
+           WHEN 'edt' THEN 'Eau de Toilette'
+           WHEN 'edc' THEN 'Eau de Cologne'
+            WHEN 'eds' THEN 'Splash perfumes'END
+           AS porc_concentracion,
+       pint.descripcion
+FROM vam_perfumes AS perf
+         INNER JOIN vam_perf_intensidades AS pint ON perf.id = pint.id_perfume
+         INNER JOIN vam_presentaciones AS ppre ON perf.id = ppre.id_perf
+--WHERE perf.nombre = 'Herbae par L''Occitane'
+
+-- FLIA OLFAT PRINCIPAL
+SELECT  flia.nombre
+FROM vam_perfumes AS perf
+    INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+    INNER JOIN vam_flia_olfat AS flia ON fliap.id_flia_olf = flia.id
+--WHERE perf.nombre = 'Herbae par L''Occitane'
+
+-- AROMAS
+SELECT DISTINCT  palabra.palabra as Aroma
+    FROM vam_perfumes AS perf
+        INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+        INNER JOIN vam_f_fn AS ffn ON fliap.id_flia_olf = ffn.id_flia_olf
+        INNER JOIN vam_palabra_clave AS palabra ON palabra.id = ffn.id_palabra_clave AND palabra.tipo_palabra = 'n'
+--WHERE perf.nombre = 'Herbae par L''Occitane'
+
+-- Escencias del perfume
+SELECT initcap(esencia.nombre) AS esencia
+FROM vam_perfumes AS perf
+    INNER JOIN vam_fo_principal AS princ ON perf.id = princ.id_perf
+    INNER JOIN vam_monolitico AS monol ON perf.id = monol.id_perf
+    INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = monol.id_esencia_perf
+WHERE perf.nombre = 'Herbae par L''Occitane'AND perf.tipo_estructura = 'm'
+UNION
+SELECT initcap(esencia.nombre) ||  CASE notas.tipo_nota
+           WHEN 'f' THEN ' (Fondo)'
+           WHEN 'c' THEN ' (Corazón)'
+           WHEN 's' THEN ' (Salida)' END AS esencia
+FROM vam_perfumes AS perf
+    INNER JOIN vam_fo_principal AS princ ON perf.id = princ.id_perf
+    INNER JOIN vam_notas_perfumes AS notas ON perf.id = notas.id_perf
+    INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = notas.id_esencia_perf
+WHERE perf.nombre = 'Herbae par L''Occitane' AND perf.tipo_estructura = 'f'
+
+-- REPORTE ORIGINAL PEDIDOS DE UN MES POR PRODUCTOR
+-- USUARIO TIENE QUE DAR EL FORMATO YYYY-MM-DD y se trunque para obtener el mes de esa fecha
+--CONFIRMADOS
+SELECT ped.id, ped.estado, ped.f_emision, prov.nombre, ped.subtotal_usd, ped.total_usd, ped.f_confirmacion, ped.nro_factura
+        FROM vam_pedidos AS ped
+    INNER JOIN vam_proveedores AS prov ON prov.id = ped.id_prov
+    INNER JOIN vam_productores AS prod on prod.id = ped.id_prod
+WHERE prod.nombre = 'Firmenich' AND ped.estado = 'a' AND ped.f_emision BETWEEN date_trunc('month', TIMESTAMP '2020-03-06') AND date_trunc('month', TIMESTAMP '2020-03-06') + interval '1 month'
+--Firmenich
+
+--CANCELADOS
+SELECT ped.id, ped.estado, ped.f_emision, prov.nombre, ped.subtotal_usd, ped.total_usd, ped.f_confirmacion, ped.nro_factura
+        FROM vam_pedidos AS ped
+    INNER JOIN vam_proveedores AS prov ON prov.id = ped.id_prov
+    INNER JOIN vam_productores AS prod on prod.id = ped.id_prod
+WHERE prod.nombre = 'Firmenich' AND (ped.estado = 'anpd' OR ped.estado = 'anpv') AND ped.f_emision BETWEEN date_trunc('month', TIMESTAMP '2020-03-06') AND date_trunc('month', TIMESTAMP '2020-03-06') + interval '1 month'
+--Firmenich
