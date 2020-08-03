@@ -353,27 +353,108 @@ SELECT perf.id, perf.nombre, flia.nombre, palabra.palabra
 
 --Queries para reportes
 
---Resultados por Productor
-SELECT prov.nombre, to_char(eval.fecha,'DD-MM-YYYY'), eval.tipo_eval, eval.resultado
+--EVALUACIÓN DE PROVEEDORES
+--Datos del productor
+SELECT nombre, pag_web, email, telefono
+FROM vam_productores
+WHERE nombre like 'Estee Lauder Companies%'
+
+--resultado que obtuvo cada proveedor y el peso del criterio de éxito, cuando la evaluación es inicial
+SELECT prov.nombre, to_char(eval.fecha,'DD-MM-YYYY') AS fecha_eval, eval.resultado, crit.peso
 FROM vam_result_eval AS eval
     INNER JOIN vam_productores AS prod ON prod.id = eval.id_prod
+    INNER JOIN vam_eval_criterios AS crit ON crit.id_prod = prod.id
     INNER JOIN vam_proveedores AS prov ON prov.id = eval.id_prov
-WHERE prod.nombre like 'Firmenich'
-ORDER BY eval.tipo_eval
+WHERE
+      --prod.nombre like 'IFF%' AND
+      crit.tipo_formula = 'i' AND eval.tipo_eval = 'i' AND crit.id_var_crit = 5 AND eval.fecha BETWEEN crit.fecha_inicio AND COALESCE(crit.fecha_fin,eval.fecha)
 
---Escalas del productor
-SELECT to_char(esc.fecha_inicio,'DD-MM-YYYY'), esc.valor_min, esc.valor_max
-FROM vam_escalas AS esc
-    INNER JOIN vam_productores AS prod ON prod.id = esc.id_prod
-WHERE prod.nombre like 'Firmenich'
-ORDER BY esc.fecha_inicio
+--resultado que obtuvo cada proveedor y el peso del criterio de éxito, cuando la evaluación es de renovación
+SELECT prov.nombre, to_char(eval.fecha,'DD-MM-YYYY') AS fecha_eval, eval.resultado, crit.peso
+FROM vam_result_eval AS eval
+    INNER JOIN vam_productores AS prod ON prod.id = eval.id_prod
+    INNER JOIN vam_eval_criterios AS crit ON crit.id_prod = prod.id
+    INNER JOIN vam_proveedores AS prov ON prov.id = eval.id_prov
+WHERE
+      --prod.nombre like 'Estee Lauder Companies%' AND
+      crit.tipo_formula = 'r' AND eval.tipo_eval = 'r' AND crit.id_var_crit = 5 AND eval.fecha BETWEEN crit.fecha_inicio AND COALESCE(crit.fecha_fin,eval.fecha)
 
---Criterios del Productor
-SELECT crit.fecha_inicio, var.nombre_crit, crit.peso, crit.tipo_formula
-FROM vam_eval_criterios AS crit
-    INNER JOIN vam_productores AS prod ON prod.id = crit.id_prod
-    INNER JOIN vam_var_criterios var on crit.id_var_crit = var.id
-WHERE prod.nombre like 'Firmenich'
+
+--FICHA INGREDIENTE
+--Datos del ingrediente
+SELECT cas,
+       CASE tipo
+           WHEN 'n' THEN 'Natural'
+           WHEN 'q' THEN 'Químico' END,
+       nombre, descripcion, taxonomia, punto_ebul, punto_inflam,
+       CASE proc_extrac
+           WHEN 'd' THEN 'Destilación' END,
+           descrip_proceso
+FROM vam_ingrediente_esencias
+WHERE nombre like 'Cassia Oil%'
+
+--Familia Olfativa del Ingrediente
+SELECT flia.nombre
+FROM vam_ingrediente_esencias AS ing
+    INNER JOIN vam_flia_ie AS cond ON cond.id_ing_esencia = ing.cas
+    INNER JOIN vam_flia_olfat AS flia ON flia.id = cond.id_flia_olfat
+WHERE ing.nombre like 'Cassia Oil%'
+
+--Nombre proveedor
+SELECT prov.nombre
+FROM vam_ingrediente_esencias AS ing
+    INNER JOIN vam_proveedores AS prov ON prov.id = ing.id_proveedor
+WHERE ing.nombre like 'Cassia Oil%'
+
+--Presentaciones del ingrediente
+SELECT pres.volumen, pres.precio
+FROM vam_ingrediente_esencias AS ing
+    INNER JOIN vam_ing_presentaciones AS pres ON pres.cas_ingrediente = ing.cas
+WHERE ing.nombre like 'Cassia Oil%'
+
+
+--FICHA CONTRATO
+--Datos del contrato
+SELECT prod.nombre AS nom_prod, prov.nombre AS nom_prov, cont.clausula, cont.fecha_emision
+FROM vam_contratos AS cont
+    INNER JOIN vam_productores prod on cont.id_prod = prod.id
+    INNER JOIN vam_proveedores prov on cont.id_prov = prov.id
+WHERE cont.id = 1
+
+--Ingredientes del contrato
+SELECT ing.cas, ing.nombre,
+    CASE tipo
+        WHEN 'n' THEN 'Natural'
+       WHEN 'q' THEN 'Químico' END
+FROM vam_contratos AS cont
+    INNER JOIN vam_mp_c AS mp ON cont.id = mp.id_contrato
+    INNER JOIN vam_ingrediente_esencias AS ing ON ing.cas = mp.cas
+WHERE cont.id = 1
+
+--Formas de Pago del Contrato
+SELECT
+    CASE fp.tipo
+        WHEN 'cont' THEN 'De contado'
+        WHEN 'cred' THEN 'A crédito' END
+        AS tipo_fp,
+    fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
+FROM vam_contratos AS c, vam_fe_fp_c AS cond
+    LEFT JOIN vam_forma_pagos AS fp ON  fp.id = cond.id_form_pago
+WHERE cond.id_contrato = c.id AND c.id = 6
+
+--Formas de envío del Contrato
+SELECT
+    CASE fe.tipo
+        WHEN 'm' THEN 'Marítimo'
+        WHEN 'a' THEN 'Aéreo'
+        WHEN 't' THEN 'Terrestre' END
+        AS tipo_fe,
+       fe.cargo
+FROM vam_contratos AS c, vam_fe_fp_c AS cond
+    LEFT JOIN vam_forma_envios AS fe ON  fe.id = cond.id_form_envio
+WHERE cond.id_contrato = c.id AND c.id = 2
+
+
 
 --FICHA DE PERFUME
 -- DATOS PERFUME
