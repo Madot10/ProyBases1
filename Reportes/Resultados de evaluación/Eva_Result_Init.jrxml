@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Eva_Result_Init" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="80c27e09-abe6-4a4d-8e88-b3142b93ffb7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="260"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="728"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Productor" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT prov.nombre, to_char(eval.fecha,'DD-MM-YYYY') AS fecha_eval, eval.resultado, crit.peso
+FROM vam_result_eval AS eval
+    INNER JOIN vam_productores AS prod ON prod.id = eval.id_prod
+    INNER JOIN vam_eval_criterios AS crit ON crit.id_prod = prod.id
+    INNER JOIN vam_proveedores AS prov ON prov.id = eval.id_prov
+WHERE
+      prod.id =  $P{Productor} AND
+      crit.tipo_formula = 'i' AND eval.tipo_eval = 'i' AND crit.id_var_crit = 5 AND eval.fecha BETWEEN crit.fecha_inicio AND COALESCE(crit.fecha_fin,eval.fecha)]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_proveedores"/>
+	</field>
+	<field name="fecha_eval" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_eval"/>
+	</field>
+	<field name="resultado" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="resultado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_result_eval"/>
+	</field>
+	<field name="peso" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="peso"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_eval_criterios"/>
+	</field>
+	<group name="nombre">
+		<groupExpression><![CDATA[$F{nombre}]]></groupExpression>
+	</group>
+	<title>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="90" y="0" width="380" height="30" uuid="a2da3cbe-3f29-42a4-8f78-afdbf07704ec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[RESULTADOS DE EVALUACIÓN INICIAL]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="0" width="150" height="30" backcolor="#DCF3F5" uuid="2d4d0526-729a-4489-84d7-c69120e94e59">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5e9371d0-eaa9-4415-b8b1-c3a67c53eb31"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="170" y="0" width="150" height="30" backcolor="#DCF3F5" uuid="76e734cc-72df-4010-ae50-f17720596d97">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b66b12a-ec47-4a2d-aac1-58fbd129b994"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[FECHA DE EVALUACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="320" y="0" width="90" height="30" backcolor="#DCF3F5" uuid="53e5117e-a65c-4797-bc9e-bfc8b8e41e3d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f01e4bd9-04b6-4ea0-817a-0d064e5435ec"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[RESULTADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="410" y="0" width="120" height="30" backcolor="#DCF3F5" uuid="72e46d70-08ea-4790-89b8-6403819d25a6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ae1ec2eb-ccac-41ab-afcd-bf53f13d7768"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[MÍN. REQUERIDO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement x="20" y="0" width="150" height="30" uuid="1d8c2c10-6409-4e76-acdb-ec9342376de2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5e9371d0-eaa9-4415-b8b1-c3a67c53eb31"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="0" width="150" height="30" uuid="9cfcf92e-1341-4662-ac92-b2c523a73b6e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b66b12a-ec47-4a2d-aac1-58fbd129b994"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_eval}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="0" width="90" height="30" uuid="a37234c3-9c47-42c8-81ce-ae30ad6613af">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f01e4bd9-04b6-4ea0-817a-0d064e5435ec"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{resultado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="0" width="120" height="30" uuid="ba5223ca-62d8-4e3f-b31d-45e20a63ee1b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ae1ec2eb-ccac-41ab-afcd-bf53f13d7768"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{peso}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
