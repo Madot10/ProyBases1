@@ -12,7 +12,7 @@
 FROM vam_contratos AS cont
     INNER JOIN vam_mp_c AS mp ON cont.id = mp.id_contrato
     INNER JOIN vam_ingrediente_esencias AS ing ON ing.cas = mp.cas
-WHERE cont.id = $P{Contrato} ]]>
+WHERE cont.id = $P{Contrato}]]>
 	</queryString>
 	<field name="cas" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="cas"/>

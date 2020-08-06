@@ -217,18 +217,15 @@ and ped.id =  $P{Nro Pedido}]]>
 		</band>
 		<band height="61">
 			<subreport>
-				<reportElement x="-26" y="0" width="200" height="60" uuid="87e31788-160f-484e-a41b-0e1c50bbbd8a"/>
+				<reportElement x="-20" y="0" width="200" height="60" uuid="f5b1aacf-bbf4-4b4a-ac8a-86bc6f18acd7"/>
 				<subreportParameter name="Pedido">
 					<subreportParameterExpression><![CDATA[$F{id_ped}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["Ing_Pedido.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["/Pedido_Ingre.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="90" splitType="Stretch">
 			<textField textAdjust="StretchHeight">
