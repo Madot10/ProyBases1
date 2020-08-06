@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Contrato" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="89147bfa-b30a-47a1-87aa-0be68f63cc8c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Contrato" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT prod.nombre AS nom_prod, 
+prov.nombre AS nom_prov, cont.clausula, 
+cont.fecha_emision, cont.id
+FROM vam_contratos AS cont
+    INNER JOIN vam_productores prod on cont.id_prod = prod.id
+    INNER JOIN vam_proveedores prov on cont.id_prov = prov.id
+WHERE cont.id = $P{Contrato}]]>
+	</queryString>
+	<field name="nom_prod" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nom_prod"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_productores"/>
+	</field>
+	<field name="nom_prov" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nom_prov"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_proveedores"/>
+	</field>
+	<field name="clausula" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="clausula"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<field name="fecha_emision" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_emision"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<group name="id">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+	</group>
+	<background>
+		<band height="802">
+			<image>
+				<reportElement x="390" y="610" width="200" height="192" uuid="9f5042a7-860b-40b6-8052-ac3c8b19708f"/>
+				<imageExpression><![CDATA["caja.png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="449" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="200" height="40" uuid="909ea6cb-2102-4091-a36f-f05a0d0bd33b"/>
+				<imageExpression><![CDATA["Header.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="220" y="40" width="120" height="30" uuid="e384a80c-8ff9-4d5e-afd0-025e2f089c38"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[CONTRATO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="390" height="30" uuid="edf0531f-e7a4-4594-add2-760f2b590d0e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Este documento establece la celebración de un contrato, donde actúan:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="110" width="80" height="30" uuid="e96bafe3-a45c-4f9a-b6ed-446e13a3c5e1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dde429f4-1122-45ef-9dfd-1529525e2cff"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[El comprador, ]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="80" y="110" width="310" height="30" uuid="04634859-9376-41eb-bab8-d4f48f311327">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dde429f4-1122-45ef-9dfd-1529525e2cff"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_prod}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="140" width="90" height="30" uuid="2c52d27f-0292-4f9f-a948-ebf12b345726">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8cc0b9ce-bd2d-40cd-98e7-9803b11b5a51"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Y el venededor, ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="140" width="300" height="30" uuid="ccc9b3bb-7a42-4d7c-ac68-893818ca8f2f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8cc0b9ce-bd2d-40cd-98e7-9803b11b5a51"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_prov}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="170" width="544" height="150" uuid="8093b38f-a266-4c9a-94ba-304cf4bafaad"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[La finalidad del contrato es para la compra y venta de los Ingredientes Esencias, con la(s) forma(s) de pago y la(s) forma(s) de envío ofrecidos por el vendedor. El contrato tendrá vigencia de un (1) año a partir de la fecha de emisión, este puede estar sujeto a cambios si cuando se cumpla el plazo de once (11) meses, el comprador realiza una evaluación de renovación de contrato, que poseerá el mismo plazo dde vigencia que el original, es decir, un (1) año. En caso de ser renovado, el contrato no puede tener ningún tipo de cambio o ajuste. Todas las transacciones de pago deberán ser efectuadas en dólares americanos. Las empresas que conforman este contrato, tanto comprador como vendedor, poseen la membresía de la Asociación Internacional de Perfumería (IFRA) activa y vigente.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="313" width="80" height="30" uuid="75daa802-3cec-4bcb-bb76-bf2e8de7b81a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6419dfe5-0a4f-4c20-8ef5-932e99a835e5"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[CLÁUSULA]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="18" y="349" width="524" height="100" uuid="020a0401-0ac1-4071-82f1-054420e4ae2c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6419dfe5-0a4f-4c20-8ef5-932e99a835e5"/>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clausula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="350" y="5" width="90" height="30" uuid="451825b4-68ad-4320-aeeb-1a068ac58e89"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha emisión:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="440" y="5" width="112" height="30" uuid="b5d96e04-c996-4f1e-a35b-226a4b60ddec"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_emision}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="61" splitType="Stretch">
+			<subreport>
+				<reportElement x="-69" y="0" width="200" height="60" uuid="6bbae1a5-f3d2-4f64-b1e2-88074308e310"/>
+				<subreportParameter name="Contrato">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Cont_Form_Pagos.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="62">
+			<subreport>
+				<reportElement x="-12" y="0" width="200" height="60" uuid="ef7aa94b-0fdd-4997-bf29-82a9330da04e"/>
+				<subreportParameter name="Contrato">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Cont_Form_Env.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="60">
+			<subreport>
+				<reportElement x="-20" y="0" width="200" height="60" uuid="94732225-0ac7-4995-a3fc-a2f9a972b72a"/>
+				<subreportParameter name="Contrato">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Cont_Ingredientes.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="110" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="60" width="550" height="50" uuid="2d63cc77-68ae-4f9a-b3cb-2df45800c5ee"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Aceptan los términos y condiciones de este documento y cualquier incumplimiento del mismo llevará a cabo una sanción legal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="1" width="78" height="30" uuid="5d54c050-9b92-4777-abcb-1da148499a38">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d6bfcbd5-3418-42fd-aacd-6f30d9d35c62"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[El comprador, ]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="80" y="2" width="200" height="30" uuid="71cfc5e5-8942-4fcd-8fb5-85b3879dfa40">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d6bfcbd5-3418-42fd-aacd-6f30d9d35c62"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_prod}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="0" width="40" height="30" uuid="4cb512ca-c0ff-445f-a106-6303476ed78c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d6bfcbd5-3418-42fd-aacd-6f30d9d35c62"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Firma,]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="330" y="0" width="200" height="30" uuid="866dc7d5-ce65-4c38-bbfd-dae5fd8eef5f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d6bfcbd5-3418-42fd-aacd-6f30d9d35c62"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_prod}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="31" width="80" height="30" uuid="dda41d31-f11f-4975-b974-343520cdab5d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2006ef4c-722a-4a02-91a7-a928c091f24a"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[El vendedor,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="30" width="40" height="30" uuid="45f94adb-91ba-42d8-b8bb-730cef0a2cb5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d6bfcbd5-3418-42fd-aacd-6f30d9d35c62"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Firma,]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="80" y="31" width="200" height="30" uuid="4ac9c2f4-8637-4d11-b831-54faf2fbf415">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2006ef4c-722a-4a02-91a7-a928c091f24a"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_prov}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="330" y="30" width="200" height="30" uuid="fe4b27ef-b129-4e67-9d20-fd5125eff842">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2006ef4c-722a-4a02-91a7-a928c091f24a"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_prov}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
