@@ -546,3 +546,17 @@ SELECT ped.id, ped.estado, ped.f_emision, prov.nombre, ped.subtotal_usd, ped.tot
     INNER JOIN vam_productores AS prod on prod.id = ped.id_prod
 WHERE prod.nombre = 'Firmenich' AND (ped.estado = 'anpd' OR ped.estado = 'anpv') AND ped.f_emision BETWEEN date_trunc('month', TIMESTAMP '2020-03-06') AND date_trunc('month', TIMESTAMP '2020-03-06') + interval '1 month'
 --Firmenich
+
+
+--FE de pedidos segun id_pedido
+SELECT condpe.id_pedido, fe.id, fe.tipo, pais.nombre AS nombre_pais
+FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+    INNER JOIN vam_forma_envios AS fe ON condcon.id_form_envio = fe.id
+    INNER JOIN vam_paises AS pais ON pais.id = condcon.id_form_envio_pais
+WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cond = condcon.id AND condpe.id_pedido = 1
+
+--FP de pedidos segun id_pedido
+SELECT condpe.id_pedido, fp.id, fp.tipo, fp.porc_inicial, fp.nro_cuotas, fp.interes_mensual, fp.nro_dia_entre_pago
+FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+    LEFT JOIN vam_forma_pagos AS fp ON condcon.id_form_pago = fp.id
+WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cond = condcon.id AND  condpe.id_pedido = 1
