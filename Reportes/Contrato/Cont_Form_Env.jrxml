@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Cont_Form_Envio" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="56102f9e-9407-4a87-9977-7da04a002b80">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="215"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="774"/>
+	<parameter name="Contrato" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+    CASE fe.tipo
+        WHEN 'm' THEN 'Marítimo'
+        WHEN 'a' THEN 'Aéreo'
+        WHEN 't' THEN 'Terrestre' END
+        AS tipo_fe,
+       fe.cargo
+FROM vam_contratos AS c, vam_fe_fp_c AS cond
+    INNER JOIN vam_forma_envios AS fe ON  fe.id = cond.id_form_envio
+WHERE cond.id_contrato = c.id AND c.id = $P{Contrato}]]>
+	</queryString>
+	<field name="tipo_fe" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_fe"/>
+	</field>
+	<field name="cargo" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="cargo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_forma_envios"/>
+	</field>
+	<group name="tipo_fe">
+		<groupExpression><![CDATA[$F{tipo_fe}]]></groupExpression>
+	</group>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="90" height="30" uuid="3556fee7-a40b-4dff-a21f-5dcb22e84d31">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9304f6c3-419c-44a0-90a9-8d701c80092b"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Forma de Envío: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="0" width="62" height="30" uuid="81c76bf5-2b17-408c-8c3d-093666d054e9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3cc05e75-6767-4569-9988-6ae3363c73a5"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Cargo (%):]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
+				<reportElement x="80" y="0" width="150" height="30" uuid="d6c2eb1f-fa34-4a3b-b3c1-5484ed71aca6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9304f6c3-419c-44a0-90a9-8d701c80092b"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo_fe}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
+				<reportElement x="340" y="0" width="80" height="30" uuid="c201271f-8dbc-45d9-9f62-a6eba1ca9c5a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3cc05e75-6767-4569-9988-6ae3363c73a5"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cargo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
