@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Prov_Activo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e03a841-c482-4efc-b270-8d509602f32b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Cod. Productor:" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select cont. id as cont_id, cont.id_prov, cont.id_prod,
+		cont.fecha_emision, prov.id, prov.nombre, 
+		prov.email, prov.telefono
+from vam_contratos cont, vam_proveedores prov
+WHERE 
+	  cont.fecha_cancelacion IS NULL AND 
+	  (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = cont.id GROUP BY id_contrato)) <= '12 month' OR age(cont.fecha_emision) <= '12 month')
+	  AND
+	  prov.id =cont.id_prov 
+	  AND cont.id_prod = $P{Cod. Productor:} ]]>
+	</queryString>
+	<field name="cont_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cont_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<field name="id_prov" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_prov"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<field name="id_prod" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_prod"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<field name="fecha_emision" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_emision"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_contratos"/>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_proveedores"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_proveedores"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_proveedores"/>
+	</field>
+	<field name="telefono" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="telefono"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_proveedores"/>
+	</field>
+	<group name="id_prod">
+		<groupExpression><![CDATA[$F{id_prod}]]></groupExpression>
+	</group>
+	<group name="cont_id">
+		<groupExpression><![CDATA[$F{cont_id}]]></groupExpression>
+	</group>
+	<title>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="172" y="1" width="208" height="30" uuid="9dbbbd8a-79d7-4821-8dae-e4b8e41aa117"/>
+				<textElement textAlignment="Center">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[CLIENTES ACTIVOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="20" y="0" width="152" height="30" backcolor="#DCF3F5" uuid="56c6bf4f-8a9a-4cb1-8445-d83e6384e947">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aaba25f5-04fd-4128-bded-e6752f72c586"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="172" y="0" width="107" height="30" backcolor="#DCF3F5" uuid="f9486976-5e9a-4fa2-93a0-8b69c002c34c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="840a9076-17c4-4471-a353-2499cc623f6e"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[NRO CONTRATO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="279" y="0" width="111" height="30" backcolor="#DCF3F5" uuid="ef417ad9-2872-458e-896f-6cfe8465aefe">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c2c113da-1024-4f2b-9da5-6821a3f5651d"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[TELÉFONO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="390" y="0" width="154" height="30" backcolor="#DCF3F5" uuid="03a11b62-15f9-47b0-8e21-64b548a52790">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="19c14d2a-a302-450a-b229-8c8017b6f308"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[CORREO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement x="172" y="0" width="107" height="30" uuid="0760c4ba-15be-465e-a687-8bb050ad888e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aaba25f5-04fd-4128-bded-e6752f72c586"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cont_id}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="20" y="0" width="152" height="30" uuid="448ac8f9-8f65-4d86-a0ee-2551ed51bcfb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="840a9076-17c4-4471-a353-2499cc623f6e"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="390" y="0" width="154" height="30" uuid="17f1a2ba-5414-4e61-aedc-ebc00f319694">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c2c113da-1024-4f2b-9da5-6821a3f5651d"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="280" y="0" width="110" height="30" uuid="e4483c8a-4a5d-47e9-83cc-f72ebec0c6a3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="19c14d2a-a302-450a-b229-8c8017b6f308"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

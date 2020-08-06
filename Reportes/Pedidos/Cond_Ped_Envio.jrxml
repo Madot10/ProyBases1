@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Cond_Ped_Pago" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f4012d28-5077-4bad-9c7a-5ce4e582c24c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Pedido" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT condpe.id_pedido, fe.id, fe.tipo, pais.nombre AS nombre_pais
+FROM vam_cond_pedido AS condpe, vam_fe_fp_c AS condcon
+    INNER JOIN vam_forma_envios AS fe ON condcon.id_form_envio = fe.id
+    INNER JOIN vam_paises AS pais ON pais.id = condcon.id_form_envio_pais
+WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cond = condcon.id 
+AND condpe.id_pedido = $P{Pedido} ]]>
+	</queryString>
+	<field name="id_pedido" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_pedido"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_cond_pedido"/>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_forma_envios"/>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_forma_envios"/>
+	</field>
+	<field name="nombre_pais" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre_pais"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_paises"/>
+	</field>
+	<group name="id_pedido">
+		<groupExpression><![CDATA[$F{id_pedido}]]></groupExpression>
+	</group>
+	<title>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="49e892a1-04d2-4684-a71c-9a2711cbaed4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Forma de Envío:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="2" width="80" height="30" uuid="866568eb-6b54-47b0-85aa-7221f7cb837f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e46ec9b1-3761-4984-930d-88b41c6c6ea3"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[País Destino:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField textAdjust="StretchHeight" evaluationTime="Group" evaluationGroup="id_pedido">
+				<reportElement x="90" y="0" width="140" height="30" uuid="a50ffd3d-3fe8-4e4a-a1e3-0ae657123ccd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="96aace27-3720-4e4b-9ed5-25028da512c5"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}.equals("a") ? "Aéreo" : $F{tipo}.equals("m") ? "Marítimo" : "Terrestre"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="0" width="112" height="30" uuid="dd530c21-9218-48d0-b75e-c9efd1b8efa4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e46ec9b1-3761-4984-930d-88b41c6c6ea3"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_pais}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
