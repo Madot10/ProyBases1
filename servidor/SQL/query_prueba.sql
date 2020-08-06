@@ -412,6 +412,14 @@ FROM vam_ingrediente_esencias AS ing
     INNER JOIN vam_ing_presentaciones AS pres ON pres.cas_ingrediente = ing.cas
 WHERE ing.nombre like 'Cassia Oil%'
 
+--PERFUMISTAS DE UN PERFUME
+SELECT pep.nombre AS Nombre, pep.apellido AS Apellido, pais.nombre As Pais
+FROM vam_pefumistas AS pep
+         INNER JOIN vam_p_p AS pp ON pep.id = pp.id_perfumista
+         INNER JOIN vam_perfumes AS perf ON perf.id = pp.id_perfume
+        INNER JOIN vam_paises AS pais ON pais.id = pep.id_pais
+WHERE perf.nombre = 'Herbae par L''Occitane';
+
 
 --FICHA CONTRATO
 --Datos del contrato
@@ -536,7 +544,7 @@ SELECT ped.id, ped.estado, ped.f_emision, prov.nombre, ped.subtotal_usd, ped.tot
         FROM vam_pedidos AS ped
     INNER JOIN vam_proveedores AS prov ON prov.id = ped.id_prov
     INNER JOIN vam_productores AS prod on prod.id = ped.id_prod
-WHERE prod.nombre = 'Firmenich' AND ped.estado = 'a' AND ped.f_emision BETWEEN date_trunc('month', TIMESTAMP '2020-03-06') AND date_trunc('month', TIMESTAMP '2020-03-06') + interval '1 month'
+WHERE prod.nombre = 'Firmenich' AND ped.estado = 'a' AND ped.f_emision BETWEEN date_trunc('month', TIMESTAMP '2020-03-06') AND date_trunc('month', TIMESTAMP '2020-03-06') + interval '1 month' ORDER BY prov.nombre
 --Firmenich
 
 --CANCELADOS
@@ -544,7 +552,7 @@ SELECT ped.id, ped.estado, ped.f_emision, prov.nombre, ped.subtotal_usd, ped.tot
         FROM vam_pedidos AS ped
     INNER JOIN vam_proveedores AS prov ON prov.id = ped.id_prov
     INNER JOIN vam_productores AS prod on prod.id = ped.id_prod
-WHERE prod.nombre = 'Firmenich' AND (ped.estado = 'anpd' OR ped.estado = 'anpv') AND ped.f_emision BETWEEN date_trunc('month', TIMESTAMP '2020-03-06') AND date_trunc('month', TIMESTAMP '2020-03-06') + interval '1 month'
+WHERE prod.nombre = 'Firmenich' AND (ped.estado = 'anpd' OR ped.estado = 'anpv') AND ped.f_emision BETWEEN date_trunc('month', TIMESTAMP '2020-03-06') AND date_trunc('month', TIMESTAMP '2020-03-06') + interval '1 month' ORDER BY prov.nombre
 --Firmenich
 
 
