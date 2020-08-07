@@ -4,14 +4,17 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="225"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="763"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Prueba Sistema VAM"/>
 	<parameter name="Productor" class="java.lang.Integer"/>
+	<parameter name="Mes" class="java.lang.Short"/>
+	<parameter name="Año" class="java.lang.Short"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT ped.id, ped.estado, ped.f_emision, prov.nombre, ped.subtotal_usd, ped.total_usd, ped.f_confirmacion, ped.nro_factura
         FROM vam_pedidos AS ped
     INNER JOIN vam_proveedores AS prov ON prov.id = ped.id_prov
     INNER JOIN vam_productores AS prod on prod.id = ped.id_prod
-WHERE prod.id =  $P{Productor}  AND (ped.estado = 'anpd' OR ped.estado = 'anpv')]]>
+WHERE prod.id =  $P{Productor}  AND (ped.estado = 'anpd' OR ped.estado = 'anpv') AND ped.f_emision BETWEEN date_trunc('month', TIMESTAMP '$P!{Año}-$P!{Mes}-06') AND date_trunc('month', TIMESTAMP '$P!{Año}-$P!{Mes}-06') + interval '1 month' ORDER BY prov.nombre
+]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="id"/>
@@ -117,7 +120,7 @@ WHERE prod.id =  $P{Productor}  AND (ped.estado = 'anpd' OR ped.estado = 'anpv')
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{f_emision}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{f_emision}.toString()]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight">
 				<reportElement x="260" y="0" width="170" height="30" uuid="98ab6c03-50a8-407e-b159-c730e026b7c2">

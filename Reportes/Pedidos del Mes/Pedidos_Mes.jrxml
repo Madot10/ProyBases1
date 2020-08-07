@@ -4,14 +4,14 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="335"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="653"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Prueba Sistema VAM"/>
 	<parameter name="Mes" class="java.lang.Short"/>
 	<parameter name="Año" class="java.lang.Short"/>
 	<parameter name="Productor" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT prod.id, prod.nombre, prod.email, prod.telefono, prod.pag_web 
 FROM vam_productores prod
-WHERE prod.id =  $P{Productor} ]]>
+WHERE prod.id =  $P{Productor}]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="id"/>
@@ -160,7 +160,37 @@ WHERE prod.id =  $P{Productor} ]]>
 		</band>
 	</title>
 	<detail>
-		<band height="59" splitType="Stretch"/>
-		<band height="50"/>
+		<band height="43" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="1" width="200" height="40" uuid="a286ba51-f5a5-46c2-a579-b4e6f3fd95d0"/>
+				<subreportParameter name="Productor">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Mes">
+					<subreportParameterExpression><![CDATA[$P{Mes}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Año">
+					<subreportParameterExpression><![CDATA[$P{Año}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Pedidos_Aprob_Mes.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="54">
+			<subreport>
+				<reportElement x="-20" y="0" width="200" height="50" uuid="cf915e78-67b2-44d6-9db5-9c738ff76272"/>
+				<subreportParameter name="Productor">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Mes">
+					<subreportParameterExpression><![CDATA[$P{Mes}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Año">
+					<subreportParameterExpression><![CDATA[$P{Año}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ped_Cancel_Mes.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</detail>
 </jasperReport>
