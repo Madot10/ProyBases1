@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Perf_Aromas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1cceb0ff-bb84-4cc4-a8da-e897ef78b08e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="263"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="725"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Perfume" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT  flia.nombre
+FROM vam_perfumes AS perf
+    INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
+    INNER JOIN vam_flia_olfat AS flia ON fliap.id_flia_olf = flia.id
+WHERE perf.id =  $P{Perfume} ]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_flia_olfat"/>
+	</field>
+	<group name="nombre">
+		<groupExpression><![CDATA[$F{nombre}]]></groupExpression>
+	</group>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="30" uuid="b8d9a882-32f0-4274-864a-f3eade5c9e05">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="06af41a2-a518-4ccc-97eb-de89b4b5849a"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Aromas: ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement x="30" y="0" width="150" height="30" uuid="c6da8939-a8c0-4c5a-973d-2e7dc9f81649">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="06af41a2-a518-4ccc-97eb-de89b4b5849a"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

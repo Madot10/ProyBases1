@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Perf_Present" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d3203b67-d5b9-416f-b62a-1125b0557cff">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="233"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="754"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Perfume" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT ppre.volumen, pint.porc_concentracion || '%' AS porc_concentracion,
+      CASE pint.tipo
+           WHEN 'p' THEN 'Perfume'
+           WHEN 'edp' THEN 'Eau de Perfume'
+           WHEN 'edt' THEN 'Eau de Toilette'
+           WHEN 'edc' THEN 'Eau de Cologne'
+            WHEN 'eds' THEN 'Splash perfumes'END
+           AS tipo,
+       pint.descripcion
+FROM vam_perfumes AS perf
+         INNER JOIN vam_perf_intensidades AS pint ON perf.id = pint.id_perfume
+         INNER JOIN vam_presentaciones AS ppre ON perf.id = ppre.id_perf
+WHERE perf.id =  $P{Perfume} ]]>
+	</queryString>
+	<field name="volumen" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="volumen"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_presentaciones"/>
+	</field>
+	<field name="porc_concentracion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="porc_concentracion"/>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_perf_intensidades"/>
+	</field>
+	<group name="volumen">
+		<groupExpression><![CDATA[$F{volumen}]]></groupExpression>
+	</group>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="120" height="30" uuid="b1a36ce9-3d5a-4dcc-aab4-e15bf2d44441">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0fec4dc8-5d33-464a-86e0-6b684c39e703"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Presentaciones (ml):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="40" height="30" uuid="039120ba-6f1d-4691-94cd-bc8f4492832b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fadfe722-27c4-414e-b4b4-2cdcf138759e"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Tipo:]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="80" y="0" width="140" height="30" uuid="728c8422-2f92-4a7d-9bcc-2780e176804c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0fec4dc8-5d33-464a-86e0-6b684c39e703"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{volumen}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="310" y="0" width="220" height="30" uuid="45ab2d9a-f8d5-4d34-8359-e4fecafbef9e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fadfe722-27c4-414e-b4b4-2cdcf138759e"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

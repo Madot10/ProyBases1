@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ficha_Perfume" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="48c691a5-bcab-41fb-af9c-394c69b3dbc3">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="233"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="754"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Perfume" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT perf.id,
+       perf.nombre,
+       CASE perf.genero
+           WHEN 'm' THEN 'Masculino'
+           WHEN 'f' THEN 'Femenino'
+           WHEN 'u' THEN 'Unisex' END
+           AS genero,
+        CASE perf.rango_edad
+           WHEN 'ate' THEN 'Atemporal'
+           WHEN 'adu' THEN 'Adulto'
+           WHEN 'inf' THEN 'Infantil'
+           WHEN 'juv' THEN 'Juvenil'END
+           AS rango_edad,
+       initcap(descrip_componentes),
+        CASE perf.tipo_estructura
+           WHEN 'm' THEN 'Monolítico'
+           WHEN 'f' THEN 'Por fases' END
+           AS tipo,
+       perf.descrip_perf
+FROM vam_perfumes AS perf
+WHERE perf.id = $P{Perfume}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_perfumes"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_perfumes"/>
+	</field>
+	<field name="genero" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="genero"/>
+	</field>
+	<field name="rango_edad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="rango_edad"/>
+	</field>
+	<field name="initcap" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="initcap"/>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+	</field>
+	<field name="descrip_perf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descrip_perf"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_perfumes"/>
+	</field>
+	<group name="id">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+	</group>
+	<background>
+		<band height="802">
+			<image>
+				<reportElement x="361" y="580" width="228" height="222" uuid="e1e389ce-9a51-444e-9a1d-a85e19cedef9"/>
+				<imageExpression><![CDATA["caja.png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="378" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="210" height="40" uuid="1861a9d4-7720-4413-b521-dbc06ce09859"/>
+				<imageExpression><![CDATA["Header.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="227" y="40" width="100" height="30" uuid="ca073260-aac3-42ac-a373-c397a8f93f2a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[PERFUME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="82" width="50" height="30" uuid="7d825c5c-8885-473c-abc5-c9388c16ae32">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fa1692d2-35a3-4fe8-8f56-5b1e9c7501fb"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="310" y="82" width="245" height="30" uuid="4b6c0b64-372e-4b86-925f-c5139354c1c9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fa1692d2-35a3-4fe8-8f56-5b1e9c7501fb"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="260" y="112" width="30" height="30" uuid="cbd888bc-dd35-4a64-b8f7-d9ced9a163cf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="794ff394-0b64-4b09-8ccb-90e0b164cc80"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Tipo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="142" width="92" height="30" uuid="4e0502a1-2632-4628-b6d6-4cea378ce83c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="faf70e64-f398-4ebf-8853-6be20e10c243"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Rango de Edad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="172" width="50" height="30" uuid="2756eb6a-267b-4044-8785-396b82ae1dbd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4c077f95-e16c-4950-88b0-3e89262dc93c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Género:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="202" width="180" height="30" uuid="6ee8c717-e235-41ff-80c8-9ee7d5639f4e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="815de8bb-c561-4785-9d1c-26e10a7ba1b4"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Descripción de los Componentes:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="270" y="233" width="285" height="57" uuid="942e8617-6947-4707-9b5f-b8d19c0490a9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="815de8bb-c561-4785-9d1c-26e10a7ba1b4"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{initcap}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="260" y="290" width="140" height="30" uuid="5c0a56fc-2e73-449b-a4b3-7b0a07ed5a8c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a93250cb-c598-40ba-ace5-321406857ac3"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Descripción del Perfume:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="270" y="320" width="285" height="58" uuid="4f62b77c-7eb5-45b5-ae1c-43dfab7cc0b8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a93250cb-c598-40ba-ace5-321406857ac3"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descrip_perf}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="310" y="172" width="92" height="30" uuid="c6abbb10-86d4-47d3-8e32-c3ca0fb22ee6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4c077f95-e16c-4950-88b0-3e89262dc93c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{genero}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="352" y="142" width="128" height="30" uuid="a82c09fd-657d-41ac-8e07-35c7ddcac344">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="faf70e64-f398-4ebf-8853-6be20e10c243"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rango_edad}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="290" y="112" width="92" height="30" uuid="1e659bce-adc9-4cbf-bf58-6771b2063a3a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="794ff394-0b64-4b09-8ccb-90e0b164cc80"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="20" y="96" width="207" height="258" uuid="373e44be-d806-4990-9ed1-e2934ec97db7"/>
+				<imageExpression><![CDATA[($P{Perfume}.equals(1))? "1.jpg" : ($P{Perfume}.equals(2))? "2.jpg" : ($P{Perfume}.equals(3))? "3.jpg" : ($P{Perfume}.equals(4))? "4.jpg" : ($P{Perfume}.equals(5))? "5.jpg" : ($P{Perfume}.equals(6))? "6.jpg" : ($P{Perfume}.equals(7))? "7.jpg" : ($P{Perfume}.equals(8))? "8.jpg" : ($P{Perfume}.equals(9))? "9.jpg" : ($P{Perfume}.equals(10))? "10.jpg" : ($P{Perfume}.equals(11))? "11.jpg" : "12.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="62" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="60" uuid="8db5cf69-7975-441d-a8b7-4a06ada75808"/>
+				<subreportParameter name="Perfume">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Perf_Present.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="51">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="51" uuid="39109192-2220-4416-998c-d937b21f84dc"/>
+				<subreportParameter name="Pefume">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Perf_Flia_Olfat.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="51">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="50" uuid="b787f5c4-d954-4f75-9634-a03f873bfca0"/>
+				<subreportParameter name="Perfume">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Perf_Perfumistas.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="50" uuid="0ff6144b-66cd-4ec6-b1e0-02edb3699a50"/>
+				<subreportParameter name="Perfume">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Perf_Aromas.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="52">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="50" uuid="2475b307-2624-4509-b5c7-4b76b90bd039"/>
+				<subreportParameter name="Perfume">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Perf_Esencias.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>
