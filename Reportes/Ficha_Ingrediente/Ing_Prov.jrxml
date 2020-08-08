@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ing_Prov" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3cb45cc6-5bba-4c98-85ba-a205caff36c9">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="236"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="752"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Ingrediente" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT prov.nombre
+FROM vam_ingrediente_esencias AS ing
+    INNER JOIN vam_proveedores AS prov ON prov.id = ing.id_proveedor
+WHERE ing.cas = $P{Ingrediente} ]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_proveedores"/>
+	</field>
+	<group name="nombre">
+		<groupExpression><![CDATA[$F{nombre}]]></groupExpression>
+	</group>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="0323b112-0507-4c96-9c78-0b32ebb58665">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="93a9ab90-c404-42b3-ac13-c68f812e68cb"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Proveedor:]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement x="40" y="0" width="170" height="30" uuid="6b8a9b86-173b-4031-8aba-75aeed25a760">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="93a9ab90-c404-42b3-ac13-c68f812e68cb"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

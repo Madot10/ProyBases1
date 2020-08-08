@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ficha_Ingrediente" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b836b7be-4d72-4ef3-9c99-a1e56b0c9037">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="295"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="692"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Ingrediente" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT cas,
+       CASE tipo
+           WHEN 'n' THEN 'Natural'
+           WHEN 'q' THEN 'Químico' END AS tipo,
+       nombre, descripcion, taxonomia, punto_ebul, punto_inflam,
+       CASE proc_extrac
+           WHEN 'd' THEN 'Destilación' END AS extrac,
+           descrip_proceso
+FROM vam_ingrediente_esencias
+WHERE cas =  $P{Ingrediente}]]>
+	</queryString>
+	<field name="cas" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="cas"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ingrediente_esencias"/>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ingrediente_esencias"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ingrediente_esencias"/>
+	</field>
+	<field name="taxonomia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="taxonomia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ingrediente_esencias"/>
+	</field>
+	<field name="punto_ebul" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="punto_ebul"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ingrediente_esencias"/>
+	</field>
+	<field name="punto_inflam" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="punto_inflam"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ingrediente_esencias"/>
+	</field>
+	<field name="extrac" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="extrac"/>
+	</field>
+	<field name="descrip_proceso" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descrip_proceso"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ingrediente_esencias"/>
+	</field>
+	<group name="cas">
+		<groupExpression><![CDATA[$F{cas}]]></groupExpression>
+	</group>
+	<background>
+		<band height="802">
+			<image>
+				<reportElement x="378" y="590" width="210" height="212" uuid="11121897-ff3b-4ad2-9b62-be84253398b3"/>
+				<imageExpression><![CDATA["caja.png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="373" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="210" height="40" uuid="47d0c2f5-8796-4b8e-8a71-d1a97915d545"/>
+				<imageExpression><![CDATA["Header.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="209" y="40" width="137" height="30" uuid="19a55a82-5373-45b3-91e4-5a1124988257"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[INGREDIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="88" width="67" height="30" uuid="5b169015-a779-4895-84d4-f2e314a4c28b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8d541b2d-4878-4cb2-9ee9-f8ee79e18d20"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[CAS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="148" width="61" height="30" uuid="d4477917-6c15-4903-8b80-78efd4ea3b0a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b54703e7-d278-4d2c-8f73-eff31e53523a"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Tipo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="118" width="61" height="30" uuid="eefd70c2-307b-4e57-972a-c39e4867d2f9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9af63baa-8900-49bb-b0b9-295bca631197"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="180" width="61" height="30" uuid="77d1be11-8fcb-4275-b08c-f58b3159a0e6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3c9af117-d0a0-4e8e-bea9-d55694a95071"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Taxonomía:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="210" width="100" height="30" uuid="c2d38f4a-c8de-429c-ab92-27bac8be88b4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="54a0be58-678f-412f-a8db-59069af8548a"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Pto. de Ebullición:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="240" width="110" height="30" uuid="2693f7ed-6339-4b6b-9dcd-ac3c66d2a635">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2d83f711-3944-4c5c-b15b-1c5936aa84b2"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Pto. de Inflamación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="210" width="131" height="30" uuid="1b333e16-5ba7-49a2-a6ef-0c2b10e9d87d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c5cf52ed-a253-4a96-960b-8fa925dfed31"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Proceso de Extracción:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="246" width="140" height="30" uuid="f72b756f-375d-4a49-b105-32a24367914c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fc72217f-1155-4fbe-869b-e6453f701612"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Descripción del proceso:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="270" width="71" height="30" uuid="e3ea4474-7cbc-4e16-be04-dd228353f1f2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bc65a548-9783-4b42-a964-c66b0b75d507"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Descripción:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="337" y="88" width="113" height="30" uuid="b5785892-738b-42e4-9846-aa0ab728093e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8d541b2d-4878-4cb2-9ee9-f8ee79e18d20"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cas}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="330" y="148" width="120" height="30" uuid="08e59613-ec36-4250-aa9f-8cdccf6dfbbc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b54703e7-d278-4d2c-8f73-eff31e53523a"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="330" y="118" width="200" height="30" uuid="59da14fe-0950-40b1-9bca-f8adcd2f2cf8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9af63baa-8900-49bb-b0b9-295bca631197"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="330" y="178" width="200" height="30" uuid="559a9b6a-f665-4e13-bf20-671ed0dedde0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3c9af117-d0a0-4e8e-bea9-d55694a95071"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxonomia}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="100" y="210" width="67" height="30" uuid="4be8051a-051e-4727-8d30-04da678a02d9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="54a0be58-678f-412f-a8db-59069af8548a"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{punto_ebul}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="110" y="240" width="67" height="30" uuid="0ace724f-acc7-47af-9a9b-283ded5d1a9b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2d83f711-3944-4c5c-b15b-1c5936aa84b2"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{punto_inflam}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="400" y="210" width="130" height="30" uuid="2327f5ac-2b35-453f-8f68-deb3e3cf71f9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c5cf52ed-a253-4a96-960b-8fa925dfed31"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extrac}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="285" y="277" width="265" height="73" uuid="6a212d85-2436-4c9f-a0bc-bfd00e8f2fe1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fc72217f-1155-4fbe-869b-e6453f701612"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descrip_proceso}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="10" y="300" width="236" height="73" uuid="0932e34c-99b9-42d4-b1a6-ab2d7b53f85a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bc65a548-9783-4b42-a964-c66b0b75d507"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="10" y="80" width="236" height="120" uuid="dc7cca1d-af6c-4eef-844f-a5934ff37fb6"/>
+				<imageExpression><![CDATA[($P{Ingrediente}.equals(8007805))? "8007805.jpg": ($P{Ingrediente}.equals(8015734))? "8015734.jpg": ($P{Ingrediente}.equals(8016635))? "8016635.jpg":  ($P{Ingrediente}.equals(586629))? "586629.png": ($P{Ingrediente}.equals(4707475))? "4707475.png": ($P{Ingrediente}.equals(106229))? "106229.png": ($P{Ingrediente}.equals(78605966))? "78605966.png": ($P{Ingrediente}.equals(140114))? "140114.png": ($P{Ingrediente}.equals(142927))? "142927.png": ($P{Ingrediente}.equals(110383))? "110383.png": ($P{Ingrediente}.equals(8015956))? "8015956.png": ($P{Ingrediente}.equals(8007010))? "8007010.jpg": ($P{Ingrediente}.equals(656531))? "656531.png": ($P{Ingrediente}.equals(29957435))? "29957435.jpg": "134203.png"]]></imageExpression>
+			</image>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="450" y="0" width="100" height="30" uuid="5b3d3211-6f5b-45dd-91a1-697031affbed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="51" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="50" uuid="037dbe83-4703-4746-a3d1-1272d68d6358"/>
+				<subreportParameter name="Ingrediente">
+					<subreportParameterExpression><![CDATA[$F{cas}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ing_Flia_Olfat.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="50" uuid="c266ea19-190a-43c4-b63b-fc5a03e1b520"/>
+				<subreportParameter name="Ingrediente">
+					<subreportParameterExpression><![CDATA[$F{cas}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ing_Proveedor.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="51">
+			<subreport>
+				<reportElement x="-20" y="0" width="200" height="50" uuid="f00a9d3f-6ba9-49ce-8b5b-fde1a5678000"/>
+				<subreportParameter name="Ingrediente">
+					<subreportParameterExpression><![CDATA[$F{cas}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ing_Present.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

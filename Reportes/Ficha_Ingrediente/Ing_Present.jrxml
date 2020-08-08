@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ing_Present" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2340280d-a3f1-443d-b7a9-00e2f45c9f39">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Ingrediente" class="java.math.BigDecimal"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT pres.volumen, pres.precio
+FROM vam_ingrediente_esencias AS ing
+    INNER JOIN vam_ing_presentaciones AS pres ON pres.cas_ingrediente = ing.cas
+WHERE ing.cas = $P{Ingrediente} ]]>
+	</queryString>
+	<field name="volumen" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="volumen"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ing_presentaciones"/>
+	</field>
+	<field name="precio" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="precio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ing_presentaciones"/>
+	</field>
+	<group name="volumen">
+		<groupExpression><![CDATA[$F{volumen}]]></groupExpression>
+	</group>
+	<title>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="130" y="0" width="295" height="30" uuid="cc73fe9d-50d2-40fd-b0ab-9c796c1beca5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[PRESENTACIONES DE VENTA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="100" y="0" width="190" height="30" backcolor="#DCF3F5" uuid="26b0c86b-c355-4731-adbb-b0626922056c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f8ebfe32-9513-416c-87f5-0e9b65273e3b"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[VOLUMEN (ml)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="290" y="0" width="185" height="30" backcolor="#DCF3F5" uuid="9920a684-3bbd-4fe8-9fd8-2d84741720f0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="85951a75-2e66-494e-b44a-dbbbb7b2521b"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[PRECIO (USD)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement x="100" y="0" width="190" height="30" uuid="364617c0-ed36-411f-8f3b-8b51cb2cda82">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f8ebfe32-9513-416c-87f5-0e9b65273e3b"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{volumen}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="290" y="0" width="185" height="30" uuid="77085302-3e3e-40ad-a357-cef4809ca882">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="85951a75-2e66-494e-b44a-dbbbb7b2521b"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
