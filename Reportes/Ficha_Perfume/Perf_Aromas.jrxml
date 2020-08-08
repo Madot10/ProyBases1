@@ -11,7 +11,7 @@
 FROM vam_perfumes AS perf
     INNER JOIN vam_fo_principal AS fliap ON perf.id = fliap.id_perf
     INNER JOIN vam_flia_olfat AS flia ON fliap.id_flia_olf = flia.id
-WHERE perf.id =  $P{Perfume} ]]>
+WHERE perf.id =  $P{Perfume}]]>
 	</queryString>
 	<field name="nombre" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombre"/>

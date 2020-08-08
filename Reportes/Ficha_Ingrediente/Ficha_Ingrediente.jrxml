@@ -166,7 +166,7 @@ WHERE cas =  $P{Ingrediente}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cas}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="330" y="148" width="120" height="30" uuid="08e59613-ec36-4250-aa9f-8cdccf6dfbbc">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b54703e7-d278-4d2c-8f73-eff31e53523a"/>
 				</reportElement>
@@ -184,7 +184,7 @@ WHERE cas =  $P{Ingrediente}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="330" y="178" width="200" height="30" uuid="559a9b6a-f665-4e13-bf20-671ed0dedde0">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3c9af117-d0a0-4e8e-bea9-d55694a95071"/>
 				</reportElement>
@@ -193,7 +193,7 @@ WHERE cas =  $P{Ingrediente}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{taxonomia}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="100" y="210" width="67" height="30" uuid="4be8051a-051e-4727-8d30-04da678a02d9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="54a0be58-678f-412f-a8db-59069af8548a"/>
 				</reportElement>
@@ -202,7 +202,7 @@ WHERE cas =  $P{Ingrediente}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{punto_ebul}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="110" y="240" width="67" height="30" uuid="0ace724f-acc7-47af-9a9b-283ded5d1a9b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2d83f711-3944-4c5c-b15b-1c5936aa84b2"/>
 				</reportElement>
@@ -211,7 +211,7 @@ WHERE cas =  $P{Ingrediente}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{punto_inflam}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="400" y="210" width="130" height="30" uuid="2327f5ac-2b35-453f-8f68-deb3e3cf71f9">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c5cf52ed-a253-4a96-960b-8fa925dfed31"/>
 				</reportElement>
@@ -220,7 +220,7 @@ WHERE cas =  $P{Ingrediente}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{extrac}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="285" y="277" width="265" height="73" uuid="6a212d85-2436-4c9f-a0bc-bfd00e8f2fe1">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fc72217f-1155-4fbe-869b-e6453f701612"/>
 				</reportElement>
@@ -229,7 +229,7 @@ WHERE cas =  $P{Ingrediente}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descrip_proceso}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="10" y="300" width="236" height="73" uuid="0932e34c-99b9-42d4-b1a6-ab2d7b53f85a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bc65a548-9783-4b42-a964-c66b0b75d507"/>
 				</reportElement>
@@ -283,4 +283,15 @@ WHERE cas =  $P{Ingrediente}]]>
 			</subreport>
 		</band>
 	</detail>
+	<pageFooter>
+		<band height="34">
+			<textField textAdjust="StretchHeight">
+				<reportElement x="227" y="0" width="100" height="30" uuid="ae0f594a-6d42-4256-8a6a-8541727f4921"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 </jasperReport>

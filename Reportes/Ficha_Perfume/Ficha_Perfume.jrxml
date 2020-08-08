@@ -221,6 +221,9 @@ WHERE perf.id = $P{Perfume}]]>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["Perf_Perfumistas.jasper"]]></subreportExpression>
 			</subreport>
+			<break>
+				<reportElement x="0" y="50" width="99" height="1" uuid="b2cd110f-1908-4c88-995a-d9e6438beba0"/>
+			</break>
 		</band>
 		<band height="50">
 			<subreport>

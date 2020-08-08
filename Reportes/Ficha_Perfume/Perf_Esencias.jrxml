@@ -7,21 +7,21 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
 	<parameter name="Perfume" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT initcap(esencia.nombre) AS esencia
+		<![CDATA[SELECT initcap(esencia.nombre) AS esencia 
 FROM vam_perfumes AS perf
     INNER JOIN vam_fo_principal AS princ ON perf.id = princ.id_perf
     INNER JOIN vam_monolitico AS monol ON perf.id = monol.id_perf
     INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = monol.id_esencia_perf
 WHERE perf.nombre = 'Herbae par L''Occitane'AND perf.tipo_estructura = 'm'
 UNION
-SELECT initcap(esencia.nombre) ||  CASE notas.tipo_nota
+SELECT initcap(esencia.nombre) ||  CASE notas.tipo_nota 
            WHEN 'f' THEN ' (Fondo)'
            WHEN 'c' THEN ' (Corazón)'
-           WHEN 's' THEN ' (Salida)' END AS esencia
+           WHEN 's' THEN ' (Salida)' END AS esencia 
 FROM vam_perfumes AS perf
     INNER JOIN vam_fo_principal AS princ ON perf.id = princ.id_perf
     INNER JOIN vam_notas_perfumes AS notas ON perf.id = notas.id_perf
-    INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = notas.id_esencia_perf
+    INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = notas.id_esencia_perf 
 WHERE perf.id =  $P{Perfume}  AND perf.tipo_estructura = 'f']]>
 	</queryString>
 	<field name="esencia" class="java.lang.String">
