@@ -406,6 +406,8 @@ FROM vam_ingrediente_esencias AS ing
     INNER JOIN vam_proveedores AS prov ON prov.id = ing.id_proveedor
 WHERE ing.nombre like 'Cassia Oil%'
 
+($P{Ingrediente}.equals(8007805))? "8007805.jpg": ($P{Ingrediente}.equals(8015734))? "8015734.jpg": ($P{Ingrediente}.equals(8016635))? "8016635.jpg":  ($P{Ingrediente}.equals(586629))? "586629.png": ($P{Ingrediente}.equals(4707475))? "4707475.png": ($P{Ingrediente}.equals(106229))? "106229.png": ($P{Ingrediente}.equals(78605966))? "78605966.png": ($P{Ingrediente}.equals(140114))? "140114.png": ($P{Ingrediente}.equals(142927))? "142927.png": ($P{Ingrediente}.equals(110383))? "110383.png": ($P{Ingrediente}.equals(8015956))? "8015956.png": ($P{Ingrediente}.equals(8007010))? "8007010.jpg": ($P{Ingrediente}.equals(656531))? "656531.png": ($P{Ingrediente}.equals(29957435))? "29957435.jpg": "134203.png"
+
 --Presentaciones del ingrediente
 SELECT pres.volumen, pres.precio
 FROM vam_ingrediente_esencias AS ing

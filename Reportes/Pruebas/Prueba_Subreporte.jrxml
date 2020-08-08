@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Prueba_Subreporte" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d70249ed-5933-40f6-9bb2-9aee7de883a6">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<parameter name="Proveedor" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select ing.cas, ing.id_proveedor,
+			ing.nombre
+ from vam_ingrediente_esencias ing
+ where ing.id_proveedor =  $P{Proveedor} ]]>
+	</queryString>
+	<field name="cas" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="cas"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ingrediente_esencias"/>
+	</field>
+	<field name="id_proveedor" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id_proveedor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ingrediente_esencias"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="vam_ingrediente_esencias"/>
+	</field>
+	<group name="cas">
+		<groupExpression><![CDATA[$F{cas}]]></groupExpression>
+	</group>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="278" height="30" backcolor="#DCF3F5" uuid="1255f8b3-f0f5-4003-bd5d-38d57a42f97d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="91853979-49ef-4b29-bc3f-5465415af7ec"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[cas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="278" y="0" width="277" height="30" backcolor="#DCF3F5" uuid="f51c5365-a361-4fcd-b841-72636bb81050">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="92278b48-c21e-4e7f-ad85-1a7e8bfb10ee"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[nombre]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="278" height="30" uuid="48329466-227f-4fd8-82b3-a5c062991eba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="91853979-49ef-4b29-bc3f-5465415af7ec"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{cas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="278" y="0" width="277" height="30" uuid="594462ca-a108-4ac8-91b6-46d564659102">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="92278b48-c21e-4e7f-ad85-1a7e8bfb10ee"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
