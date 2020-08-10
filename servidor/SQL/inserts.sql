@@ -1276,14 +1276,14 @@ UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar el mutuo acuerdo en realizar todos los pagos
 mediante transferencia bancaria a la cuenta principal de la empresa proveedora de la
 materia prima.'
-WHERE id = 1
+WHERE id = 1;
 UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar el mutuo acuerdo en realizar todos los pagos
 mediante transferencia bancaria a la cuenta principal de la empresa proveedora de la
 materia prima.
 Se establece que todos los envíos en modalidad marítimo sólo deben llegar al puerto
 principal del país de destino para su pronto desembarque por la empresa compradora.'
-WHERE id = 2
+WHERE id = 2;
 UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar el mutuo acuerdo en realizar todos los pagos
 mediante transferencia bancaria a la cuenta principal de la empresa proveedora de la
@@ -1291,7 +1291,7 @@ materia prima.
 Se establece que todos los envíos en modalidad aéreo sólo podrán realizar una única
 escala adicional para llegar al país de destino, a menos que se presente una situación
 excepcional por parte del medio de transporte.'
-WHERE id = 3
+WHERE id = 3;
 UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar el mutuo acuerdo en realizar todos los pagos
 de la materia prima mediante Paypal o a la cuenta máxima de la empresa proveedora de la
@@ -1299,19 +1299,19 @@ materia prima.
 Los despachos de la mercancía sólo se podrán realizar los días lunes, miércoles y viernes,
 por lo que es necesario coordinar el día de la llegada de la mercancía al lugar de destino,
 tomando en cuenta los posibles inconvenientes y retrasos de la misma.'
-WHERE id = 4
+WHERE id = 4;
 UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar que los despachos de la mercancía sólo se podrán
 realizar los días lunes, miércoles y viernes, por lo que es necesario coordinar el día de
 la llegada de la mercancía al lugar de destino, tomando en cuenta los posibles
 inconvenientes y retrasos de la misma.'
-WHERE id = 5
+WHERE id = 5;
 UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar que los despachos de la mercancía sólo se podrán
 realizar los días lunes, miércoles y viernes, por lo que es necesario coordinar el día de
 la llegada de la mercancía al lugar de destino, tomando en cuenta los posibles
 inconvenientes y retrasos de la misma.'
-WHERE id = 6
+WHERE id = 6;
 UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar el mutuo acuerdo en realizar todos los pagos
 mediante transferencia bancaria a la cuenta principal de la empresa proveedora de la
@@ -1322,24 +1322,24 @@ Los despachos de la mercancía sólo se podrán
 realizar los días lunes, miércoles y viernes, por lo que es necesario coordinar el día de
 la llegada de la mercancía al lugar de destino, tomando en cuenta los posibles
 inconvenientes y retrasos de la misma.'
-WHERE id = 7
+WHERE id = 7;
 UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar el mutuo acuerdo en entregar toda la mercancía
 en cajas especiales que protejan a la materia prima de la humedad y del calor.
 Se establece que la recepción de la mercancía sea solamente los días sábados y domingos.'
-WHERE id = 8
+WHERE id = 8;
 UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar el mutuo acuerdo que todos los pagos realizados
 a crédito serán por cheques y se recibirán solamente el día acordado en dicho contrato.
 Se establece que todos los envíos en modalidad marítimo sólo deben llegar al puerto
 principal del país de destino para su pronto desembarque por la empresa compradora.'
-WHERE id = 9
+WHERE id = 9;
 UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar el mutuo acuerdo que todos los pagos realizados
 a crédito serán por cheques y se recibirán solamente el día acordado en dicho contrato.
 Se establece que todos los envíos en modalidad marítimo sólo deben llegar al puerto
 principal del país de destino para su pronto desembarque por la empresa compradora.'
-WHERE id = 10
+WHERE id = 10;
 UPDATE vam_contratos
 SET clausula = 'Esta cláusula viene dada para expresar el mutuo acuerdo en realizar todos los pagos
 mediante transferencia bancaria a la cuenta principal de la empresa proveedora de la
@@ -1347,4 +1347,4 @@ materia prima.
 Se establece que todos los envíos en modalidad aéreo sólo podrán realizar una única
 escala adicional para llegar al país de destino, a menos que se presente una situación
 excepcional por parte del medio de transporte.'
-WHERE id = 11
+WHERE id = 11;
