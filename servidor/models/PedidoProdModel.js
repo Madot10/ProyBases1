@@ -16,7 +16,7 @@ function createInsertCondFeFp(id_pedido, id_prov, id_prod, pedido) {
                     pedido.id_fp_cond,
                 ]
             )
-            .then(function () {
+            .then(function() {
                 resolve(true);
             })
             .catch((e) => console.error(e.stack));
@@ -30,7 +30,13 @@ function createInsertDetPedido(id_pedido, id_prov, id_prod, pedido) {
             database
                 .query(
                     `INSERT INTO vam_det_pedido(id_pedido,cantidad,id_ing_presentacion,cas_ingrediente,id_prov_ing) VALUES ($1,$2,$3,$4,$5)`,
-                    [id_pedido, pedido.cantidad[i], pedido.id_pres[i], pedido.cas[i], id_prov]
+                    [
+                        id_pedido,
+                        pedido.cantidad[i],
+                        pedido.id_pres[i],
+                        pedido.cas[i],
+                        id_prov,
+                    ]
                 )
                 .catch((e) => console.error(e.stack));
         }
@@ -51,9 +57,14 @@ class PedidoProdModel {
                     `INSERT INTO vam_pedidos(f_emision,estado,id_prov,id_prod,subtotal_usd,total_usd) VALUES (current_date,'p',$1,$2,$3,$4) RETURNING id`,
                     [id_prov, id_prod, pedido.subtotal_usd, pedido.total_usd]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const id_pedido = response.rows[0].id;
-                    createInsertDetPedido(id_pedido, id_prov, id_prod, pedido).then(() => {
+                    createInsertDetPedido(
+                        id_pedido,
+                        id_prov,
+                        id_prod,
+                        pedido
+                    ).then(() => {
                         resolve();
                     });
                 })
@@ -78,7 +89,7 @@ class PedidoProdModel {
                     WHERE mpc.id_cont_prov = prov.id AND mpc.id_cont_prod = $1 AND mpc.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                     [id_prod]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -98,7 +109,7 @@ class PedidoProdModel {
                 WHERE condc.id_form_envio IS NOT NULL AND condc.id_prod_cont = $1 AND condc.id_prov_cont IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                     [id_prod]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -117,7 +128,7 @@ class PedidoProdModel {
                 WHERE condc.id_form_pago IS NOT NULL AND condc.id_prod_cont = $1 AND condc.id_prov_cont IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = $1 AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                     [id_prod]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -139,7 +150,7 @@ class PedidoProdModel {
                     WHERE det.id_pedido = p.id AND p.id_prod = $1`,
                     [id_prod]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const prods = response.rows;
                     resolve(prods);
                 })
@@ -159,7 +170,7 @@ class PedidoProdModel {
                     WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cont_prod = $1 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prod = $1)`,
                     [id_prod]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -178,7 +189,7 @@ class PedidoProdModel {
                     WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prod = $1 AND condpe.id_cond = condcon.id AND  condpe.id_pedido IN (SELECT ped.id FROM vam_pedidos AS ped WHERE ped.id_prod = $1)`,
                     [id_prod]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -194,7 +205,7 @@ class PedidoProdModel {
                     "UPDATE vam_pedidos SET estado='anpd', motivo_cancel=$1 WHERE id = $2 AND id_prod = $3",
                     [motivo_cancel, id_ped, id_prod]
                 )
-                .then(function () {
+                .then(function() {
                     resolve(true);
                 })
                 .catch((e) => console.error(e.stack));

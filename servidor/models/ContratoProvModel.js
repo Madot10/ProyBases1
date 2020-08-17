@@ -16,7 +16,7 @@ class ContratoProvModel {
                   WHERE c.id_prov = $1 AND cond.id_contrato = c.id AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month')`,
                     [id_prov]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -32,7 +32,7 @@ class ContratoProvModel {
                     `SELECT c.id, ing.cas, ing.nombre, ing.tipo, ing.descripcion, ing.taxonomia, ing_pres.volumen, ing_pres.precio FROM vam_contratos AS c, vam_mp_c AS cond LEFT JOIN vam_ingrediente_esencias AS ing ON ing.cas = cond.cas LEFT JOIN vam_ing_presentaciones AS ing_pres ON ing_pres.cas_ingrediente = cond.cas WHERE c.id_prov = $1 AND cond.id_contrato = c.id AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month')`,
                     [id_prov]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
 
                     resolve(provs);

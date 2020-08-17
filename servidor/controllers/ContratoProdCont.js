@@ -10,7 +10,7 @@ class ContratoProdCont {
 
         contrato
             .getContratos(id_prod)
-            .then(function (contratos) {
+            .then(function(contratos) {
                 res.status(200).json({ Info_Contratos: contratos });
             })
             .catch((e) => console.error(e.stack));
@@ -22,7 +22,7 @@ class ContratoProdCont {
 
         contrato
             .getIngCont(id_prod)
-            .then(function (ingred) {
+            .then(function(ingred) {
                 res.status(200).json({ Ingredientes_Contratos: ingred });
             })
             .catch((e) => console.error(e.stack));
@@ -34,7 +34,7 @@ class ContratoProdCont {
 
         contrato
             .getContVencer(id_prod)
-            .then(function (contratos) {
+            .then(function(contratos) {
                 res.status(200).json({ Info_Contratos: contratos });
             })
             .catch((e) => console.error(e.stack));
@@ -46,7 +46,7 @@ class ContratoProdCont {
 
         contrato
             .getIngContVencer(id_prod)
-            .then(function (ingred) {
+            .then(function(ingred) {
                 res.status(200).json({ Ingredientes_Contratos: ingred });
             })
             .catch((e) => console.error(e.stack));
@@ -60,8 +60,10 @@ class ContratoProdCont {
 
         contrato
             .updateCancelarCont(id_prod, id_cont, motivo_cancel, quien_cancela)
-            .then(function () {
-                res.status(200).json({ message: "Contrato cancelado con éxito" });
+            .then(function() {
+                res.status(200).json({
+                    message: "Contrato cancelado con éxito",
+                });
             })
             .catch((e) => console.error(e.stack));
     }
@@ -72,7 +74,7 @@ class ContratoProdCont {
 
         contrato
             .getContNuevo(id_prod)
-            .then(function (provs) {
+            .then(function(provs) {
                 res.status(200).json({ Lista_de_proveedores: provs });
             })
             .catch((e) => console.error(e.stack));
@@ -84,7 +86,7 @@ class ContratoProdCont {
 
         contrato
             .getContNuevoFe(id_prod)
-            .then(function (fes) {
+            .then(function(fes) {
                 res.status(200).json({ Lista_de_formas_de_envio: fes });
             })
             .catch((e) => console.error(e.stack));
@@ -96,7 +98,7 @@ class ContratoProdCont {
 
         contrato
             .getContNuevoFp(id_prod)
-            .then(function (fps) {
+            .then(function(fps) {
                 res.status(200).json({ Lista_de_formas_de_pago: fps });
             })
             .catch((e) => console.error(e.stack));
@@ -108,7 +110,7 @@ class ContratoProdCont {
 
         contrato
             .getContNuevoIng(id_prod)
-            .then(function (ingreds) {
+            .then(function(ingreds) {
                 res.status(200).json({ Lista_de_ingredientes: ingreds });
             })
             .catch((e) => console.error(e.stack));
@@ -120,7 +122,7 @@ class ContratoProdCont {
 
         contrato
             .getContNuevoListIng(id_prov)
-            .then(function (ingreds) {
+            .then(function(ingreds) {
                 res.status(200).json({ Lista_de_proveedores: ingreds });
             })
             .catch((e) => console.error(e.stack));
@@ -132,7 +134,7 @@ class ContratoProdCont {
 
         contrato
             .getContNuevoListIngExc(id_prov)
-            .then(function (ingreds) {
+            .then(function(ingreds) {
                 res.status(200).json({ Lista_de_proveedores: ingreds });
             })
             .catch((e) => console.error(e.stack));
@@ -158,7 +160,9 @@ class ContratoProdCont {
         console.log("Contrato recibido", id_prov, id_prod, cont);
         contrato
             .createContrato(id_prod, id_prov, cont)
-            .then(res.status(200).json({ message: "Contrato creado con éxito" }))
+            .then(
+                res.status(200).json({ message: "Contrato creado con éxito" })
+            )
             .catch((e) => {
                 console.error(e.stack);
                 res.status(500);
@@ -173,7 +177,9 @@ class ContratoProdCont {
 
         contrato
             .renovarContrato(id_prod, id_prov, id_cont)
-            .then(res.status(200).json({ message: "Contrato renovado con éxito" }))
+            .then(
+                res.status(200).json({ message: "Contrato renovado con éxito" })
+            )
             .catch((e) => {
                 console.error(e.stack);
                 res.status(500);

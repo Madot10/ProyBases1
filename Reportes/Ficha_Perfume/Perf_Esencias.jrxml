@@ -22,7 +22,8 @@ FROM vam_perfumes AS perf
     INNER JOIN vam_fo_principal AS princ ON perf.id = princ.id_perf
     INNER JOIN vam_notas_perfumes AS notas ON perf.id = notas.id_perf
     INNER JOIN vam_esencias_perf AS esencia ON esencia.tsca_cas = notas.id_esencia_perf 
-WHERE perf.id =  $P{Perfume}  AND perf.tipo_estructura = 'f']]>
+WHERE perf.id =  $P{Perfume}  AND perf.tipo_estructura = 'f'
+ORDER BY tipo_nota]]>
 	</queryString>
 	<field name="esencia" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="esencia"/>

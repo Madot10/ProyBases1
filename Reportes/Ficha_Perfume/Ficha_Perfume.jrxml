@@ -4,7 +4,7 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="233"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="754"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sistema_vam"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgresql Adapter"/>
 	<parameter name="Perfume" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT perf.id,

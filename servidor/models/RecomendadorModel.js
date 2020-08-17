@@ -17,7 +17,7 @@ class RecomendadorModel {
         return new Promise((resolve, reject) => {
             database
                 .query(myquery, [genero, edad])
-                .then(function (response) {
+                .then(function(response) {
                     const perfs = response.rows;
                     resolve(perfs);
                 })
@@ -43,7 +43,7 @@ class RecomendadorModel {
         return new Promise((resolve, reject) => {
             database
                 .query(myquery, [genero, edad])
-                .then(function (response) {
+                .then(function(response) {
                     const perfs = response.rows;
                     resolve(perfs);
                 })
@@ -76,7 +76,7 @@ class RecomendadorModel {
         return new Promise((resolve, reject) => {
             database
                 .query(myquery, [genero, edad])
-                .then(function (response) {
+                .then(function(response) {
                     const perfs = response.rows;
                     resolve(perfs);
                 })
@@ -112,7 +112,7 @@ class RecomendadorModel {
         return new Promise((resolve, reject) => {
             database
                 .query(myquery, [genero, edad])
-                .then(function (response) {
+                .then(function(response) {
                     const perfs = response.rows;
                     resolve(perfs);
                 })
@@ -120,7 +120,15 @@ class RecomendadorModel {
         });
     }
 
-    getPersonalidad(genero, edad, intensidad, caracter, flia_olf, aroma, preferencia) {
+    getPersonalidad(
+        genero,
+        edad,
+        intensidad,
+        caracter,
+        flia_olf,
+        aroma,
+        preferencia
+    ) {
         var myquery =
             `SELECT DISTINCT perf.id AS id_perf, palabra.id AS id_aroma, palabra.palabra
         FROM vam_perfumes AS perf
@@ -155,7 +163,7 @@ class RecomendadorModel {
         return new Promise((resolve, reject) => {
             database
                 .query(myquery, [genero, edad])
-                .then(function (response) {
+                .then(function(response) {
                     const perfs = response.rows;
                     resolve(perfs);
                 })
@@ -179,7 +187,7 @@ class RecomendadorModel {
                     WHERE perf.genero = $1`,
                     [genero]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const perfs = response.rows;
                     resolve(perfs);
                 })
@@ -208,14 +216,13 @@ class RecomendadorModel {
                     WHERE perf.id = $1 AND perf.tipo_estructura = 'f' ORDER BY tipo_nota`,
                     [id_perf]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const perfs = response.rows;
                     resolve(perfs);
                 })
                 .catch((e) => console.error(e.stack));
         });
     }
-
 }
 
 module.exports = { RecomendadorModel };

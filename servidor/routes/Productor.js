@@ -50,16 +50,25 @@ router.get("/:id_prod/contratos/nuevo/fp", contrato.getContNuevoFp);
 router.get("/:id_prod/contratos/nuevo/ing", contrato.getContNuevoIng);
 
 //Ingredientes de un proveedor disponibles para contratar (sin pedir exclusividad)
-router.get("/:id_prod/contratos/nuevo/ing/:id_prov", contrato.getContNuevoListIng);
+router.get(
+    "/:id_prod/contratos/nuevo/ing/:id_prov",
+    contrato.getContNuevoListIng
+);
 
 //Ingredientes de un proveedor disponibles para contratar (pidiendo exclusividad)
-router.get("/:id_prod/contratos/nuevo/ing/exc/:id_prov", contrato.getContNuevoListIngExc);
+router.get(
+    "/:id_prod/contratos/nuevo/ing/exc/:id_prov",
+    contrato.getContNuevoListIngExc
+);
 
 //Creación del contrato
 router.post("/:id_prod/contratos/nuevo/:id_prov", contrato.createContrato);
 
 //Renovación de un contrato
-router.post("/:id_prod/contratos/:id_contrato/renovar/:id_prov", contrato.renovarContrato);
+router.post(
+    "/:id_prod/contratos/:id_contrato/renovar/:id_prov",
+    contrato.renovarContrato
+);
 
 //Pedido
 //Creación del pedido

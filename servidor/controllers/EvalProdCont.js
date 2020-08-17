@@ -84,7 +84,7 @@ class EvalProdCont {
 			id_var_crit: [1,2,3,4,5],
 			pesos: [10,20,30,40,50]
 		}
-    */
+        */
 
         evaluacion
             .createEvalCriterios(id_prod, tipo_formula, formula)

@@ -13,13 +13,16 @@ function generarPagos(id_ped, fp) {
             //Primer pago
             if (i === true) {
                 if (fp[0].tipo === "cred") {
-                    primer_pago = fp[0].subtotal_usd * (fp[0].porc_inicial / 100);
+                    primer_pago =
+                        fp[0].subtotal_usd * (fp[0].porc_inicial / 100);
                     fp[0].nro_cuotas--;
                     console.log(primer_pago);
                     var resto =
                         fp[0].subtotal_usd -
                         primer_pago +
-                        ((fp[0].subtotal_usd - primer_pago) * fp[0].interes_mensual) / 100;
+                        ((fp[0].subtotal_usd - primer_pago) *
+                            fp[0].interes_mensual) /
+                            100;
                     pagos = resto / fp[0].nro_cuotas;
                     console.log(pagos);
                 } else {
@@ -32,7 +35,7 @@ function generarPagos(id_ped, fp) {
                         `INSERT INTO vam_pagos(id_pedido, fecha, monto) VALUES ($1,current_date,$2)`,
                         [id_ped, primer_pago]
                     )
-                    .then(function () {
+                    .then(function() {
                         resolve(true);
                     })
                     .catch((e) => console.error(e.stack));
@@ -45,7 +48,7 @@ function generarPagos(id_ped, fp) {
                         `INSERT INTO vam_pagos(id_pedido, fecha, monto) VALUES ($1,now()+ interval '1 day' * $2,$3)`,
                         [id_ped, dias, pagos]
                     )
-                    .then(function () {
+                    .then(function() {
                         resolve(true);
                     })
                     .catch((e) => console.error(e.stack));
@@ -66,7 +69,7 @@ function createPagosPedido(id_prov, id_ped) {
                 WHERE condpe.id_pedido = $1 AND condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = $2 AND condpe.id_cond = condcon.id`,
                 [id_ped, id_prov]
             )
-            .then(function (response) {
+            .then(function(response) {
                 var fp = response.rows;
                 console.log(fp);
                 generarPagos(id_ped, fp).then(() => {
@@ -95,7 +98,7 @@ class PedidoProvModel {
                     WHERE p.estado != 'p' AND det.id_pedido = p.id AND p.id_prov = $1`,
                     [id_prov]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -115,7 +118,7 @@ class PedidoProvModel {
                     WHERE condcon.id_form_envio IS NOT NULL AND condpe.id_cont_prov = $1 AND condpe.id_cond = condcon.id AND  p.estado != 'p';`,
                     [id_prov]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -134,7 +137,7 @@ class PedidoProvModel {
                     WHERE condcon.id_form_pago IS NOT NULL AND condpe.id_cont_prov = $1 AND condpe.id_cond = condcon.id AND  p.estado != 'p';`,
                     [id_prov]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -156,7 +159,7 @@ class PedidoProvModel {
                     WHERE p.estado = 'p' AND p.id = det.id_pedido AND p.id_prov = $1 AND det.id_prov_ing = p.id_prov AND p.id_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = p.id_prod AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                     [id_prov]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -177,7 +180,7 @@ class PedidoProvModel {
                   AND condpe.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = condpe.id_cont_prod AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                     [id_prov]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -197,7 +200,7 @@ class PedidoProvModel {
                   AND condpe.id_cont_prov IN (SELECT c.id_prov FROM vam_contratos AS c WHERE c.id_prod = condpe.id_cont_prod AND c.fecha_cancelacion IS NULL AND (age((SELECT max(fecha) as maxf FROM vam_renovaciones AS r WHERE r.id_contrato = c.id GROUP BY id_contrato)) <= '12 month' OR age(c.fecha_emision) <= '12 month'))`,
                     [id_prov]
                 )
-                .then(function (response) {
+                .then(function(response) {
                     const provs = response.rows;
                     resolve(provs);
                 })
@@ -213,7 +216,7 @@ class PedidoProvModel {
                     "UPDATE vam_pedidos SET estado = 'a', nro_factura = $1, f_confirmacion = current_date WHERE id = $2 AND id_prov = $3",
                     [nro_factura, id_ped, id_prov]
                 )
-                .then(function () {
+                .then(function() {
                     createPagosPedido(id_prov, id_ped).then(() => {
                         resolve();
                     });
@@ -230,7 +233,7 @@ class PedidoProvModel {
                     "UPDATE vam_pedidos SET estado='anpv', motivo_cancel=$1 WHERE id = $2 AND id_prov = $3",
                     [motivo_cancel, id_ped, id_prov]
                 )
-                .then(function () {
+                .then(function() {
                     resolve(true);
                 })
                 .catch((e) => console.error(e.stack));
